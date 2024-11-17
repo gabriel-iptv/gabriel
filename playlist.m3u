@@ -395,7 +395,7 @@ https://webhdrunns.mizhls.ru/lb/premium312/index.m3u8|referer=https://lewblivehd
 #EXTINF:-1 tvg-id="(no tvg-id)" tvg-name="disneyjr" tvg-logo="https://imgur.com/EROJS2X.png" group-title="GABRIEL : FREE LOCAL PLAYLIST", Disney Jr
 http://fl2.moveonjoy.com/DISNEY_JR/index.m3u8
 #EXTINF:-1 tvg-id="Disney.XD.(East).(DISXD).jm" tvg-name="Disneyxd" tvg-logo="https://i.imgur.com/XTzB1MO.png" group-title="GABRIEL : FREE LOCAL PLAYLIST", Disney XD
-http://212.102.60.231/DISNEY_XD/index.m3u8
+http://fl2.moveonjoy.com/DISNEY_XD/index.m3u8
 #EXTINF:-1 tvg-id="SONY.Movies.br" tvg-name="sonymovies" tvg-logo="https://imgur.com/tEa4rMS.png" group-title="GABRIEL : FREE LOCAL PLAYLIST", Sony Movies
 https://cdn.klowdtv.net/803B48A/n1.klowdtv.net/live1/smc_720p/chunks.m3u8
 #EXTINF:-1 tvg-id="PBS.Kids.us" tvg-name="pbskids" tvg-logo="https://imgur.com/RNtLJ3S.png" group-title="GABRIEL : FREE LOCAL PLAYLIST", PBS Kids
