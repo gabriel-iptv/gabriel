@@ -414,10 +414,6 @@ https://linearjitp-playback.astro.com.my/dash-wv/linear/2111/default_primary.mpd
 https://cdn-uw2-prod.tsv2.amagi.tv/linear/amg01006-abs-cbn-abscbn-gma-x7-dash-abscbnono/7c693236-e0c1-40a3-8bd0-bb25e43f5bfc/index.mpd
 #EXTINF:-1 tvg-id="ptvsports" tvg-logo="https://imgur.com/PCOeNwc.png" group-title="GABRIEL : FREE LOCAL PLAYLIST",PTV Sports
 http://125.209.88.166:45793/BRN/PTVSports.stream/playlist.m3u8
-#EXTINF:-1 tvg-id="GMA.ph" tvg-logo="https://i.imgur.com/g1X5J69.png" group-title="GABRIEL : FREE LOCAL PLAYLIST", GMA
-https://wag.ika.lat/stream/812083425
-#EXTINF:-1 tvg-id="GTV.ph" tvg-logo="https://static.wikia.nocookie.net/russel/images/a/a5/GTV_Vector_Logo_2021.png" group-title="GABRIEL : FREE LOCAL PLAYLIST",GTV
-https://wag.ika.lat/stream/872206966
 #KODIPROP:inputstream.adaptive.license_type=clearkey
 #KODIPROP:inputstream.adaptive.license_key={ "keys":[ { "kty":"oct", "k":"zwz/tje4FZiie9aw2Q1lqA", "kid":"NGufQeKTN0jIhh+Cky4BEA" } ], "type":"temporary" }
 #EXTINF:-1 tvg-id="Asianfoodnetwork.ph" tvg-logo="https://i.imgur.com/O5jBcL2.png" group-title="GABRIEL : FREE LOCAL PLAYLIST",Asian Food Network 
