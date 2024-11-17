@@ -1,15 +1,10 @@
 <?php
-// Redirect the user to another website
-header("Location: https://chatgpt.com"); // Replace with your target URL
-exit(); // Stop further script execution
+header("Location: https://chatgpt.com");
+exit(); 
 
-// The code below will not execute because of the exit() above,
-// but if you remove the redirect, it will generate the M3U content.
 
-// Set headers to display as plain text (if no redirect)
 header("Content-Type: text/plain");
 
-// Print the M3U content directly
 echo <<<M3U
 #EXTM3U url-tvg=""
 
