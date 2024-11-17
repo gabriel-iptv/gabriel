@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GABRIELIPTV</title>
+    <style>
+        body {
+            background-color: #000;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            height: 100vh;
+            margin: 0;
+            font-family: sans-serif;
+            text-align: center;
+            padding-top: 20px;
+        }
+        .content {
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+        }
+        .ascii-art {
+            font-size: 10px;
+            line-height: 1.1;
+            background: linear-gradient(90deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #8f00ff);
+            -webkit-background-clip: text;
+            color: transparent;
+            animation: rainbow 3s linear infinite;
+            background-size: 200% 100%;
+            margin-bottom: -10px;
+        }
+        .ascii-text {
+            margin-top: 0;
+        }
+        .instructions {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #fff;
+            line-height: 1.5;
+        }
+        .url-box {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+            background-color: #000;
+            border: 2px solid red;
+            border-radius: 5px;
+            padding: 10px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .url-text {
+            flex: 1;
+            color: #fff;
+            font-size: 12px;
+            text-align: left;
+        }
+        .copy-btn {
+            background-color: red;
+            color: #fff;
+            border: none;
+            padding: 8px 12px;
+            cursor: pointer;
+            font-size: 12px;
+            border-radius: 4px;
+            margin-left: 10px;
+            transition: background 0.3s;
+        }
+        .copy-btn:hover {
+            filter: brightness(1.2);
+        }
+        @keyframes rainbow {
+            0% { background-position: 0%; }
+            100% { background-position: 100%; }
+        }
+        /* Toast styling */
+        #toast {
+            visibility: hidden;
+            min-width: 200px;
+            margin: auto;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 5px;
+            padding: 10px;
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1;
+            font-size: 14px;
+            opacity: 0;
+            transition: opacity 0.5s, visibility 0.5s;
+        }
+        #toast.show {
+            visibility: visible;
+            opacity: 1;
+        }
+    </style>
+    <script>
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                showToast("URL copied to clipboard!");
+            }).catch(err => {
+                console.error("Failed to copy: ", err);
+            });
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById("toast");
+            toast.textContent = message;
+            toast.classList.add("show");
+            setTimeout(() => {
+                toast.classList.remove("show");
+            }, 3000); // Toast visible for 3 seconds
+        }
+    </script>
+</head>
+<body>
+    <div class="content">
+        <pre class="ascii-art">
+            
+ 
+   ___ ___ ___ _  _   _   _      ___ ___ _______   __
+  / __|_ _/ __| \| | /_\ | |    |_ _| _ \_   _\ \ / /
+ | (__ | | (_ | .` |/ _ \| |__   | ||  _/ | |  \ V / 
+  \___|___\___|_|\_/_/ \_\____| |___|_|   |_|   \_/  
+                                                     
+
+                                                         </pre>
+        <div class="ascii-art ascii-text">BY GABRIEL</div>
+
+        <!-- Instructions above URL box -->
+        <div class="instructions">
+           Copy and Paste the URL to OTT Navigator<br>
+            <small>Settings &gt; Provider &gt; Add Provider &gt; Playlist &gt; URL &gt; APPLY &gt; Done! </small>
+        </div>
+
+        <!-- URL box with copy button -->
+        <div class="url-box">
+            <div class="url-text">https://gab292.github.io/gabrieliptv.playlist.com/</div>
+            <button class="copy-btn" onclick="copyToClipboard('https://gab292.github.io/gabrieliptv.playlist.com/')">Copy URL</button>
+        </div>
+    </div>
+
+    <!-- Toast container -->
+    <div id="toast"></div>
+</body>
+</html>
