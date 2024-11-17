@@ -8,7 +8,7 @@
 </head>
 <body>
   <script>
-    window.location.href="https://gab292.github.io/gabrieliptv.login.com/"
+    window.location.href="github.com"
   </script>
   
   #EXTM3U url-tvg=""<br>
