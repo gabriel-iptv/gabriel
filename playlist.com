@@ -8,32 +8,7 @@
 </head>
 <body>
   <script>
-    const fetch = require('node-fetch');
-
-exports.handler = async (event, context) => {
-  // Get token from request headers or query parameters
-  const token = event.headers['authorization'] || event.queryStringParameters.token;
-
-  // Check token validity
-  if (token !== 'YOUR_SECRET_TOKEN') {
-    return {
-      statusCode: 401,
-      body: 'Unauthorized',
-    };
-  }
-
-  // If authorized, fetch and return the M3U playlist
-  const res = await fetch('https://gabrielplaylist.netlify.app/playlist.m3u');
-  const playlist = await res.text();
-
-  return {
-    statusCode: 200,
-    headers: {
-      'Content-Type': 'application/x-mpegURL',
-    },
-    body: playlist,
-  };
-};
+    window.location.href="https://www.blackbox.ai/chat/QKJCBIQ"
   </script>
   
   #EXTM3U url-tvg=""<br>
