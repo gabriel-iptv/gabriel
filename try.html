@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IPTV Player</title>
+  <script src="https://cdn.dashjs.org/latest/dash.all.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f9;
+    }
+    video {
+      width: 80%;
+      height: auto;
+      margin-top: 20px;
+      border: 2px solid #ccc;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+  </style>
+</head>
+<body>
+  <h1>IPTV Player</h1>
+  <video id="videoPlayer" controls></video>
+
+  <script>
+    // MPEG-DASH player initialization
+    const player = dashjs.MediaPlayer().create();
+
+    // MPEG-DASH stream URL
+    const mpdUrl = "https://cdn-ue1-prod.tsv2.amagi.tv/linear/amg01006-abs-cbn-kapcha-dash-abscbnono/index.mpd";
+
+    // ClearKey DRM configuration
+    const keyId = "bd17afb5dc9648a39be79ee3634dd4b8"; // Key ID
+    const key = "3ecf305d54a7729299b93a3d69c02ea5";   // Key
+
+    player.setProtectionData({
+      "org.w3.clearkey": {
+        "clearkeys": {
+          [keyId]: key
+        }
+      }
+    });
+
+    // Initialize the player
+    player.initialize(document.querySelector("#videoPlayer"), mpdUrl, true);
+  </script>
+</body>
+</html>
