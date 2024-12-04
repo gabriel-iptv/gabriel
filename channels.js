@@ -8,7 +8,7 @@ const channels = {
     },
 	 KapamilyaChannel: {
         name: 'Kapamilya Channel',
-        url: 'https://cdn-ue1-prod.tsv2.amagi.tv/linear/amg01006-abs-cbn-kapcha-dash-abscbnono/0edc605b-c592-42ff-9083-53b0e8181ca0/index.mpd',
+        url: 'https://cdn-ue1-prod.tsv2.amagi.tv/linear/amg01006-abs-cbn-kapcha-dash-abscbnono/a17856f0-00aa-415c-a4cc-a6fdfc0e4f7a/index.mpd',
         keyId: 'bd17afb5dc9648a39be79ee3634dd4b8',
         key: '3ecf305d54a7729299b93a3d69c02ea5',
 		type: 'mpd'
