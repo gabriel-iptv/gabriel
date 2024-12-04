@@ -6,9 +6,20 @@ const channels = {
         key: '07c7f996b1734ea288641a68e1cfdc4d',
 		type: 'mpd'
     },
-	 boomerang: {
-        name: 'Boomerang',
-        url: 'http://gcp-dash.ngslbs.com/TVD037/index.mpd',
+	 nickelodeon_astro: {
+        name: 'Nickelodeon',
+        url: 'https://linearjitp-playback.astro.com.my/dash-wv/linear/2511/default_primary.mpd',
+        license_type: 'clearkey',
+        license_key: {
+            "keys": [
+                {
+                    "kty": "oct",
+                    "k": "vaX3u8HkQJb3eaBhn+mIHw",
+                    "kid": "2FIOlqEoOrblvlOEdL+oEA"
+                }
+            ],
+            "type": "temporary"
+        },
         type: 'mpd'
     },
 
