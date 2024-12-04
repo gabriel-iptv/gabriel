@@ -6,6 +6,12 @@ const channels = {
         key: '07c7f996b1734ea288641a68e1cfdc4d',
 		type: 'mpd'
     },
+	 Boomerang: {
+        name: 'Boomerang',
+        url: 'http://gcp-dash.ngslbs.com/TVD037/index.mpd',
+		type: 'mpd'
+    },
+
     Animax: {
         name: 'Animax',
         url: 'https://qp-pldt-live-grp-07-prod.akamaized.net/out/u/cg_animax_sd.mpd',
