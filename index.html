@@ -12,31 +12,33 @@
             display: flex;
             height: 100vh;
             overflow: hidden;
+            background-color: #fff;
         }
 
         /* Sidebar styling */
         .sidebar {
-            width: 20%;
-            background-color: #222;
-            color: white;
+            width: 250px; /* Set a fixed width for the sidebar */
+            background-color: transparent; /* Set background to transparent */
+            color: black;
             padding: 20px;
-            overflow-y: auto;
             position: absolute;
             top: 0;
-            left: 0;
-            bottom: 0;
-            transform: translateX(-100%);
-            transition: transform 0.3s ease;
+            left: -250px; /* Initially hidden off-screen */
+            height: 100%;
+            overflow-y: auto;
+            transition: left 0.3s ease;
+            z-index: 5;
         }
 
-        .sidebar.visible {
-            transform: translateX(0);
+        .sidebar.open {
+            left: 0; /* When the sidebar is open, it slides in */
         }
 
         .sidebar h2 {
             font-size: 24px;
             text-align: center;
             margin-bottom: 20px;
+            color: black;
         }
 
         .sidebar ul {
@@ -51,15 +53,19 @@
             cursor: pointer;
             padding: 10px;
             border-radius: 5px;
+            background-color: rgba(255, 255, 255, 0.8); /* Slight white background for better readability */
+            color: black;
             transition: background-color 0.3s ease;
+            border: 1px solid #ddd;
         }
 
         .sidebar li:hover {
-            background-color: #444;
+            background-color: rgba(0, 0, 0, 0.1); /* Slight dark background on hover */
         }
 
         .sidebar li.active {
             background-color: #4CAF50;
+            color: white;
         }
 
         /* Player container */
@@ -69,14 +75,13 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            background-color: #f4f4f4;
-            width: 100%;
+            position: relative;
         }
 
         #player {
-            width: 80%;
-            height: 450px;
-            background-color: black;
+            width: 100%;
+            height: 100%;
+            background-color: #fff;
         }
 
         /* Menu button */
@@ -97,6 +102,23 @@
         .menu-button:hover {
             background-color: #45a049;
         }
+
+        @media (max-width: 768px) {
+            /* Ensure sidebar is hidden off-screen on mobile */
+            .sidebar {
+                position: absolute;
+                top: 0;
+                left: -100%; /* Completely off-screen */
+                height: 100%;
+                transition: left 0.3s ease;
+                z-index: 5;
+                box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            }
+
+            .sidebar.open {
+                left: 0; /* When the sidebar is open, it slides in */
+            }
+        }
     </style>
 
     <script src="https://ssl.p.jwpcdn.com/player/v/8.27.1/jwpsrv.js"></script>
@@ -105,8 +127,13 @@
     <script>
         jwplayer.key = 'XSuP4qMl+9tK17QNb+4+th2Pm9AWgMO/cYH8CI0HGGr7bdjo';
 
+        let currentChannelName = "TV5"; // Default channel name
+
         function loadStream(channelKey) {
             const channel = channels[channelKey];
+            currentChannelName = channelKey; // Update the current channel name
+            updateMenuButton(); // Update menu button text
+            
             jwplayer("player").setup({
                 file: channel.url,
                 type: channel.type,
@@ -117,7 +144,7 @@
                     }
                 } : undefined,
                 width: "100%",
-                height: 450,
+                height: "100%",
                 autostart: true
             });
 
@@ -129,7 +156,12 @@
 
         function toggleMenu() {
             const sidebar = document.querySelector('.sidebar');
-            sidebar.classList.toggle('visible');
+            sidebar.classList.toggle('open');
+        }
+
+        function updateMenuButton() {
+            const menuButton = document.querySelector('.menu-button');
+            menuButton.textContent = `Channel: ${currentChannelName}`; // Update button text
         }
 
         window.onload = function() {
@@ -140,13 +172,13 @@
 </head>
 <body>
     <!-- Menu Button -->
-    <button class="menu-button" onclick="toggleMenu()">☰ </button>
+    <button class="menu-button" onclick="toggleMenu()">Channel: TV5</button>
 
     <!-- Sidebar -->
     <div class="sidebar">
         <h2>Channel List</h2>
         <ul>
-            <li id="tv5" onclick="loadStream('tv5')">TV5</li>
+             <li id="tv5" onclick="loadStream('tv5')">TV5</li>
 <li id="anc" onclick="loadStream('anc')">ANC</li>
 <li id="animax" onclick="loadStream('Animax')">Animax</li>
 <li id="cartoon_net_hd" onclick="loadStream('cartoon_net_hd')">Cartoon Network HD</li>
