@@ -105,6 +105,33 @@
             background-color: #45a049;
         }
 
+        /* Fullscreen button for landscape */
+        .fullscreen-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            z-index: 10;
+            display: none; /* Hidden by default */
+        }
+
+        .fullscreen-button:hover {
+            background-color: #45a049;
+        }
+
+        /* Show fullscreen button in landscape mode */
+        @media (orientation: landscape) {
+            .fullscreen-button {
+                display: inline-block; /* Show button in landscape */
+            }
+        }
+
         /* When the sidebar is visible */
         .fullscreen .sidebar {
             left: 0;
@@ -180,6 +207,16 @@
             }
         }
 
+        function toggleFullscreen() {
+            if (document.fullscreenElement) {
+                document.exitFullscreen().then(() => {
+                    document.body.classList.remove('fullscreen');
+                });
+            } else {
+                enterFullscreen();
+            }
+        }
+
         window.onload = function() {
             // Load the first channel by default
             loadStream('tv5');
@@ -192,6 +229,9 @@
 <body>
     <!-- Menu Button -->
     <button class="menu-button" onclick="toggleMenu()">Channel: TV5</button>
+
+    <!-- Fullscreen Button (only shown in landscape mode) -->
+    <button class="fullscreen-button" onclick="toggleFullscreen()">Fullscreen</button>
 
     <!-- Sidebar -->
     <div class="sidebar">
