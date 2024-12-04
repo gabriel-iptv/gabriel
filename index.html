@@ -168,41 +168,49 @@
     currentChannelName = channelKey; // Update the current channel name
     updateMenuButton(); // Update menu button text
 
-    const playerContainer = document.getElementById("player");
-
-    // Clear the player container before loading a new stream
-    playerContainer.innerHTML = "";
-
     if (channel.type === "youtube") {
-        // Create and append a YouTube iframe
-        const iframe = document.createElement("iframe");
-        iframe.src = channel.url;
-        iframe.width = "100%";
-        iframe.height = "100%";
-        iframe.frameBorder = "0";
-        iframe.allow = "autoplay; encrypted-media; picture-in-picture";
-        iframe.allowFullscreen = true;
-        playerContainer.appendChild(iframe);
+        // Handle YouTube embed
+        const playerContainer = document.getElementById("player");
+        playerContainer.innerHTML = `
+            <iframe
+                id="youtube-player"
+                src="${channel.url}"
+                frameborder="0"
+                allow="autoplay; fullscreen"
+                allowfullscreen
+                width="100%"
+                height="100%"
+            ></iframe>
+        `;
+
+        // Unmute the YouTube live stream programmatically
+        const iframe = document.getElementById("youtube-player");
+        iframe.onload = () => {
+            iframe.contentWindow.postMessage(
+                '{"event":"command","func":"unMute","args":""}',
+                "*"
+            );
+        };
     } else {
-        // Use JWPlayer for non-YouTube streams
+        // Handle other types of streams
         jwplayer("player").setup({
             file: channel.url,
             type: channel.type,
             drm: channel.type === "mpd" ? {
                 clearkey: {
                     keyId: channel.keyId,
-                    key: channel.key
-                }
+                    key: channel.key,
+                },
             } : undefined,
             width: "100%",
             height: "100%",
-            autostart: true
+            autostart: true,
         });
     }
 
     // Highlight the active channel in the sidebar
     const channelItems = document.querySelectorAll(".sidebar li");
-    channelItems.forEach(item => item.classList.remove("active"));
+    channelItems.forEach((item) => item.classList.remove("active"));
     document.getElementById(channelKey).classList.add("active");
 }
 
