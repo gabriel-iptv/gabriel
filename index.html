@@ -243,17 +243,35 @@
 
     function filterChannels() {
     const searchInput = document.getElementById('channelSearch').value.toLowerCase();
-    const channels = document.getElementById('channelList').getElementsByTagName('li');
+    const channelList = document.getElementById('channelList');
+    const channels = channelList.getElementsByTagName('li');
+    const noChannelMessage = document.getElementById('noChannelMessage');
+    let found = false;
 
+    // Loop through all channels to match search input
     for (let i = 0; i < channels.length; i++) {
         const channelName = channels[i].textContent.toLowerCase();
         if (channelName.includes(searchInput)) {
-            channels[i].style.display = ''; // Show the channel
+            channels[i].style.display = ''; // Show matching channels
+            found = true;
+
+            // Automatically load the first matching channel
+            if (found && searchInput.length > 0) {
+                loadStream(channels[i].id);
+                break;
+            }
         } else {
-            channels[i].style.display = 'none'; // Hide the channel
+            channels[i].style.display = 'none'; // Hide non-matching channels
         }
     }
+
+    // Show or hide "No Channel Found" message
+    if (!found) {
+        noChannelMessage.style.display = 'block';
+    } else {
+        noChannelMessage.style.display = 'none';
     }
+}
 
     function toggleFullscreen() {
         if (document.fullscreenElement) {
@@ -281,7 +299,7 @@
     <!-- Fullscreen Button (only shown in landscape mode) -->
     <button class="fullscreen-button" onclick="toggleFullscreen()">Fullscreen</button>
 
-    <!-- Sidebar -->
+<!-- Sidebar -->
 <div class="sidebar">
     <h2>Channel List</h2>
     <!-- Search Bar -->
@@ -368,7 +386,9 @@
 <li id="fashiontv_hd" onclick="loadStream('fashiontv_hd')">Fashion TV HD</li>
 <li id="bloomberg" onclick="loadStream('bloomberg')">Bloomberg</li>
         </ul>
-    </div>
+     <!-- Message for No Channels Found -->
+    <p id="noChannelMessage" style="display: none; text-align: center; color: red; font-weight: bold;">No Channel Found</p>
+ </div>
 
     <!-- Player Container -->
     <div class="player-container">
