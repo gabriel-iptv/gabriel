@@ -6,21 +6,12 @@ const channels = {
         key: '07c7f996b1734ea288641a68e1cfdc4d',
 		type: 'mpd'
     },
-	 nickelodeon_astro: {
-        name: 'Nickelodeon',
-        url: 'https://linearjitp-playback.astro.com.my/dash-wv/linear/2511/default_primary.mpd',
-        license_type: 'clearkey',
-        license_key: {
-            "keys": [
-                {
-                    "kty": "oct",
-                    "k": "vaX3u8HkQJb3eaBhn+mIHw",
-                    "kid": "2FIOlqEoOrblvlOEdL+oEA"
-                }
-            ],
-            "type": "temporary"
-        },
-        type: 'mpd'
+	 KapamilyaChannel: {
+        name: 'Kapamilya Channel',
+        url: 'https://cdn-ue1-prod.tsv2.amagi.tv/linear/amg01006-abs-cbn-kapcha-dash-abscbnono/0edc605b-c592-42ff-9083-53b0e8181ca0/index.mpd',
+        keyId: 'bd17afb5dc9648a39be79ee3634dd4b8',
+        key: '3ecf305d54a7729299b93a3d69c02ea5',
+		type: 'mpd'
     },
 
     Animax: {
