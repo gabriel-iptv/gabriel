@@ -245,14 +245,23 @@
         }
 
         function toggleFullscreen() {
-            if (document.fullscreenElement) {
-                document.exitFullscreen().then(() => {
-                    document.body.classList.remove('fullscreen');
-                });
-            } else {
-                enterFullscreen();
-            }
-        }
+    if (document.fullscreenElement) {
+        document.exitFullscreen().then(() => {
+            document.body.classList.remove('fullscreen');
+        });
+    } else {
+        enterFullscreen();
+    }
+}
+
+function enterFullscreen() {
+    const body = document.body;
+    if (!document.fullscreenElement) {
+        body.requestFullscreen().then(() => {
+            body.classList.add('fullscreen');
+        });
+    }
+}
 
         window.onload = function() {
             // Load the first channel by default
