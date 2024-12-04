@@ -20,7 +20,15 @@ const channels = {
         keyId: '92032b0e41a543fb9830751273b8debd',
         key: '03f8b65e2af785b10d6634735dbe6c11',
 		type: 'mpd'
+
+	
     },
+	KapamilyaChannel: {
+        name: 'Kapamilya',
+        url: 'https://www.youtube.com/embed/8bogHAFIEyc?autoplay=1&mute=1',
+        type: 'youtube'
+
+	},
     nickelodeon: {
         name: 'Nickelodeon',
         url: 'https://qp-pldt-live-grp-11-prod.akamaized.net/out/u/dr_nickelodeon.mpd',
