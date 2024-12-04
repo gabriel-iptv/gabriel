@@ -216,6 +216,13 @@
     // Close the menu automatically
     const sidebar = document.querySelector('.sidebar');
     sidebar.classList.remove('open');
+
+    // Exit fullscreen menu state if needed
+    const menuButton = document.querySelector('.menu-button');
+    if (document.fullscreenElement) {
+        document.exitFullscreen();
+        menuButton.classList.remove('fullscreen'); // Ensure correct button styling
+    }
 }
 
         function toggleMenu() {
