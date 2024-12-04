@@ -6,10 +6,10 @@ const channels = {
         key: '07c7f996b1734ea288641a68e1cfdc4d',
 		type: 'mpd'
     },
-	 Boomerang: {
+	 boomerang: {
         name: 'Boomerang',
         url: 'http://gcp-dash.ngslbs.com/TVD037/index.mpd',
-		type: 'mpd'
+        type: 'mpd'
     },
 
     Animax: {
