@@ -11,6 +11,7 @@
             padding: 0;
             display: flex;
             height: 100vh;
+            overflow: hidden;
         }
 
         /* Sidebar styling */
@@ -20,6 +21,15 @@
             color: white;
             padding: 20px;
             overflow-y: auto;
+            position: absolute;
+            top: 0;
+            left: -20%;
+            bottom: 0;
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar.visible {
+            transform: translateX(20%);
         }
 
         .sidebar h2 {
@@ -59,30 +69,13 @@
             align-items: center;
             justify-content: center;
             background-color: #f4f4f4;
+            width: 100%;
         }
 
         #player {
             width: 80%;
             height: 450px;
             background-color: black;
-        }
-
-        /* Button styling */
-        .link-button {
-            background-color: #4CAF50;
-            border: none;
-            color: white;
-            padding: 10px 20px;
-            text-align: center;
-            text-decoration: none;
-            font-size: 16px;
-            cursor: pointer;
-            border-radius: 5px;
-            margin-top: 20px;
-        }
-
-        .link-button:hover {
-            background-color: #45a049;
         }
     </style>
 
@@ -114,9 +107,37 @@
             document.getElementById(channelKey).classList.add('active');
         }
 
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        function handleTouchStart(event) {
+            touchStartX = event.touches[0].clientX;
+        }
+
+        function handleTouchMove(event) {
+            touchEndX = event.touches[0].clientX;
+        }
+
+        function handleTouchEnd() {
+            const sidebar = document.querySelector('.sidebar');
+            if (touchEndX - touchStartX > 100) {
+                // Swipe right - open sidebar
+                sidebar.classList.add('visible');
+            } else if (touchStartX - touchEndX > 100) {
+                // Swipe left - close sidebar
+                sidebar.classList.remove('visible');
+            }
+        }
+
         window.onload = function() {
             // Load the first channel by default
             loadStream('tv5');
+
+            // Add swipe event listeners
+            const body = document.body;
+            body.addEventListener('touchstart', handleTouchStart, false);
+            body.addEventListener('touchmove', handleTouchMove, false);
+            body.addEventListener('touchend', handleTouchEnd, false);
         };
     </script>
 </head>
@@ -125,86 +146,16 @@
     <div class="sidebar">
         <h2>Channel List</h2>
         <ul>
-    <li id="tv5" onclick="loadStream('tv5')">TV5</li>
-<li id="anc" onclick="loadStream('anc')">ANC</li>
-<li id="animax" onclick="loadStream('Animax')">Animax</li>
-<li id="cartoon_net_hd" onclick="loadStream('cartoon_net_hd')">Cartoon Network HD</li>
-<li id="nickjr" onclick="loadStream('nickjr')">Nick Jr.</li>
-<li id="nickelodeon" onclick="loadStream('nickelodeon')">Nickelodeon</li>
-<li id="hbohd" onclick="loadStream('hbohd')">HBO HD</li>
-<li id="teleradyo" onclick="loadStream('teleradyo')">Teleradyo</li>
-<li id="sarisari" onclick="loadStream('sarisari')">SARISARI</li>
-<li id="ibc13" onclick="loadStream('ibc13')">IBC13</li>
-<li id="buko" onclick="loadStream('buko')">BUKO</li>
-<li id="knowledge_channel" onclick="loadStream('knowledge_channel')">Knowledge Channel</li>
-<li id="bilyonaryoch" onclick="loadStream('bilyonaryoch')">Bilyonaryo</li>
-<li id="RPTV" onclick="loadStream('RPTV')">RPTV</li>
-<li id="truefmtv" onclick="loadStream('truefmtv')">True FM TV</li>
-<li id="hits_now" onclick="loadStream('hits_now')">Hits Now</li>
-<li id="cinemaone" onclick="loadStream('cinemaone')">CinemaOne</li>
-<li id="cinemo" onclick="loadStream('cinemo')">CineMo!</li>
-<li id="hbo_family" onclick="loadStream('hbo_family')">HBO Family</li>
-<li id="cinemax" onclick="loadStream('cinemax')">Cinemax</li>
-<li id="blueant_extreme" onclick="loadStream('blueant_extreme')">Rock Action</li>
-<li id="rock_entertainment" onclick="loadStream('rock_entertainment')">Rock Entertainment</li>
-<li id="hbo_signature" onclick="loadStream('hbo_signature')">HBO Signature</li>
-<li id="hbo_hits" onclick="loadStream('hbo_hits')">HBO Hits</li>
-<li id="tvn_movies" onclick="loadStream('tvn_movies')">TVN Movies</li>
-<li id="dreamworks_tag" onclick="loadStream('dreamworks_tag')">Dreamworks Tagalog</li>
-<li id="tvn_plus" onclick="loadStream('tvn_plus')">TVN</li>
-<li id="popup_ppv_hd" onclick="loadStream('popup_ppv_hd')">Popup PPV HD</li>
-<li id="mp_tv" onclick="loadStream('mp_tv')">MPTV</li>
-<li id="a2z" onclick="loadStream('a2z')">A2Z</li>
-<li id="dreamworks_hd" onclick="loadStream('dreamworks_hd')">Dreamworks HD</li>
-<li id="ptv4" onclick="loadStream('ptv4')">PTV4</li>
-<li id="taptv" onclick="loadStream('taptv')">TAP TV</li>
-<li id="tap_edge" onclick="loadStream('tap_edge')">TAP Edge</li>
-<li id="tap_sports" onclick="loadStream('tap_sports')">TAP Sports</li>
-<li id="one_sports_plus_hd" onclick="loadStream('one_sports_plus_hd')">One Sports Plus HD</li>
-<li id="cctv4" onclick="loadStream('cctv4')">CCTV4</li>
-<li id="pba_rush_hd" onclick="loadStream('pba_rush_hd')">PBA Rush HD</li>
-<li id="arirang" onclick="loadStream('arirang')">Arirang</li>
-<li id="bbcearth_hd" onclick="loadStream('bbcearth_hd')">BBC Earth</li>
-<li id="discovery" onclick="loadStream('discovery')">Discovery</li>
-<li id="kbs_world" onclick="loadStream('kbs_world')">KBS World</li>
-<li id="onenews_hd" onclick="loadStream('onenews_hd')">One News HD</li>
-<li id="kix_hd" onclick="loadStream('kix_hd')">Kix HD</li>
-<li id="lifetime" onclick="loadStream('lifetime')">Lifetime</li>
-<li id="hgtv_hd" onclick="loadStream('hgtv_hd')">HGTV HD</li>
-<li id="asianfoodnetwork" onclick="loadStream('asianfoodnetwork')">Asian Food Network</li>
-<li id="travel_channel" onclick="loadStream('travel_channel')">Travel Channel</li>
-<li id="uaap_varsity" onclick="loadStream('uaap_varsity')">UAAP Varsity</li>
-<li id="hits_hd" onclick="loadStream('hits_hd')">Hits HD</li>
-<li id="crime_investigation" onclick="loadStream('crime_investigation')">Crime Investigation</li>
-<li id="tech_storm" onclick="loadStream('tech_storm')">Tech Storm</li>
-<li id="aljazeera" onclick="loadStream('aljazeera')">Al Jazeera</li>
-<li id="bbcworld_news" onclick="loadStream('bbcworld_news')">BBCWORLD News</li>
-<li id="channelnews_asia" onclick="loadStream('channelnews_asia')">Channel News Asia</li>
-<li id="abc_australia" onclick="loadStream('abc_australia')">ABC Australia</li>
-<li id="oneph" onclick="loadStream('oneph')">One PH</li>
-<li id="onesports" onclick="loadStream('onesports')">One Sports</li>
-<li id="SPOTV_HD" onclick="loadStream('SPOTV_HD')">SPOTV</li>
-<li id="SPOTV_HD2" onclick="loadStream('SPOTV_HD2')">SPOTV2</li>
-<li id="premiersports_hd" onclick="loadStream('premiersports_hd')">Premier Sports</li>
-<li id="premier_tennishd" onclick="loadStream('premier_tennishd')">Premier Tennis</li>
-<li id="pbo" onclick="loadStream('pbo')">PBO</li>
-<li id="cg_tagalogmovie" onclick="loadStream('cg_tagalogmovie')">TMC</li>
-<li id="viva" onclick="loadStream('viva')">VIVA</li>
-<li id="tapactionflix_hd" onclick="loadStream('tapactionflix_hd')">Tap Action Flix</li>
-<li id="thrill" onclick="loadStream('thrill')">Thrill</li>
-<li id="foodnetwork_hd" onclick="loadStream('foodnetwork_hd')">Food Network HD</li>
-<li id="depedchannel" onclick="loadStream('depedchannel')">DepEd Channel</li>
-<li id="history_hd" onclick="loadStream('history_hd')">History HD</li>
-<li id="animal_planet" onclick="loadStream('animal_planet')">Animal Planet</li>
-<li id="fashiontv_hd" onclick="loadStream('fashiontv_hd')">Fashion TV HD</li>
-<li id="bloomberg" onclick="loadStream('bloomberg')">Bloomberg</li>
+            <li id="tv5" onclick="loadStream('tv5')">TV5</li>
+            <li id="anc" onclick="loadStream('anc')">ANC</li>
+            <li id="animax" onclick="loadStream('Animax')">Animax</li>
+            <!-- Add more channels here as needed -->
         </ul>
     </div>
 
     <!-- Player Container -->
     <div class="player-container">
         <div id="player"></div>
-        <a href="https://moviestreamz.vercel.app/" target="_blank" class="link-button">Visit Movie Streamz</a>
     </div>
 </body>
 </html>
