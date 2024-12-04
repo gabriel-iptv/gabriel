@@ -6,11 +6,11 @@ const channels = {
         key: '07c7f996b1734ea288641a68e1cfdc4d',
 		type: 'mpd'
     },
-	 KapamilyaChannel: {
-        name: 'Kapamilya Channel',
-        url: 'https://cdn-ue1-prod.tsv2.amagi.tv/linear/amg01006-abs-cbn-kapcha-dash-abscbnono/index.mpd',
-        keyId: 'bd17afb5dc9648a39be79ee3634dd4b8',
-        key: '3ecf305d54a7729299b93a3d69c02ea5',
+	 HITS: {
+        name: 'Hits',
+        url: 'https://qp-pldt-live-grp-04-prod.akamaized.net/out/u/hits_hd1.mpd',
+        keyId: 'dac605bc197e442c93f4f08595a95100',
+        key: '975e27ffc1b7949721ee3ccb4b7fd3e5',
 		type: 'mpd'
     },
 
