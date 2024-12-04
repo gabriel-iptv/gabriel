@@ -241,6 +241,20 @@
         }
     }
 
+    function filterChannels() {
+    const searchInput = document.getElementById('channelSearch').value.toLowerCase();
+    const channels = document.getElementById('channelList').getElementsByTagName('li');
+
+    for (let i = 0; i < channels.length; i++) {
+        const channelName = channels[i].textContent.toLowerCase();
+        if (channelName.includes(searchInput)) {
+            channels[i].style.display = ''; // Show the channel
+        } else {
+            channels[i].style.display = 'none'; // Hide the channel
+        }
+    }
+    }
+
     function toggleFullscreen() {
         if (document.fullscreenElement) {
             document.exitFullscreen().then(() => {
@@ -268,8 +282,16 @@
     <button class="fullscreen-button" onclick="toggleFullscreen()">Fullscreen</button>
 
     <!-- Sidebar -->
-    <div class="sidebar">
-        <h2>Channel List</h2>
+<div class="sidebar">
+    <h2>Channel List</h2>
+    <!-- Search Bar -->
+    <input 
+        type="text" 
+        id="channelSearch" 
+        placeholder="Search Channel..." 
+        oninput="filterChannels()" 
+        style="width: 100%; padding: 10px; margin-bottom: 20px; border: 1px solid #ddd; border-radius: 5px;"
+    />
         <ul>
             <li id="tv5" onclick="loadStream('tv5')">TV5</li>
 <li id="anc" onclick="loadStream('anc')">ANC</li>
