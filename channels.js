@@ -20,7 +20,7 @@ const channels = {
         key: 'f0fbb758cdeeaddfa3eae538856b4d72',
 		type: 'mpd'
     },
-    hbohd: {
+    HBO: {
         name: 'HBO HD',
         url: 'https://qp-pldt-live-grp-03-prod.akamaized.net/out/u/cg_hbohd.mpd',
         keyId: 'd47ebabf7a21430b83a8c4b82d9ef6b1',
