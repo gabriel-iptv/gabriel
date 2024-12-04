@@ -188,14 +188,14 @@ const channels = {
         key: 'b712c4ec307300043333a6899a402c10',
 		type: 'mpd'
     },
-	popup_ppv_hd: {
+	TapMovies: {
     name: 'Popup PPV HD',
         url: 'https://qp-pldt-live-grp-13-prod.akamaized.net/out/u/dr_popupppvhd.mpd',
         keyId: '286e1c2d622c4c73b5c3d72e4a848abd',
         key: 'b7fad67599c1ce3c2fbc9d02b901be05',
 		type: 'mpd'
     },
-	mp_tv: {
+	MPTV: {
     name: 'MPTV',
         url: 'https://qp-pldt-live-grp-09-prod.akamaized.net/out/u/cg_mptv.mpd',
         keyId: '6aab8f40536f4ea98e7c97b8f3aa7d4e',
