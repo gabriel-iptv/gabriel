@@ -166,20 +166,7 @@
     currentChannelName = channelKey; // Update the current channel name
     updateMenuButton(); // Update menu button text
 
-    if (channel.type === "youtube") {
-        // Handle YouTube embed
-        const playerContainer = document.getElementById("player");
-        playerContainer.innerHTML = `
-            <iframe
-                id="youtube-player"
-                src="${channel.url}"
-                frameborder="0"
-                allow="autoplay; fullscreen"
-                allowfullscreen
-                width="100%"
-                height="100%"
-            ></iframe>
-        `;
+    
 
         if (channel.type === 'link') {
     document.getElementById('player').innerHTML = `
