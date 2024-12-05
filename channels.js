@@ -29,6 +29,15 @@ const channels = {
         type: 'youtube'
 
 	},
+
+
+	GMA: {
+        name: 'gma',
+        url: 'https://www.youtube.com/embed/4OdLIDendZI?autoplay=1&mute=0',
+        type: 'youtube'
+
+	},
+	
     nickelodeon: {
         name: 'Nickelodeon',
         url: 'https://qp-pldt-live-grp-11-prod.akamaized.net/out/u/dr_nickelodeon.mpd',
