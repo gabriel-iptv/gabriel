@@ -181,6 +181,13 @@
             ></iframe>
         `;
 
+        if (channel.type === 'link') {
+    document.getElementById('player').innerHTML = `
+        <a href="${channel.url}" target="_blank" rel="noopener noreferrer">
+            Watch Kapamilya Live on YouTube
+        </a>`;
+        }
+
         // Unmute the YouTube live stream programmatically
         const iframe = document.getElementById("youtube-player");
         iframe.onload = () => {
