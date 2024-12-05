@@ -25,7 +25,7 @@ const channels = {
     },
 	KapamilyaChannel: {
         name: 'Kapamilya',
-        url: 'https://www.youtube.com/embed/8bogHAFIEyc?autoplay=1&mute=0',
+        url: 'https://m.youtube.com/abscbnentertainment/live',
         type: 'youtube'
 
 	},
