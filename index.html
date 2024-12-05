@@ -166,14 +166,20 @@
     currentChannelName = channelKey; // Update the current channel name
     updateMenuButton(); // Update menu button text
 
-    
-
-        if (channel.type === 'link') {
-    document.getElementById('player').innerHTML = `
-        <a href="${channel.url}" target="_blank" rel="noopener noreferrer">
-            Watch Kapamilya Live on YouTube
-        </a>`;
-        }
+    if (channel.type === "youtube") {
+        // Handle YouTube embed
+        const playerContainer = document.getElementById("player");
+        playerContainer.innerHTML = `
+            <iframe
+                id="youtube-player"
+                src="${channel.url}"
+                frameborder="0"
+                allow="autoplay; fullscreen"
+                allowfullscreen
+                width="100%"
+                height="100%"
+            ></iframe>
+        `;
 
         // Unmute the YouTube live stream programmatically
         const iframe = document.getElementById("youtube-player");
