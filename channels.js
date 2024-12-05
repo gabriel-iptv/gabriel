@@ -337,7 +337,7 @@ const channels = {
         key: '7932354c3a84f7fc1b80efa6bcea0615',
 		type: 'mpd'
     },
-	knowledge_channe: {
+	KnowledgeChannel: {
     name: 'knowledge_channel',
         url: 'https://qp-pldt-live-grp-13-prod.akamaized.net/out/u/dr_knowledgechannel.mpd',
         keyId: '0f856fa0412b11edb8780242ac120002',
