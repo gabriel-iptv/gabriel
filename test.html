@@ -229,6 +229,24 @@
             const menuButton = document.querySelector('.menu-button');
             menuButton.textContent = `Channel: ${currentChannelName}`; // Update button text
         }
+        function toggleFullscreen() {
+            if (document.fullscreenElement) {
+                document.exitFullscreen();
+            } else {
+                const playerContainer = document.getElementById("player");
+                playerContainer.requestFullscreen().catch((err) => {
+                    console.error(`Error attempting to enable fullscreen: ${err.message}`);
+                });
+            }
+
+            // Notify YouTube iframe of fullscreen changes
+            if (youtubePlayer) {
+                const message = document.fullscreenElement
+                    ? '{"event":"command","func":"playVideo","args":[]}'
+                    : '{"event":"command","func":"pauseVideo","args":[]}';
+                youtubePlayer.contentWindow.postMessage(message, "*");
+            }
+        }
 
         function enterFullscreen() {
             const body = document.body;
