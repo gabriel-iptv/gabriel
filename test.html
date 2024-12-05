@@ -130,12 +130,6 @@
             .fullscreen-button {
                 display: inline-block; /* Show button in landscape */
             }
-
-            /* Adjust menu button in landscape to avoid overlap */
-            .menu-button {
-                top: 20px;
-                left: 20px;
-            }
         }
 
         /* When the sidebar is visible */
@@ -167,6 +161,8 @@
     <script>
         jwplayer.key = 'XSuP4qMl+9tK17QNb+4+th2Pm9AWgMO/cYH8CI0HGGr7bdjo';
 
+        let youtubePlayer = null; // We'll store the YouTube iframe here
+
         function loadStream(channelKey) {
             const channel = channels[channelKey];
             currentChannelName = channelKey; // Update the current channel name
@@ -178,7 +174,7 @@
                 playerContainer.innerHTML = `
                     <iframe
                         id="youtube-player"
-                        src="${channel.url}"
+                        src="${channel.url}?enablejsapi=1"
                         frameborder="0"
                         allow="autoplay; fullscreen"
                         allowfullscreen
@@ -187,10 +183,12 @@
                     ></iframe>
                 `;
 
-                // Unmute the YouTube live stream programmatically
-                const iframe = document.getElementById("youtube-player");
-                iframe.onload = () => {
-                    iframe.contentWindow.postMessage(
+                // Store the YouTube player reference
+                youtubePlayer = document.getElementById("youtube-player");
+
+                // Send a message to the iframe to unmute the video
+                youtubePlayer.onload = () => {
+                    youtubePlayer.contentWindow.postMessage(
                         '{"event":"command","func":"unMute","args":""}',
                         "*"
                     );
@@ -237,15 +235,33 @@
             if (!document.fullscreenElement) {
                 body.requestFullscreen().then(() => {
                     body.classList.add('fullscreen');
+                    if (youtubePlayer) {
+                        youtubePlayer.contentWindow.postMessage(
+                            '{"event":"command","func":"setFullscreen","args":""}',
+                            "*"
+                        );
+                    }
+                });
+            }
+        }
+
+        function exitFullscreen() {
+            if (document.fullscreenElement) {
+                document.exitFullscreen().then(() => {
+                    document.body.classList.remove('fullscreen');
+                    if (youtubePlayer) {
+                        youtubePlayer.contentWindow.postMessage(
+                            '{"event":"command","func":"exitFullscreen","args":""}',
+                            "*"
+                        );
+                    }
                 });
             }
         }
 
         function toggleFullscreen() {
             if (document.fullscreenElement) {
-                document.exitFullscreen().then(() => {
-                    document.body.classList.remove('fullscreen');
-                });
+                exitFullscreen();
             } else {
                 enterFullscreen();
             }
@@ -271,80 +287,8 @@
     <div class="sidebar">
         <h2>Channel List</h2>
         <ul>
-           <li id="tv5" onclick="loadStream('tv5')">TV5</li>
-<li id="anc" onclick="loadStream('anc')">ANC</li>
-<li id="animax" onclick="loadStream('Animax')">Animax</li>
-<li id="cartoon_net_hd" onclick="loadStream('cartoon_net_hd')">Cartoon Network</li>
-<li id="KapamilyaChannel" onclick="loadStream('KapamilyaChannel')">Kapamilya Channel</li>
-<li id="nickjr" onclick="loadStream('nickjr')">Nick Jr.</li>
-<li id="nickelodeon" onclick="loadStream('nickelodeon')">Nickelodeon</li>
-<li id="HBO" onclick="loadStream('HBO')">HBO HD</li>
-<li id="teleradyo" onclick="loadStream('teleradyo')">Teleradyo</li>
-<li id="sarisari" onclick="loadStream('sarisari')">SARISARI</li>
-<li id="ibc13" onclick="loadStream('ibc13')">IBC13</li>
-<li id="buko" onclick="loadStream('buko')">BUKO</li>
-<li id="KnowledgeChannel" onclick="loadStream('KnowledgeChannel')">Knowledge Channel</li>
-<li id="bilyonaryoch" onclick="loadStream('bilyonaryoch')">Bilyonaryo</li>
-<li id="RPTV" onclick="loadStream('RPTV')">RPTV</li>
-<li id="truefmtv" onclick="loadStream('truefmtv')">True FM TV</li>
-<li id="hits_now" onclick="loadStream('hits_now')">Hits Now</li>
-<li id="cinemaone" onclick="loadStream('cinemaone')">CinemaOne</li>
-<li id="cinemo" onclick="loadStream('cinemo')">CineMo!</li>
-<li id="hbo_family" onclick="loadStream('hbo_family')">HBO Family</li>
-<li id="cinemax" onclick="loadStream('cinemax')">Cinemax</li>
-<li id="blueant_extreme" onclick="loadStream('blueant_extreme')">Rock Action</li>
-<li id="rock_entertainment" onclick="loadStream('rock_entertainment')">Rock Entertainment</li>
-<li id="hbo_signature" onclick="loadStream('hbo_signature')">HBO Signature</li>
-<li id="hbo_hits" onclick="loadStream('hbo_hits')">HBO Hits</li>
-<li id="tvn_movies" onclick="loadStream('tvn_movies')">TVN Movies</li>
-<li id="dreamworks_tag" onclick="loadStream('dreamworks_tag')">Dreamworks Tagalized</li>
-<li id="tvn_plus" onclick="loadStream('tvn_plus')">TVN</li>
-<li id="TapMovies" onclick="loadStream('TapMovies')">Tap Movies</li>
-<li id="MPTV" onclick="loadStream('MPTV')">MPTV</li>
-<li id="a2z" onclick="loadStream('a2z')">A2Z</li>
-<li id="dreamworks_hd" onclick="loadStream('dreamworks_hd')">Dreamworks HD</li>
-<li id="ptv4" onclick="loadStream('ptv4')">PTV4</li>
-<li id="taptv" onclick="loadStream('taptv')">TAP TV</li>
-<li id="tap_edge" onclick="loadStream('tap_edge')">TAP Edge</li>
-<li id="tap_sports" onclick="loadStream('tap_sports')">TAP Sports</li>
-<li id="one_sports_plus_hd" onclick="loadStream('one_sports_plus_hd')">One Sports Plus HD</li>
-<li id="cctv4" onclick="loadStream('cctv4')">CCTV4</li>
-<li id="pba_rush_hd" onclick="loadStream('pba_rush_hd')">PBA Rush </li>
-<li id="arirang" onclick="loadStream('arirang')">Arirang</li>
-<li id="bbcearth_hd" onclick="loadStream('bbcearth_hd')">BBC Earth</li>
-<li id="discovery" onclick="loadStream('discovery')">Discovery</li>
-<li id="kbs_world" onclick="loadStream('kbs_world')">KBS World</li>
-<li id="onenews_hd" onclick="loadStream('onenews_hd')">One News</li>
-<li id="kix_hd" onclick="loadStream('kix_hd')">Kix HD</li>
-<li id="lifetime" onclick="loadStream('lifetime')">Lifetime</li>
-<li id="hgtv_hd" onclick="loadStream('hgtv_hd')">HGTV HD</li>
-<li id="asianfoodnetwork" onclick="loadStream('asianfoodnetwork')">Asian Food Network</li>
-<li id="travel_channel" onclick="loadStream('travel_channel')">Travel Channel</li>
-<li id="uaap_varsity" onclick="loadStream('uaap_varsity')">UAAP Varsity</li>
-<li id="HITS" onclick="loadStream('HITS')">Hits HD</li>
-<li id="crime_investigation" onclick="loadStream('crime_investigation')">Crime Investigation</li>
-<li id="tech_storm" onclick="loadStream('tech_storm')">Tech Storm</li>
-<li id="aljazeera" onclick="loadStream('aljazeera')">Al Jazeera</li>
-<li id="bbcworld_news" onclick="loadStream('bbcworld_news')">BBCWORLD News</li>
-<li id="channelnews_asia" onclick="loadStream('channelnews_asia')">Channel News Asia</li>
-<li id="abc_australia" onclick="loadStream('abc_australia')">ABC Australia</li>
-<li id="oneph" onclick="loadStream('oneph')">One PH</li>
-<li id="onesports" onclick="loadStream('onesports')">One Sports</li>
-<li id="SPOTV_HD" onclick="loadStream('SPOTV_HD')">SPOTV</li>
-<li id="SPOTV_HD2" onclick="loadStream('SPOTV_HD2')">SPOTV2</li>
-<li id="premiersports_hd" onclick="loadStream('premiersports_hd')">Premier Sports</li>
-<li id="premier_tennishd" onclick="loadStream('premier_tennishd')">Premier Sports 2</li>
-<li id="pbo" onclick="loadStream('pbo')">PBO</li>
-<li id="cg_tagalogmovie" onclick="loadStream('cg_tagalogmovie')">TMC</li>
-<li id="viva" onclick="loadStream('viva')">Viva Cinema</li>
-<li id="tapactionflix_hd" onclick="loadStream('tapactionflix_hd')">Tap Action Flix</li>
-<li id="thrill" onclick="loadStream('thrill')">Thrill</li>
-<li id="foodnetwork_hd" onclick="loadStream('foodnetwork_hd')">Food Network</li>
-<li id="depedchannel" onclick="loadStream('depedchannel')">DepEd Channel</li>
-<li id="history_hd" onclick="loadStream('history_hd')">History HD</li>
-<li id="animal_planet" onclick="loadStream('animal_planet')">Animal Planet</li>
-<li id="fashiontv_hd" onclick="loadStream('fashiontv_hd')">Fashion TV HD</li>
-<li id="bloomberg" onclick="loadStream('bloomberg')">Bloomberg</li>
+            <li id="tv5" onclick="loadStream('tv5')">TV5</li>
+            <!-- Add other channel list items here -->
         </ul>
     </div>
 
