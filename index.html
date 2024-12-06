@@ -154,12 +154,32 @@
             }
         
 
-        .channel-logo {
-    width: 30px;  /* Adjust size as needed */
-    height: 30px; /* Maintain aspect ratio */
-    margin-right: 10px; /* Space between logo and channel name */
-    vertical-align: middle; /* Align logo with text */
-        }
+        /* General styling for channel logos */
+.channel-logo {
+    width: 30px; /* Adjust size as needed */
+    height: auto;
+    margin-right: 10px;
+    vertical-align: middle;
+}
+
+/* Adjust logo size for portrait mode */
+@media (orientation: portrait) {
+    .channel-logo {
+        width: 40px;
+    }
+}
+
+/* Adjust logo size for landscape mode */
+@media (orientation: landscape) {
+    .channel-logo {
+        width: 50px;
+    }
+}
+
+/* Adjust logo size in fullscreen */
+.fullscreen .channel-logo {
+    width: 60px;
+}
             
     </style>
 
