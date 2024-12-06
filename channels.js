@@ -20,6 +20,24 @@ const channels = {
         keyId: 'c95ed4c44b0b4f7fa1c6ebbbbaab21a1',
         key: '47635b8e885e19f2ccbdff078c207058',
 		type: 'mpd'
+
+    },
+
+	HitsMovies: {
+        name: 'HitsMovies',
+        url: 'https://qp-pldt-live-grp-12-prod.akamaized.net/out/u/dr_hitsmovies.mpd',
+        keyId: 'f56b57b32d7e4b2cb21748c0b56761a7',
+        key: '3df06a89aa01b32655a77d93e09e266f',
+		type: 'mpd'
+
+    },
+
+	TFC: {
+        name: 'TFC',
+        url: 'https://cdn-ue1-prod.tsv2.amagi.tv/linear/amg01006-abs-cbn-tfcasia-dash-abscbnono/7045bc3c-9492-42d4-974e-a3b217776e57/index.mpd',
+        keyId: '9568cc84e1d944f38eac304517eab6fd',
+        key: 'f12142af8f39b3bab79d3679d3665ebe',
+		type: 'mpd'
     },
 
     Animax: {
