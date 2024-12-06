@@ -19,18 +19,18 @@
         .menu-overlay {
             display: none;
             position: fixed;
-            top: 50%; /* Center vertically */
-            left: 50%; /* Center horizontally */
-            transform: translate(-50%, -50%); /* Move it back to center */
-            width: 250px;  /* Adjust the width to a smaller size */
-            height: 60%; /* Adjust the height to a smaller size */
-            background-color: rgba(255, 255, 255, 0.9);  /* Transparent white background */
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 250px;
+            height: 60%;
+            background-color: rgba(255, 255, 255, 0.9);
             color: black;
             z-index: 10;
             padding: 20px;
-            overflow-y: auto; /* Make the list scrollable */
+            overflow-y: auto;
             border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add some shadow */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
 
         .menu-overlay.open {
@@ -38,7 +38,7 @@
         }
 
         .menu-overlay h2 {
-            font-size: 18px; /* Smaller font size */
+            font-size: 18px;
             text-align: center;
             margin-bottom: 15px;
         }
@@ -47,13 +47,13 @@
             list-style-type: none;
             padding: 0;
             margin: 0;
-            max-height: 80%; /* Limit the height of the list */
-            overflow-y: auto; /* Make the list scrollable */
+            max-height: 80%;
+            overflow-y: auto;
         }
 
         .menu-overlay li {
             margin: 8px 0;
-            font-size: 12px; /* Smaller font size */
+            font-size: 12px;
             cursor: pointer;
             padding: 8px;
             border-radius: 5px;
@@ -73,7 +73,7 @@
         }
 
         .menu-overlay li img {
-            width: 18px; /* Smaller logo size */
+            width: 18px;
             height: auto;
             margin-right: 10px;
             vertical-align: middle;
@@ -97,23 +97,21 @@
             background-color: #fff;
         }
 
-        /* Menu button */
+        /* Hamburger Menu Button */
         .menu-button {
             position: absolute;
             top: 20px;
             left: 20px;
-            background-color: #4CAF50;
+            background-color: transparent;
             border: none;
-            color: white;
-            padding: 10px 20px;
-            font-size: 14px;
+            color: black;
+            font-size: 30px;
             cursor: pointer;
-            border-radius: 5px;
             z-index: 11;
         }
 
         .menu-button:hover {
-            background-color: #45a049;
+            color: #4CAF50;
         }
 
         /* Fullscreen button for landscape */
@@ -121,19 +119,16 @@
             position: absolute;
             top: 20px;
             right: 20px;
-            background-color: #4CAF50;
+            background-color: transparent;
             border: none;
-            color: white;
-            padding: 10px 20px;
-            font-size: 16px;
+            color: black;
+            font-size: 20px; /* Reduced size */
             cursor: pointer;
-            border-radius: 5px;
             z-index: 11;
-            display: none;
         }
 
         .fullscreen-button:hover {
-            background-color: #45a049;
+            color: #4CAF50;
         }
 
         /* Show fullscreen button in landscape mode */
@@ -142,6 +137,24 @@
                 display: inline-block;
             }
         }
+
+        /* Footer text styling */
+        .footer-text {
+            font-size: 12px;
+            text-align: center;
+            margin-top: 20px;
+            color: #555;
+        }
+
+        .footer-text a {
+            color: #4CAF50;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .footer-text a:hover {
+            text-decoration: underline;
+        }
     </style>
     <script src="https://ssl.p.jwpcdn.com/player/v/8.27.1/jwpsrv.js"></script>
     <script src="https://ssl.p.jwpcdn.com/player/v/8.27.1/jwplayer.js"></script>
@@ -149,9 +162,11 @@
     <script>
         jwplayer.key = 'XSuP4qMl+9tK17QNb+4+th2Pm9AWgMO/cYH8CI0HGGr7bdjo';
 
+        let isFullscreen = false;
+
         function loadStream(channelKey) {
             const channel = channels[channelKey];
-            currentChannelName = channelKey; // Update the current channel name
+            currentChannelName = channelKey;
             updateMenuButton(); // Update menu button text
 
             if (channel.type === "youtube") {
@@ -206,7 +221,7 @@
 
         function updateMenuButton() {
             const menuButton = document.querySelector('.menu-button');
-            menuButton.textContent = `Channel: ${currentChannelName}`; // Update button text
+            menuButton.textContent = `≡`; // Hamburger icon
         }
 
         function enterFullscreen() {
@@ -214,18 +229,33 @@
             if (!document.fullscreenElement) {
                 body.requestFullscreen().then(() => {
                     body.classList.add('fullscreen');
+                    isFullscreen = true;
+                    updateFullscreenButton();
+                });
+            }
+        }
+
+        function exitFullscreen() {
+            if (document.fullscreenElement) {
+                document.exitFullscreen().then(() => {
+                    document.body.classList.remove('fullscreen');
+                    isFullscreen = false;
+                    updateFullscreenButton();
                 });
             }
         }
 
         function toggleFullscreen() {
-            if (document.fullscreenElement) {
-                document.exitFullscreen().then(() => {
-                    document.body.classList.remove('fullscreen');
-                });
+            if (isFullscreen) {
+                exitFullscreen();
             } else {
                 enterFullscreen();
             }
+        }
+
+        function updateFullscreenButton() {
+            const fullscreenButton = document.querySelector('.fullscreen-button');
+            fullscreenButton.textContent = isFullscreen ? '⛶' : '⛝'; // Change icon based on fullscreen state
         }
 
         function adjustLogoForFullscreen() {
@@ -247,15 +277,15 @@
     </script>
 </head>
 <body>
-    <!-- Menu Button -->
-    <button class="menu-button" onclick="toggleMenu()">Channel: TV5</button>
+    <!-- Hamburger Menu Button -->
+    <button class="menu-button" onclick="toggleMenu()">≡</button>
 
     <!-- Fullscreen Button (only shown in landscape mode) -->
-    <button class="fullscreen-button" onclick="toggleFullscreen()">Fullscreen</button>
+    <button class="fullscreen-button" onclick="toggleFullscreen()">⛝</button>
 
     <!-- Menu Overlay -->
     <div class="menu-overlay">
-        <h2>Channel List</h2>
+        <h2 id="current-channel">Channel: TV5</h2>
         <ul>
             <li id="tv5" onclick="loadStream('tv5')">
     <img src="https://i.imgur.com/Ddyfzrn.png" alt="TV5 Logo" class="channel-logo">TV5
@@ -360,11 +390,13 @@
 <li id="fashiontv_hd" onclick="loadStream('fashiontv_hd')">Fashion TV HD</li>
 <li id="bloomberg" onclick="loadStream('bloomberg')">Bloomberg</li>
         </ul>
+        <div class="footer-text">
+            This IPTV WEB was created by <a href="https://www.facebook.com/gabriel.totanes?mibextid=ZbWKwL" target="_blank">GABRIEL</a> and this is for free
+        </div>
     </div>
 
     <!-- Player Container -->
     <div class="player-container">
         <div id="player"></div>
     </div>
-</body>
-</html>
+</
