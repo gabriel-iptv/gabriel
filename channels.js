@@ -24,9 +24,9 @@ const channels = {
 
     Animax: {
         name: 'Animax',
-        url: 'https://qp-pldt-live-grp-07-prod.akamaized.net/out/u/cg_animax_sd.mpd',
-        keyId: '92032b0e41a543fb9830751273b8debd',
-        key: '03f8b65e2af785b10d6634735dbe6c11',
+        url: 'https://tglmp01.akamaized.net/out/v1/de55fad9216e4fe7ad8d2eed456ba1ec/manifest.mpd',
+        keyId: 'edf1a715de9748638dd2fad75a419af2',
+        key: '2f5a3199b26e9b693ae881af7ff864cf',
 		type: 'mpd'
 
 	
