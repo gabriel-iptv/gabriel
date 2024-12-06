@@ -14,6 +14,14 @@ const channels = {
 		type: 'mpd'
     },
 
+	HitsMovies: {
+        name: 'HitsMovies',
+        url: 'https://linearjitp-playback.astro.com.my/dash-wv/linear/2305/default_ott.mpd',
+        keyId: 'ff1febd7018d0dd711601e795e0d6210',
+        key: '38fbfb3a56e40ff92c9df8acbcba9ef6',
+		type: 'mpd'
+    },
+
     Animax: {
         name: 'Animax',
         url: 'https://qp-pldt-live-grp-07-prod.akamaized.net/out/u/cg_animax_sd.mpd',
