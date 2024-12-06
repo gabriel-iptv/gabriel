@@ -16,9 +16,9 @@ const channels = {
 
 	HitsMovies: {
         name: 'HitsMovies',
-        url: 'https://linearjitp-playback.astro.com.my/dash-wv/linear/2305/default_ott.mpd',
-        keyId: '38fbfb3a56e40ff92c9df8acbcba9ef6',
-        key: 'ff1febd7018d0dd711601e795e0d6210',
+        url: 'https://cdn-uw2-prod.tsv2.amagi.tv/linear/amg01006-abs-cbn-abscbn-gma-x7-dash-abscbnono/7c693236-e0c1-40a3-8bd0-bb25e43f5bfc/index.mpd',
+        keyId: 'c95ed4c44b0b4f7fa1c6ebbbbaab21a1',
+        key: '47635b8e885e19f2ccbdff078c207058',
 		type: 'mpd'
     },
 
