@@ -272,6 +272,15 @@
         enterFullscreen();
     }
 }
+        function adjustLogoForFullscreen() {
+    const isFullscreen = !!document.fullscreenElement;
+    const logos = document.querySelectorAll('.channel-logo');
+    logos.forEach((logo) => {
+        logo.style.width = isFullscreen ? '60px' : ''; // Larger size in fullscreen
+    });
+}
+
+document.addEventListener('fullscreenchange', adjustLogoForFullscreen);
 
 function enterFullscreen() {
     const body = document.body;
