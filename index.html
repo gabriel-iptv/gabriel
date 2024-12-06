@@ -9,82 +9,17 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            display: flex;
-            flex-direction: column;
             height: 100vh;
             overflow: hidden;
             background-color: #fff;
         }
 
-        /* Sidebar styling */
-        .sidebar {
-            width: 200px; /* Smaller width for consistency */
-            background-color: rgba(255, 255, 255, 0.9);
-            color: black;
-            padding: 10px;
-            position: absolute;
-            top: 0;
-            left: -200px; /* Hidden by default */
-            height: 100%;
-            overflow-y: auto;
-            transition: left 0.3s ease;
-            z-index: 5;
-        }
-
-        .sidebar.open {
-            left: 0; /* Slide in when open */
-        }
-
-        .sidebar h2 {
-            font-size: 18px;
-            text-align: center;
-            margin-bottom: 10px;
-            color: black;
-        }
-
-        .sidebar ul {
-            list-style-type: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .sidebar li {
-            margin: 5px 0;
-            font-size: 14px; /* Smaller text */
-            cursor: pointer;
-            padding: 8px;
-            border-radius: 5px;
-            background-color: rgba(255, 255, 255, 0.8);
-            color: black;
-            transition: background-color 0.3s ease;
-            border: 1px solid #ddd;
-            display: flex;
-            align-items: center;
-        }
-
-        .sidebar li:hover {
-            background-color: rgba(0, 0, 0, 0.1);
-        }
-
-        .sidebar li.active {
-            background-color: #4CAF50;
-            color: white;
-        }
-
-        /* Channel logo */
-        .channel-logo {
-            width: 30px; /* Uniform size */
-            height: 30px; /* Ensure logos are square */
-            margin-right: 10px;
-        }
-
         /* Player container */
         .player-container {
-            flex: 1;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            position: relative;
             width: 100%;
             height: 100%;
         }
@@ -92,19 +27,19 @@
         #player {
             width: 100%;
             height: 100%;
-            background-color: #000;
+            background-color: #fff;
         }
 
-        /* Menu button */
+        /* Menu button (hamburger) */
         .menu-button {
             position: absolute;
-            top: 10px;
-            left: 10px;
+            top: 20px;
+            left: 20px;
             background-color: #4CAF50;
             border: none;
             color: white;
-            padding: 8px 16px;
-            font-size: 14px;
+            padding: 10px;
+            font-size: 18px;
             cursor: pointer;
             border-radius: 5px;
             z-index: 10;
@@ -114,122 +49,141 @@
             background-color: #45a049;
         }
 
-        /* Fullscreen button */
-        .fullscreen-button {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background-color: #4CAF50;
-            border: none;
-            color: white;
-            padding: 8px 16px;
-            font-size: 14px;
-            cursor: pointer;
-            border-radius: 5px;
-            z-index: 10;
+        .menu-button span {
+            display: block;
+            width: 20px;
+            height: 3px;
+            background-color: white;
+            margin: 4px 0;
         }
 
-        .fullscreen-button:hover {
-            background-color: #45a049;
-        }
+/* Channel menu (dropdown-like overlay) */
+.channel-menu {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.7); /* Transparent black background */
+    width: 90%; /* Adjusted width for visibility on smaller screens */
+    max-height: 80%; /* Limit height to make it scrollable */
+    overflow-y: auto; /* Enable vertical scrolling */
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: none;
+    z-index: 20;
+}
 
-        /* Responsive design adjustments */
-        @media (orientation: portrait) {
-            .sidebar {
-                display: none; /* Hidden by default in portrait */
-            }
+/* Channel list (single scrollable column) */
+.channel-menu ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
 
-            .sidebar.open {
-                display: block; /* Allow toggling sidebar in portrait */
-            }
+/* Channel items */
+.channel-menu li {
+    display: flex;
+    align-items: center;
+    font-size: 14px; /* Adjust font size */
+    cursor: pointer;
+    padding: 10px;
+    text-align: center;
+    background-color: transparent; /* Fully transparent background */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2); /* Divider between items */
+    transition: background-color 0.3s ease, transform 0.2s;
+}
 
-            .fullscreen-button {
-                display: none; /* No fullscreen button in portrait */
-            }
-        }
+.channel-menu li:hover {
+    background-color: rgba(76, 175, 80, 0.7); /* Transparent hover color */
+    color: white;
+}
 
-        @media (orientation: landscape) {
-            .sidebar {
-                display: none; /* Hidden by default in landscape */
-            }
+/* Channel logos */
+.channel-menu img {
+    width: 60px; /* Adjusted size */
+    height: 60px;
+    object-fit: contain; /* Ensure logos are fully visible */
+    margin-right: 10px; /* Spacing between logo and text */
+}
 
-            .sidebar.open {
-                display: block; /* Allow toggling sidebar in landscape */
-            }
+        /* Overlay (to dim the background when menu is open) */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            z-index: 15;
         }
     </style>
-    <script src="https://ssl.p.jwpcdn.com/player/v/8.27.1/jwpsrv.js"></script>
     <script src="https://ssl.p.jwpcdn.com/player/v/8.27.1/jwplayer.js"></script>
     <script src="channels.js"></script>
     <script>
-    <script>
-        // JWPlayer setup
         jwplayer.key = 'XSuP4qMl+9tK17QNb+4+th2Pm9AWgMO/cYH8CI0HGGr7bdjo';
 
-        let currentChannelName = 'TV5'; // Default channel
-
         function loadStream(channelKey) {
-            const channel = channels[channelKey];
-            currentChannelName = channelKey; // Update the current channel name
-            updateMenuButton(); // Update menu button text
+    const channel = channels[channelKey];
+    currentChannelName = channelKey;
 
-            if (channel.type === "youtube") {
-                const playerContainer = document.getElementById("player");
-                playerContainer.innerHTML = `
-                    <iframe
-                        id="youtube-player"
-                        src="${channel.url}"
-                        frameborder="0"
-                        allow="autoplay; fullscreen"
-                        allowfullscreen
-                        width="100%"
-                        height="100%"
-                    ></iframe>
-                `;
-            } else {
-                jwplayer("player").setup({
-                    file: channel.url,
-                    type: channel.type,
-                    width: "100%",
-                    height: "100%",
-                    autostart: true,
-                });
-            }
+    if (channel.type === "youtube") {
+        document.getElementById("player").innerHTML = `
+            <iframe
+                id="youtube-player"
+                src="${channel.url}"
+                frameborder="0"
+                allow="autoplay; fullscreen"
+                allowfullscreen
+                width="100%"
+                height="100%"
+            ></iframe>
+        `;
+    } else {
+        jwplayer("player").setup({
+            file: channel.url,
+            type: channel.type,
+            width: "100%",
+            height: "100%",
+            autostart: true,
+        });
+    }
 
-            const sidebar = document.querySelector('.sidebar');
-            sidebar.classList.remove('open'); // Hide sidebar after selection
-        }
+    closeMenu(); // Automatically close the menu
+}
 
         function toggleMenu() {
-            const sidebar = document.querySelector('.sidebar');
-            sidebar.classList.toggle('open');
-        }
-
-        function updateMenuButton() {
-            const menuButton = document.querySelector('.menu-button');
-            menuButton.textContent = `Channel: ${currentChannelName}`;
-        }
-
-        function toggleFullscreen() {
-            const element = document.documentElement;
-            if (!document.fullscreenElement) {
-                element.requestFullscreen();
+            const menu = document.querySelector('.channel-menu');
+            const overlay = document.querySelector('.overlay');
+            if (menu.style.display === 'none' || menu.style.display === '') {
+                menu.style.display = 'block';
+                overlay.style.display = 'block';
             } else {
-                document.exitFullscreen();
+                closeMenu();
             }
         }
+
+        function closeMenu() {
+            const menu = document.querySelector('.channel-menu');
+            const overlay = document.querySelector('.overlay');
+            menu.style.display = 'none';
+            overlay.style.display = 'none';
+        }
+
+        window.onload = function() {
+            loadStream('tv5');
+        };
     </script>
 </head>
 <body>
-    <!-- Menu Button -->
-    <button class="menu-button" onclick="toggleMenu()">Channel: TV5</button>
-
-    <!-- Fullscreen Button (only visible in landscape) -->
-    <button class="fullscreen-button" onclick="toggleFullscreen()">Fullscreen</button>
-
-    <!-- Sidebar -->
-    <div class="sidebar">
-        <h2>Channel List</h2>
+    <button class="menu-button" onclick="toggleMenu()">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+    <div class="overlay" onclick="closeMenu()"></div>
+    <div class="channel-menu">
         <ul>
             <li id="tv5" onclick="loadStream('tv5')">
     <img src="https://i.imgur.com/Ddyfzrn.png" alt="TV5 Logo" class="channel-logo">TV5
@@ -335,10 +289,8 @@
 <li id="bloomberg" onclick="loadStream('bloomberg')">Bloomberg</li>
         </ul>
     </div>
-
-    <!-- Player Container -->
     <div class="player-container">
         <div id="player"></div>
     </div>
 </body>
-</html>
+    </html>
