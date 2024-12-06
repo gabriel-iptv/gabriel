@@ -99,12 +99,12 @@
 
         /* Hamburger Menu Button */
         .menu-button {
-            position: absolute;
+            position: fixed;
             top: 20px;
             left: 20px;
             background-color: transparent;
             border: none;
-            color: black;
+            color: white; /* Changed to white */
             font-size: 30px;
             cursor: pointer;
             z-index: 11;
@@ -116,15 +116,16 @@
 
         /* Fullscreen button for landscape */
         .fullscreen-button {
-            position: absolute;
+            position: fixed;
             top: 20px;
             right: 20px;
             background-color: transparent;
             border: none;
-            color: black;
+            color: white; /* Changed to white */
             font-size: 20px; /* Reduced size */
             cursor: pointer;
             z-index: 11;
+            display: none; /* Hidden by default */
         }
 
         .fullscreen-button:hover {
@@ -134,7 +135,7 @@
         /* Show fullscreen button in landscape mode */
         @media (orientation: landscape) {
             .fullscreen-button {
-                display: inline-block;
+                display: inline-block; /* Visible only in landscape mode */
             }
         }
 
@@ -391,7 +392,7 @@
 <li id="bloomberg" onclick="loadStream('bloomberg')">Bloomberg</li>
         </ul>
         <div class="footer-text">
-            This IPTV WEB was created by <a href="https://www.facebook.com/gabriel.totanes?mibextid=ZbWKwL" target="_blank">GABRIEL</a> and this is for free
+            This IPTV WEB was created by <a href="https://www.example.com" target="_blank">GABRIEL</a> and this is for free
         </div>
     </div>
 
