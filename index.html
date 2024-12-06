@@ -126,10 +126,13 @@
 
         function loadStream(channelKey) {
     const channel = channels[channelKey];
-    currentChannelName = channelKey;
+    currentChannelName = channelKey; // Update the current channel name
+    updateMenuButton(); // Update menu button text
 
     if (channel.type === "youtube") {
-        document.getElementById("player").innerHTML = `
+        // Handle YouTube embed
+        const playerContainer = document.getElementById("player");
+        playerContainer.innerHTML = `
             <iframe
                 id="youtube-player"
                 src="${channel.url}"
@@ -140,10 +143,26 @@
                 height="100%"
             ></iframe>
         `;
+
+        // Unmute the YouTube live stream programmatically
+        const iframe = document.getElementById("youtube-player");
+        iframe.onload = () => {
+            iframe.contentWindow.postMessage(
+                '{"event":"command","func":"unMute","args":""}',
+                "*"
+            );
+        };
     } else {
+        // Handle other types of streams
         jwplayer("player").setup({
             file: channel.url,
             type: channel.type,
+            drm: channel.type === "mpd" ? {
+                clearkey: {
+                    keyId: channel.keyId,
+                    key: channel.key,
+                },
+            } : undefined,
             width: "100%",
             height: "100%",
             autostart: true,
