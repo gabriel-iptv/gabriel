@@ -390,14 +390,45 @@
 <li id="animal_planet" onclick="loadStream('animal_planet')">Animal Planet</li>
 <li id="fashiontv_hd" onclick="loadStream('fashiontv_hd')">Fashion TV HD</li>
 <li id="bloomberg" onclick="loadStream('bloomberg')">Bloomberg</li>
-        </ul>
-        <div class="footer-text">
-            This IPTV WEB was created by <a href="https://www.facebook.com/gabriel.totanes" target="_blank">GABRIEL</a> and this is for free
-        </div>
-    </div>
-
-    <!-- Player Container -->
+            
+            </ul>
+        
+        <!-- Player Container -->
     <div class="player-container">
         <div id="player"></div>
     </div>
-</
+
+    <script>
+        // Automatically adjust the fullscreen button visibility when resizing or loading
+        window.addEventListener('resize', () => {
+            if (window.innerHeight > window.innerWidth) {
+                document.querySelector('.fullscreen-button').style.display = 'none'; // Hide fullscreen button in portrait mode
+            } else {
+                document.querySelector('.fullscreen-button').style.display = 'inline-block'; // Show fullscreen button in landscape mode
+            }
+        });
+
+        // Adjust fullscreen button on initial load based on orientation
+        window.onload = function() {
+            loadStream('tv5'); // Load the first channel by default
+            enterFullscreen(); // Automatically enter fullscreen on page load
+            // Update fullscreen button visibility
+            if (window.innerHeight > window.innerWidth) {
+                document.querySelector('.fullscreen-button').style.display = 'none';
+            } else {
+                document.querySelector('.fullscreen-button').style.display = 'inline-block';
+            }
+        };
+
+        // Add event listener for when fullscreen is changed
+        document.addEventListener('fullscreenchange', updateFullscreenButton);
+
+        // Ensure that the fullscreen button updates correctly when the page is resized
+        window.addEventListener('resize', () => {
+            if (document.fullscreenElement) {
+                updateFullscreenButton();
+            }
+        });
+    </script>
+</body>
+    </html>
