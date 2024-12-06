@@ -152,7 +152,15 @@
             .sidebar.open {
                 left: 0;
             }
+        
+
+        .channel-logo {
+    width: 30px;  /* Adjust size as needed */
+    height: 30px; /* Maintain aspect ratio */
+    margin-right: 10px; /* Space between logo and channel name */
+    vertical-align: middle; /* Align logo with text */
         }
+            
     </style>
 
     <script src="https://ssl.p.jwpcdn.com/player/v/8.27.1/jwpsrv.js"></script>
@@ -274,7 +282,9 @@ function enterFullscreen() {
     <div class="sidebar">
         <h2>Channel List</h2>
         <ul>
-            <li id="tv5" onclick="loadStream('tv5')">TV5</li>
+            <li id="tv5" onclick="loadStream('tv5')">
+    <img src="https://i.imgur.com/Ddyfzrn.png" alt="TV5 Logo" class="channel-logo">
+    TV5</li>
 <li id="a2z" onclick="loadStream('a2z')">A2Z</li>
 <li id="GmaPinoyTV" onclick="loadStream('GmaPinoyTV')">GMA Pinoy TV</li>
 <li id="TFC" onclick="loadStream('TFC')">TFC</li>
