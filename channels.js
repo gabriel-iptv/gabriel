@@ -14,6 +14,30 @@ const channels = {
 		type: 'mpd'
     },
 
+	WarnerTV: {
+        name: 'WarnerTV',
+        url: 'https://qp-pldt-live-grp-11-prod.akamaized.net/out/u/dr_warnertvhd.mpd',
+        keyId: '4503cf86bca3494ab95a77ed913619a0',
+        key: 'afc9c8f627fb3fb255dee8e3b0fe1d71',
+		type: 'mpd'
+    },
+
+	NBAPH: {
+        name: 'NBAPH',
+        url: 'https://qp-pldt-live-grp-02-prod.akamaized.net/out/u/pl_nba.mpd',
+        keyId: 'f36eed9e95f140fabbc88a08abbeafff',
+        key: '0125600d0eb13359c28bdab4a2ebe75a',
+		type: 'mpd'
+    },
+
+	AXN: {
+        name: 'AXN',
+        url: 'https://qp-pldt-live-grp-06-prod.akamaized.net/out/u/cg_axn_sd.mpd',
+        keyId: 'fd5d928f5d974ca4983f6e9295dfe410',
+        key: '3aaa001ddc142fedbb9d5557be43792f',
+		type: 'mpd'
+    },
+
 	GmaPinoyTV: {
         name: 'GmaPinoy',
         url: 'https://cdn-uw2-prod.tsv2.amagi.tv/linear/amg01006-abs-cbn-abscbn-gma-x7-dash-abscbnono/7c693236-e0c1-40a3-8bd0-bb25e43f5bfc/index.mpd',
@@ -298,8 +322,8 @@ const channels = {
 	cctv4: {
     name: 'CCTV4',
         url: 'https://qp-pldt-live-grp-12-prod.akamaized.net/out/u/dr_cctv4.mpd',
-        keyId: '0f8541ec412b11edb8780242ac120002',
-        key: '6cf16c272b7357c48cd47061799a4963',
+        keyId: 'b83566836c0d4216b7107bd7b8399366',
+        key: '32d50635bfd05fbf8189a0e3f6c8db09',
 		type: 'mpd'
     },
 	lifetime: {
@@ -562,6 +586,11 @@ const channels = {
     cinemo: {
         name: 'CineMo!',
         url: 'https://cinemo-abscbn-ono.amagi.tv/playlist.m3u8',
+        type: 'hls'
+         },	 
+	MYX: {
+        name: 'MYX',
+        url: 'https://myxnola-abscbn-ono.amagi.tv/index.m3u8',
         type: 'hls'
          },	 
     };
