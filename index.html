@@ -10,6 +10,7 @@
             margin: 0;
             padding: 0;
             display: flex;
+            flex-direction: column;
             height: 100vh;
             overflow: hidden;
             background-color: #fff;
@@ -17,13 +18,13 @@
 
         /* Sidebar styling */
         .sidebar {
-            width: 250px;
-            background-color: transparent;
+            width: 200px; /* Smaller width for consistency */
+            background-color: rgba(255, 255, 255, 0.9);
             color: black;
-            padding: 20px;
+            padding: 10px;
             position: absolute;
             top: 0;
-            left: -250px;
+            left: -200px; /* Hidden by default */
             height: 100%;
             overflow-y: auto;
             transition: left 0.3s ease;
@@ -31,13 +32,13 @@
         }
 
         .sidebar.open {
-            left: 0;
+            left: 0; /* Slide in when open */
         }
 
         .sidebar h2 {
-            font-size: 24px;
+            font-size: 18px;
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
             color: black;
         }
 
@@ -48,15 +49,17 @@
         }
 
         .sidebar li {
-            margin: 10px 0;
-            font-size: 16px;
+            margin: 5px 0;
+            font-size: 14px; /* Smaller text */
             cursor: pointer;
-            padding: 10px;
+            padding: 8px;
             border-radius: 5px;
             background-color: rgba(255, 255, 255, 0.8);
             color: black;
             transition: background-color 0.3s ease;
             border: 1px solid #ddd;
+            display: flex;
+            align-items: center;
         }
 
         .sidebar li:hover {
@@ -68,11 +71,17 @@
             color: white;
         }
 
+        /* Channel logo */
+        .channel-logo {
+            width: 30px; /* Uniform size */
+            height: 30px; /* Ensure logos are square */
+            margin-right: 10px;
+        }
+
         /* Player container */
         .player-container {
             flex: 1;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
             position: relative;
@@ -83,19 +92,19 @@
         #player {
             width: 100%;
             height: 100%;
-            background-color: #fff;
+            background-color: #000;
         }
 
         /* Menu button */
         .menu-button {
             position: absolute;
-            top: 20px;
-            left: 20px;
+            top: 10px;
+            left: 10px;
             background-color: #4CAF50;
             border: none;
             color: white;
-            padding: 10px 20px;
-            font-size: 16px;
+            padding: 8px 16px;
+            font-size: 14px;
             cursor: pointer;
             border-radius: 5px;
             z-index: 10;
@@ -105,144 +114,87 @@
             background-color: #45a049;
         }
 
-        /* Fullscreen button for landscape */
+        /* Fullscreen button */
         .fullscreen-button {
             position: absolute;
-            top: 20px;
-            right: 20px;
+            top: 10px;
+            right: 10px;
             background-color: #4CAF50;
             border: none;
             color: white;
-            padding: 10px 20px;
-            font-size: 16px;
+            padding: 8px 16px;
+            font-size: 14px;
             cursor: pointer;
             border-radius: 5px;
             z-index: 10;
-            display: none; /* Hidden by default */
         }
 
         .fullscreen-button:hover {
             background-color: #45a049;
         }
 
-        /* Show fullscreen button in landscape mode */
-        @media (orientation: landscape) {
-            .fullscreen-button {
-                display: inline-block; /* Show button in landscape */
-            }
-        }
-
-        /* When the sidebar is visible */
-        .fullscreen .sidebar {
-            left: 0;
-        }
-
-        @media (max-width: 768px) {
-            /* Ensure sidebar is hidden off-screen on mobile */
+        /* Responsive design adjustments */
+        @media (orientation: portrait) {
             .sidebar {
-                position: absolute;
-                top: 0;
-                left: -100%;
-                height: 100%;
-                transition: left 0.3s ease;
-                z-index: 5;
-                box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+                display: none; /* Hidden by default in portrait */
             }
 
             .sidebar.open {
-                left: 0;
+                display: block; /* Allow toggling sidebar in portrait */
             }
-        
 
-        /* General styling for channel logos */
-.channel-logo {
-    width: 30px; /* Adjust size as needed */
-    height: auto;
-    margin-right: 10px;
-    vertical-align: middle;
-}
+            .fullscreen-button {
+                display: none; /* No fullscreen button in portrait */
+            }
+        }
 
-/* Adjust logo size for portrait mode */
-@media (orientation: portrait) {
-    .channel-logo {
-        width: 40px;
-    }
-}
+        @media (orientation: landscape) {
+            .sidebar {
+                display: none; /* Hidden by default in landscape */
+            }
 
-/* Adjust logo size for landscape mode */
-@media (orientation: landscape) {
-    .channel-logo {
-        width: 40px;
-    }
-}
-
-/* Adjust logo size in fullscreen */
-.fullscreen .channel-logo {
-    width: 40px;
-}
-            
+            .sidebar.open {
+                display: block; /* Allow toggling sidebar in landscape */
+            }
+        }
     </style>
-
-    <script src="https://ssl.p.jwpcdn.com/player/v/8.27.1/jwpsrv.js"></script>
-    <script src="https://ssl.p.jwpcdn.com/player/v/8.27.1/jwplayer.js"></script>
-    <script src="channels.js"></script>
     <script>
+        // JWPlayer setup
         jwplayer.key = 'XSuP4qMl+9tK17QNb+4+th2Pm9AWgMO/cYH8CI0HGGr7bdjo';
 
+        let currentChannelName = 'TV5'; // Default channel
+
         function loadStream(channelKey) {
-    const channel = channels[channelKey];
-    currentChannelName = channelKey; // Update the current channel name
-    updateMenuButton(); // Update menu button text
+            const channel = channels[channelKey];
+            currentChannelName = channelKey; // Update the current channel name
+            updateMenuButton(); // Update menu button text
 
-    if (channel.type === "youtube") {
-        // Handle YouTube embed
-        const playerContainer = document.getElementById("player");
-        playerContainer.innerHTML = `
-            <iframe
-                id="youtube-player"
-                src="${channel.url}"
-                frameborder="0"
-                allow="autoplay; fullscreen"
-                allowfullscreen
-                width="100%"
-                height="100%"
-            ></iframe>
-        `;
+            if (channel.type === "youtube") {
+                const playerContainer = document.getElementById("player");
+                playerContainer.innerHTML = `
+                    <iframe
+                        id="youtube-player"
+                        src="${channel.url}"
+                        frameborder="0"
+                        allow="autoplay; fullscreen"
+                        allowfullscreen
+                        width="100%"
+                        height="100%"
+                    ></iframe>
+                `;
+            } else {
+                jwplayer("player").setup({
+                    file: channel.url,
+                    type: channel.type,
+                    width: "100%",
+                    height: "100%",
+                    autostart: true,
+                });
+            }
 
-        // Unmute the YouTube live stream programmatically
-        const iframe = document.getElementById("youtube-player");
-        iframe.onload = () => {
-            iframe.contentWindow.postMessage(
-                '{"event":"command","func":"unMute","args":""}',
-                "*"
-            );
-        };
-    } else {
-        // Handle other types of streams
-        jwplayer("player").setup({
-            file: channel.url,
-            type: channel.type,
-            drm: channel.type === "mpd" ? {
-                clearkey: {
-                    keyId: channel.keyId,
-                    key: channel.key,
-                },
-            } : undefined,
-            width: "100%",
-            height: "100%",
-            autostart: true,
-        });
-    }
-
-    // Highlight the active channel in the sidebar
-    const channelItems = document.querySelectorAll(".sidebar li");
-    channelItems.forEach((item) => item.classList.remove("active"));
-    document.getElementById(channelKey).classList.add("active");
-
-    // Close the menu automatically
-    const sidebar = document.querySelector('.sidebar');
-    sidebar.classList.remove('open');
-}
+            const sidebar = document.querySelector('.sidebar');
+            sidebar.classList.remove('open'); // Hide sidebar after selection
+        }
 
         function toggleMenu() {
             const sidebar = document.querySelector('.sidebar');
@@ -251,60 +203,24 @@
 
         function updateMenuButton() {
             const menuButton = document.querySelector('.menu-button');
-            menuButton.textContent = `Channel: ${currentChannelName}`; // Update button text
-        }
-
-        function enterFullscreen() {
-            const body = document.body;
-            if (!document.fullscreenElement) {
-                body.requestFullscreen().then(() => {
-                    body.classList.add('fullscreen');
-                });
-            }
+            menuButton.textContent = `Channel: ${currentChannelName}`;
         }
 
         function toggleFullscreen() {
-    if (document.fullscreenElement) {
-        document.exitFullscreen().then(() => {
-            document.body.classList.remove('fullscreen');
-        });
-    } else {
-        enterFullscreen();
-    }
-}
-        function adjustLogoForFullscreen() {
-    const isFullscreen = !!document.fullscreenElement;
-    const logos = document.querySelectorAll('.channel-logo');
-    logos.forEach((logo) => {
-        logo.style.width = isFullscreen ? '60px' : ''; // Larger size in fullscreen
-    });
-}
-
-document.addEventListener('fullscreenchange', adjustLogoForFullscreen);
-
-function enterFullscreen() {
-    const body = document.body;
-    if (!document.fullscreenElement) {
-        body.requestFullscreen().then(() => {
-            body.classList.add('fullscreen');
-        });
-    }
-}
-
-        window.onload = function() {
-            // Load the first channel by default
-            loadStream('tv5');
-
-            // Automatically enter fullscreen on page load
-            enterFullscreen();
-        };
+            const element = document.documentElement;
+            if (!document.fullscreenElement) {
+                element.requestFullscreen();
+            } else {
+                document.exitFullscreen();
+            }
+        }
     </script>
 </head>
 <body>
     <!-- Menu Button -->
     <button class="menu-button" onclick="toggleMenu()">Channel: TV5</button>
 
-    <!-- Fullscreen Button (only shown in landscape mode) -->
+    <!-- Fullscreen Button (only visible in landscape) -->
     <button class="fullscreen-button" onclick="toggleFullscreen()">Fullscreen</button>
 
     <!-- Sidebar -->
