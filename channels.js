@@ -17,8 +17,8 @@ const channels = {
 	HitsMovies: {
         name: 'HitsMovies',
         url: 'https://linearjitp-playback.astro.com.my/dash-wv/linear/2305/default_ott.mpd',
-        keyId: 'ff1febd7018d0dd711601e795e0d6210',
-        key: '38fbfb3a56e40ff92c9df8acbcba9ef6',
+        keyId: '38fbfb3a56e40ff92c9df8acbcba9ef6',
+        key: 'ff1febd7018d0dd711601e795e0d6210',
 		type: 'mpd'
     },
 
