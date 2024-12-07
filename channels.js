@@ -75,7 +75,7 @@ const channels = {
     },
 	KapamilyaChannel: {
         name: 'Kapamilya',
-        url: 'https://www.youtube.com/embed/Uk40kV_iUio?autoplay=1&mute=0',
+        url: 'https://www.youtube.com/embed/EWHEyfzZtE0?autoplay=1&mute=0',
         type: 'youtube'
 
 	},
@@ -83,7 +83,7 @@ const channels = {
 
 	GMA: {
         name: 'gma',
-        url: 'https://www.youtube.com/embed/a1gTWZ6yBXQ?autoplay=1&mute=0',
+        url: 'https://www.youtube.com/embed/Ds9QldvRuMg?autoplay=1&mute=0',
         type: 'youtube'
 
 	},
