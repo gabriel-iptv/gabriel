@@ -38,6 +38,14 @@ const channels = {
 		type: 'mpd'
     },
 
+	Cartoonito: {
+        name: 'Cartoonito',
+        url: 'https://atemecdnbalancer-voe.sysln.id/live/eds/CartoonitoHD/mpd/CartoonitoHD.mpd',
+        keyId: '955574ee2b674f0fbbad818fb384c233',
+        key: '51d2893619bdd062fb4c0cdaafefbf27',
+		type: 'mpd'
+    },
+
 	AXN: {
         name: 'AXN',
         url: 'https://qp-pldt-live-grp-06-prod.akamaized.net/out/u/cg_axn_sd.mpd',
