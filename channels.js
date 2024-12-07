@@ -72,9 +72,9 @@ const channels = {
 
 	test: {
         name: 'test',
-        url: 'https://tglmp02.akamaized.net/out/v1/621a7089e63144e4be7891cd9bfb10e2/manifest.mpd',
-        keyId: '9229814c629b406f8de98d2f23c968a0',
-        key: '40b9f250455b43b3b2ea6845ab81abca',
+        url: 'https://linearjitp-playback.astro.com.my/dash-wv/linear/2511/default_primary.mpd',
+        keyId: 'd8520e96a1283ab6e5be538474bfa810',
+        key: 'bda5f7bbc1e44096f779a0619fe9881f',
 		type: 'mpd'
     },
 
