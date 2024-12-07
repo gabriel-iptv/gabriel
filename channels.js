@@ -65,14 +65,14 @@ const channels = {
 	nickelodeon: {
         name: 'Nickelodeon',
         url: 'https://linearjitp-playback.astro.com.my/dash-wv/linear/2511/default_primary.mpd',
-        keyId: 'd8520e96a1283ab6e5be538474bfa810',
-        key: 'bda5f7bbc1e44096f779a0619fe9881f',
+        keyId: 'bd17afb5dc9648a39be79ee3634dd4b8',
+        key: '3ecf305d54a7729299b93a3d69c02ea5',
 		type: 'mpd'
     },
 
 	test: {
         name: 'test',
-        url: 'https://linearjitp-playback.astro.com.my/dash-wv/linear/2511/default_primary.mpd',
+        url: 'https://cdn-ue1-prod.tsv2.amagi.tv/linear/amg01006-abs-cbn-kapcha-dash-abscbnono/3f79073d-e175-4669-ab85-3dacfbcf72fa/index.mpd',
         keyId: 'd8520e96a1283ab6e5be538474bfa810',
         key: 'bda5f7bbc1e44096f779a0619fe9881f',
 		type: 'mpd'
