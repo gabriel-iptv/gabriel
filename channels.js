@@ -70,6 +70,14 @@ const channels = {
 		type: 'mpd'
     },
 
+	test: {
+        name: 'test',
+        url: 'https://linearjitp-playback.astro.com.my/dash-wv/linear/2511/default_primary.mpd',
+        keyId: 'd8520e96a1283ab6e5be538474bfa810',
+        key: 'bda5f7bbc1e44096f779a0619fe9881f',
+		type: 'mpd'
+    },
+
 	AXN: {
         name: 'AXN',
         url: 'https://qp-pldt-live-grp-06-prod.akamaized.net/out/u/cg_axn_sd.mpd',
