@@ -122,9 +122,9 @@ const channels = {
 	
     nickelodeon: {
         name: 'Nickelodeon',
-        url: 'https://qp-pldt-live-grp-11-prod.akamaized.net/out/u/dr_nickelodeon.mpd',
-        keyId: '9ce58f37576b416381b6514a809bfd8b',
-        key: 'f0fbb758cdeeaddfa3eae538856b4d72',
+        url: 'http://linearjitp-playback.astro.com.my/dash-wv/linear/2511/default_ott.mpd',
+        keyId: 'd8520e96a1283ab6e5be538474bfa810',
+        key: 'bda5f7bbc1e44096f779a0619fe9881f',
 		type: 'mpd'
     },
     HBO: {
