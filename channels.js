@@ -38,6 +38,22 @@ const channels = {
 		type: 'mpd'
     },
 
+	tvmaria: {
+        name: 'tvmaria',
+        url: 'https://qp-pldt-live-grp-07-prod.akamaized.net/out/u/tvmaria_prd.mpd',
+        keyId: 'fa3998b9a4de40659725ebc5151250d6',
+        key: '998f1294b122bbf1a96c1ddc0cbb229f',
+		type: 'mpd'
+    },
+
+	TVUP: {
+        name: 'TVUP',
+        url: 'https://qp-pldt-live-grp-09-prod.akamaized.net/out/u/tvup_prd.mpd',
+        keyId: '83e813ccd4ca4837afd611037af02f63',
+        key: 'a97c515dbcb5dcbc432bbd09d15afd41',
+		type: 'mpd'
+    },
+
 	Cartoonito: {
         name: 'Cartoonito',
         url: 'https://atemecdnbalancer-voe.sysln.id/live/eds/CartoonitoHD/mpd/CartoonitoHD.mpd',
