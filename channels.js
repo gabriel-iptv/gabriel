@@ -62,7 +62,7 @@ const channels = {
 		type: 'mpd'
     },
 
-	nick: {
+	nickelodeon: {
         name: 'Nickelodeon',
         url: 'https://linearjitp-playback.astro.com.my/dash-wv/linear/2511/default_primary.mpd',
         keyId: 'd8520e96a1283ab6e5be538474bfa810',
