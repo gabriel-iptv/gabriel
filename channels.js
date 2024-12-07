@@ -537,9 +537,9 @@ const channels = {
     },
 	tech_storm: {
     name: 'Tech Storm',
-        url: 'https://qp-pldt-live-grp-11-prod.akamaized.net/out/u/dr_tech_storm.mpd',
-        keyId: '5675d85ce6754ba6aa8f6acc4660f76f',
-        key: '140bfb365cf143c349f68699238a610c',
+        url: 'https://cdn08jtedge.indihometv.com/dassdvr/133/techstorm/manifest.mpd',
+        keyId: '69646b755f3130303030303030303030',
+        key: 'e4a2359b05563399f1d9adfce641724a',
 		type: 'mpd'
     },
 	kix_hd: {
