@@ -30,6 +30,14 @@ const channels = {
 		type: 'mpd'
     },
 
+	EUROSPORTS: {
+        name: 'EUROSPORTS',
+        url: 'https://atemeshield1-voe.sysln.id/live/eds/EUROSPORTHD/mpd/EUROSPORTHD.mpd',
+        keyId: '47c03f29f04747d2a298c0ad63f3b2c1',
+        key: '8b48b2cb2743b91d5f20cf2622067f3a',
+		type: 'mpd'
+    },
+
 	AXN: {
         name: 'AXN',
         url: 'https://qp-pldt-live-grp-06-prod.akamaized.net/out/u/cg_axn_sd.mpd',
