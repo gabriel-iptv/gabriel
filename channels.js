@@ -641,5 +641,10 @@ const channels = {
         name: 'MYX',
         url: 'https://myxnola-abscbn-ono.amagi.tv/index.m3u8',
         type: 'hls'
-         },	 
+         },	
+	Disney: {
+        name: 'Disney',
+        url: 'https://webhdrunns.mizhls.ru/lb/premium312/index.m3u8|referer=https://lewblivehdplay.ru/&user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1',
+        type: 'hls'
+         },	
     };
