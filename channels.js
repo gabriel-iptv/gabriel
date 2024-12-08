@@ -659,7 +659,7 @@ const channels = {
          },
 	Boomerang: {
         name: 'Boomerang',
-        url: 'https://fl3.moveonjoy.com/BOOMERANG/index.m3u8',
+        url: 'https://gabrieliptv.netlify.app/boomerang.m3u8',
         type: 'hls'
          },	
     };
