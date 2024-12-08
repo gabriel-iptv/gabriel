@@ -644,7 +644,22 @@ const channels = {
          },	
 	Disney: {
         name: 'Disney',
-        url: 'https://webhdrunns.mizhls.ru/lb/premium312/index.m3u8',
+        url: 'http://212.102.60.231/DISNEY_CHANNEL/index.m3u8',
+        type: 'hls'
+         },
+	Disneyjr: {
+        name: 'Disneyjr',
+        url: 'http://fl2.moveonjoy.com/DISNEY_JR/index.m3u8',
+        type: 'hls'
+         },
+	Disneyxd: {
+        name: 'Disneyxd',
+        url: 'http://212.102.60.231/DISNEY_XD/index.m3u8',
+        type: 'hls'
+         },
+	Boomerang: {
+        name: 'Boomerang',
+        url: 'https://fl3.moveonjoy.com/BOOMERANG/index.m3u8',
         type: 'hls'
          },	
     };
