@@ -644,7 +644,7 @@ const channels = {
          },	
 	Disney: {
         name: 'Disney',
-        url: 'http://212.102.60.231/DISNEY_CHANNEL/index.m3u8',
+        url: 'https://disney-channel.13l.link/live/Disney/index.m3u8',
         type: 'hls'
          },
 	Disneyjr: {
