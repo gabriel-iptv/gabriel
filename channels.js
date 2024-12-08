@@ -416,6 +416,14 @@ const channels = {
         key: 'b24094f6ca136af25600e44df5987af4',
 		type: 'mpd'
     },
+
+	globaltrekker: {
+    name: 'globaltrekker',
+        url: 'https://tglmp04.akamaized.net/out/v1/179412178c874c7fba3ca6b0d382cd92/manifest.mpd',
+        keyId: '4dc56e6ee6244bba93065edb7dbcb009',
+        key: '650398d5fa33caed301c53e71523bb90',
+		type: 'mpd'
+    },
 	depedchannel: {
     name: 'DepEd Channel',
         url: 'https://qp-pldt-live-grp-07-prod.akamaized.net/out/u/depedch_sd.mpd',
@@ -572,16 +580,16 @@ const channels = {
     },
 	blueant_extreme: {
     name: 'Rock Action',
-        url: 'https://qp-pldt-live-grp-13-prod.akamaized.net/out/u/dr_rockextreme.mpd',
-        keyId: '0f852fb8412b11edb8780242ac120002',
-        key: '4cbc004d8c444f9f996db42059ce8178',
+        url: 'https://tglmp04.akamaized.net/out/v1/421a3cd3bdcd492f8f4b5efb2363ed2c/manifest.mpd',
+        keyId: '2341c2ecd3cf4865881bb0fa1287de8f',
+        key: 'ad45202e64f66ef36b3f60fac93cc47f',
 		type: 'mpd'
     },
 	rock_entertainment: {
     name: 'Rock Entertainment',
-        url: 'https://qp-pldt-live-grp-13-prod.akamaized.net/out/u/dr_rockentertainment.mpd',
-        keyId: 'e4ee0cf8ca9746f99af402ca6eed8dc7',
-        key: 'be2a096403346bc1d0bb0f812822bb62',
+        url: 'https://tglmp02.akamaized.net/out/v1/621a7089e63144e4be7891cd9bfb10e2/manifest.mpd',
+        keyId: '9229814c629b406f8de98d2f23c968a0',
+        key: '40b9f250455b43b3b2ea6845ab81abca',
 		type: 'mpd'
     },
 	discovery: {
