@@ -70,11 +70,11 @@ const channels = {
 		type: 'mpd'
     },
 
-	test: {
-        name: 'test',
-        url: 'https://linearjitp-playback.astro.com.my/dash-wv/linear/2511/default_primary.mpd',
-        keyId: 'd8520e96a1283ab6e5be538474bfa810',
-        key: 'bda5f7bbc1e44096f779a0619fe9881f',
+	moonbug: {
+        name: 'moonbug',
+        url: 'https://qp-pldt-live-grp-06-prod.akamaized.net/out/u/cg_moonbug_kids_sd.mpd',
+        keyId: '0bf00921bec94a65a124fba1ef52b1cd',
+        key: '0f1488487cbe05e2badc3db53ae0f29f',
 		type: 'mpd'
     },
 
@@ -417,11 +417,11 @@ const channels = {
 		type: 'mpd'
     },
 
-	globaltrekker: {
-    name: 'globaltrekker',
-        url: 'https://tglmp04.akamaized.net/out/v1/179412178c874c7fba3ca6b0d382cd92/manifest.mpd',
-        keyId: '4dc56e6ee6244bba93065edb7dbcb009',
-        key: '650398d5fa33caed301c53e71523bb90',
+	lotus: {
+    name: 'lotus',
+        url: 'https://qp-pldt-live-grp-07-prod.akamaized.net/out/u/lotusmacau_prd.mpd',
+        keyId: '60dc692e64ea443a8fb5ac186c865a9b',
+        key: '01bdbe22d59b2a4504b53adc2f606cc1',
 		type: 'mpd'
     },
 	depedchannel: {
@@ -647,19 +647,10 @@ const channels = {
         url: 'https://disney-channel.13l.link/live/Disney/index.m3u8',
         type: 'hls'
          },
-	Disneyjr: {
-        name: 'Disneyjr',
-        url: 'http://fl2.moveonjoy.com/DISNEY_JR/index.m3u8',
+	pbs: {
+        name: 'pbs',
+        url: 'https://2-fss-2.streamhoster.com/pl_140/amlst:200914-1298290/chunklist_b2000000.m3u8',
         type: 'hls'
          },
-	Disneyxd: {
-        name: 'Disneyxd',
-        url: 'http://212.102.60.231/DISNEY_XD/index.m3u8',
-        type: 'hls'
-         },
-	Boomerang: {
-        name: 'Boomerang',
-        url: 'https://gabrieliptv.netlify.app/boomerang.m3u8',
-        type: 'hls'
-         },	
+	
     };
