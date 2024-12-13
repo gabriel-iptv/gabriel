@@ -25,7 +25,7 @@
       align-items: center;
       flex-direction: column;
     }
-    #portrait-message {
+    #error-message {
       display: none;
       width: 100%;
       height: 100vh;
@@ -138,7 +138,7 @@
   </style>
 </head>
 <body>
-  <div id="portrait-message">Rotate your phone</div>
+  <div id="error-message">Playback is not allowed due to Widevine L3 support. Please use a supported device.</div>
   <div id="wrapper">
     <div id="video-container">
       <div id="menu-button" onclick="toggleMenu()">☰</div>
@@ -167,7 +167,7 @@
       if (storedActivationStatus !== 'true' || storedCode !== activationCode) {
         requestActivation();
       } else {
-        initializePlayer();
+        detectWidevineLevel();
       }
     }
 
@@ -179,7 +179,35 @@
       } else {
         localStorage.setItem(activationKey, 'true');
         localStorage.setItem(activationCodeKey, activationCode);
-        initializePlayer();
+        detectWidevineLevel();
+      }
+    }
+
+    async function detectWidevineLevel() {
+      const wrapper = document.getElementById('wrapper');
+      const errorMessage = document.getElementById('error-message');
+
+      try {
+        const config = await navigator.requestMediaKeySystemAccess('com.widevine.alpha', [
+          {
+            initDataTypes: ['cenc'],
+            videoCapabilities: [{ contentType: 'video/mp4; codecs="avc1.42E01E"' }],
+          },
+        ]);
+        const keySystem = config.getConfiguration();
+
+        if (keySystem && keySystem.distinctiveIdentifier === 'optional') {
+          wrapper.style.display = 'flex'; // Allow playback
+          errorMessage.style.display = 'none';
+          initializePlayer();
+        } else {
+          wrapper.style.display = 'none';
+          errorMessage.style.display = 'flex'; // Block playback
+        }
+      } catch (error) {
+        console.error('Widevine detection failed:', error);
+        wrapper.style.display = 'none';
+        errorMessage.style.display = 'flex'; // Block playback
       }
     }
 
@@ -804,86 +832,25 @@
       
     ];
 
-    let player;
-    const videoElement = document.getElementById('video');
-    const youtubeElement = document.getElementById('youtube-video');
-    const channelButtonsContainer = document.getElementById('channel-buttons');
-
     function initializePlayer() {
+      const videoElement = document.getElementById('video');
+      const player = new shaka.Player(videoElement);
+
       if (!shaka.Player.isBrowserSupported()) {
         alert('Browser not supported!');
         return;
       }
-      player = new shaka.Player(videoElement);
-      createChannelButtons();
-      changeChannel(0);
-    }
 
-    async function stopCurrentStream() {
-      videoElement.pause();
-      videoElement.style.display = 'none';
-      youtubeElement.src = '';
-      youtubeElement.style.display = 'none';
-    }
-
-    async function loadMPEGDash(index) {
-      const { manifestUri, clearKey } = streams[index];
       player.configure({
         drm: {
-          clearKeys: clearKey
-        }
+          clearKeys: {}, // Use your clear keys here
+        },
       });
-      try {
-        await player.load(manifestUri);
-        videoElement.style.display = 'block';
-      } catch (error) {
-        alert(`Failed to load channel: ${streams[index].name}`);
-      }
-    }
-
-    async function loadHLS(index) {
-      const { manifestUri } = streams[index];
-      try {
-        await player.load(manifestUri);
-        videoElement.style.display = 'block';
-      } catch (error) {
-        alert(`Failed to load channel: ${streams[index].name}`);
-      }
-    }
-
-    function loadYouTube(embedUrl) {
-      youtubeElement.src = embedUrl;
-      youtubeElement.style.display = 'block';
-    }
-
-    async function changeChannel(index) {
-      await stopCurrentStream();
-      const stream = streams[index];
-      if (stream.type === 'mpegdash') {
-        await loadMPEGDash(index);
-      } else if (stream.type === 'hls') {
-        await loadHLS(index);
-      } else if (stream.type === 'youtube') {
-        loadYouTube(stream.embedUrl);
-      }
-      toggleMenu();
-    }
-
-    function toggleMenu() {
-      const menu = document.getElementById('channel-menu');
-      menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
-    }
-
-    function toggleFullscreen() {
-      const container = document.getElementById('video-container');
-      if (!document.fullscreenElement) {
-        container.requestFullscreen();
-      } else {
-        document.exitFullscreen();
-      }
+      createChannelButtons();
     }
 
     function createChannelButtons() {
+      const channelButtonsContainer = document.getElementById('channel-buttons');
       streams.forEach((stream, index) => {
         const button = document.createElement('button');
         const logo = document.createElement('img');
@@ -892,49 +859,15 @@
         button.appendChild(logo);
         button.appendChild(document.createTextNode(stream.name));
         button.onclick = () => changeChannel(index);
-        button.setAttribute('tabindex', '0');
         channelButtonsContainer.appendChild(button);
       });
     }
 
-    function filterChannels() {
-      const searchTerm = document.getElementById('search-bar').value.toLowerCase();
-      const buttons = document.querySelectorAll('#channel-buttons button');
-      let anyVisible = false;
-
-      buttons.forEach(button => {
-        const channelName = button.textContent.toLowerCase();
-        if (channelName.includes(searchTerm)) {
-          button.style.display = 'flex';
-          anyVisible = true;
-        } else {
-          button.style.display = 'none';
-        }
-      });
-
-      const noChannelMessage = document.getElementById('no-channel-message');
-      noChannelMessage.style.display = anyVisible ? 'none' : 'block';
+    function changeChannel(index) {
+      console.log(`Change to channel: ${streams[index].name}`);
     }
 
-    function handleOrientation() {
-      const wrapper = document.getElementById('wrapper');
-      const portraitMessage = document.getElementById('portrait-message');
-      if (window.innerWidth > window.innerHeight) {
-        // Landscape
-        wrapper.style.display = 'flex';
-        portraitMessage.style.display = 'none';
-      } else {
-        // Portrait
-        wrapper.style.display = 'none';
-        portraitMessage.style.display = 'flex';
-      }
-    }
-
-    window.addEventListener('resize', handleOrientation);
-    document.addEventListener('DOMContentLoaded', () => {
-      handleOrientation();
-      checkActivation();
-    });
+    document.addEventListener('DOMContentLoaded', checkActivation);
   </script>
 </body>
 </html>
