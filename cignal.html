@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Livestream Player</title>
+  <title>GABRIEL IPTV</title>
   <link rel="icon" href="https://img.freepik.com/premium-psd/play-icon-button-black-background_609989-2403.jpg">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/shaka-player@latest/dist/controls.css">
   <script src="https://cdn.jsdelivr.net/npm/shaka-player@latest/dist/shaka-player.ui.debug.js"></script>
@@ -119,6 +119,20 @@
 
   <script>
     const activationCode = '2024';
+    const activationKey = 'activationStatus';
+    const activationCodeKey = 'activationCode';
+
+    function checkActivation() {
+      const storedActivationStatus = localStorage.getItem(activationKey);
+      const storedCode = localStorage.getItem(activationCodeKey);
+
+      // Check if activation code has changed or if activation has not occurred
+      if (storedActivationStatus !== 'true' || storedCode !== activationCode) {
+        requestActivation();
+      } else {
+        initializePlayer();
+      }
+    }
 
     function requestActivation() {
       const userCode = prompt('Please enter the activation code:');
@@ -126,6 +140,8 @@
         alert('Incorrect activation code. Access denied.');
         document.body.innerHTML = '<h1>Access Denied</h1>';
       } else {
+        localStorage.setItem(activationKey, 'true');
+        localStorage.setItem(activationCodeKey, activationCode);
         initializePlayer();
       }
     }
@@ -146,10 +162,11 @@
         clearKey: { 'f703e4c8ec9041eeb5028ab4248fa094': 'c22f2162e176eee6273a5d0b68d19530' }
       },
        {
-        name: 'Kapamilya Online Live',
-        logo: 'https://i.imgur.com/8YT2rMz.png',
-        type: 'youtube',
-        embedUrl: 'https://www.youtube.com/embed/vC5Wu78HcFQ?autoplay=1&mute=0'
+        name: 'Kapamilya Channel',
+        logo: 'https://i.imgur.com/fRETRXx.png',
+        type: 'mpegdash',
+        manifestUri: 'https://cdn-ue1-prod.tsv2.amagi.tv/linear/amg01006-abs-cbn-kapcha-dash-abscbnono/c1d18480-b845-4414-a1bb-771327c4a685/index.mpd',
+        clearKey: { 'bd17afb5dc9648a39be79ee3634dd4b8': '3ecf305d54a7729299b93a3d69c02ea5' }
       },
        {
         name: 'GMA Kapuso Stream',
@@ -238,13 +255,6 @@
         type: 'mpegdash',
         manifestUri: 'https://qp-pldt-live-grp-12-prod.akamaized.net/out/u/dr_cartoonnetworkhd.mpd',
         clearKey: { 'a2d1f552ff9541558b3296b5a932136b': 'cdd48fa884dc0c3a3f85aeebca13d444' }
-      },
-{
-        name: 'Cartoonito',
-        logo: 'https://i.imgur.com/x1wehbs.png',
-        type: 'mpegdash',
-        manifestUri: 'https://atemecdnbalancer-voe.sysln.id/live/eds/CartoonitoHD/mpd/CartoonitoHD.mpd',
-        clearKey: { '955574ee2b674f0fbbad818fb384c233': '51d2893619bdd062fb4c0cdaafefbf27' }
       },
       {
         name: 'Disney Channel',
@@ -713,11 +723,11 @@
         clearKey: { '59454adb530b4e0784eae62735f9d850': '61100d0b8c4dd13e4eb8b4851ba192cc' }
       },
 {
-        name: 'Eurosports',
-        logo: 'https://i.imgur.com/gY1eLYC.png',
+        name: 'WWE Network',
+        logo: 'https://imgur.com/YLM91P6.png',
         type: 'mpegdash',
-        manifestUri: 'https://atemeshield1-voe.sysln.id/live/eds/EUROSPORTHD/mpd/EUROSPORTHD.mpd',
-        clearKey: { '47c03f29f04747d2a298c0ad63f3b2c1': '8b48b2cb2743b91d5f20cf2622067f3a' }
+        manifestUri: 'https://linearjitp-playback.astro.com.my/dash-wv/linear/2603/default_primary.mpd',
+        clearKey: { '0cbc4d3b4fbd9af512acb2488bb42910': '30528c4ef882954e5707cd1001d66121' }
       },
 {
         name: 'History',
@@ -772,23 +782,53 @@
       changeChannel(0);
     }
 
-    async function loadMPEGDash(index) {
-      const { manifestUri, clearKey } = streams[index];
-      player.configure({ drm: { clearKeys: clearKey } });
-      try {
-        await player.load(manifestUri);
-        youtubeElement.style.display = 'none';
-        videoElement.style.display = 'block';
-      } catch (error) {
-        alert(`Failed to load channel: ${streams[index].name}`);
-      }
+    async function stopCurrentStream() {
+      videoElement.pause();
+      videoElement.style.display = 'none';
+      youtubeElement.src = '';
+      youtubeElement.style.display = 'none';
     }
+
+  async function loadMPEGDash(index) {
+    const { manifestUri, clearKey } = streams[index];
+
+    // Enhanced DRM Configuration for ClearKey
+    player.configure({
+      drm: {
+        clearKeys: clearKey,
+        advanced: {
+          'com.widevine.alpha': {
+            videoRobustness: 'SW_SECURE_DECODE',
+            audioRobustness: 'SW_SECURE_DECODE'
+          }
+        }
+      },
+      streaming: {
+        bufferingGoal: 30,
+        rebufferingGoal: 15,
+        retryParameters: {
+          maxAttempts: 5,
+          baseDelay: 1000,
+          backoffFactor: 2,
+          fuzzFactor: 0.5,
+          timeout: 0 // No timeout for manifest loading
+        }
+      }
+    });
+
+    try {
+      await player.load(manifestUri);
+      videoElement.style.display = 'block';
+    } catch (error) {
+      console.error(`Error loading MPEG-DASH stream: ${error}`);
+      alert(`Failed to load channel: ${streams[index].name}`);
+    }
+  }
 
     async function loadHLS(index) {
       const { manifestUri } = streams[index];
       try {
         await player.load(manifestUri);
-        youtubeElement.style.display = 'none';
         videoElement.style.display = 'block';
       } catch (error) {
         alert(`Failed to load channel: ${streams[index].name}`);
@@ -796,18 +836,17 @@
     }
 
     function loadYouTube(embedUrl) {
-      videoElement.style.display = 'none';
-      youtubeElement.style.display = 'block';
       youtubeElement.src = embedUrl;
+      youtubeElement.style.display = 'block';
     }
 
-    function changeChannel(index) {
-      if (!player) return;
+    async function changeChannel(index) {
+      await stopCurrentStream();
       const stream = streams[index];
       if (stream.type === 'mpegdash') {
-        loadMPEGDash(index);
+        await loadMPEGDash(index);
       } else if (stream.type === 'hls') {
-        loadHLS(index);
+        await loadHLS(index);
       } else if (stream.type === 'youtube') {
         loadYouTube(stream.embedUrl);
       }
@@ -840,8 +879,9 @@
         channelButtonsContainer.appendChild(button);
       });
     }
+  
 
-    document.addEventListener('DOMContentLoaded', requestActivation);
+    document.addEventListener('DOMContentLoaded', checkActivation);
   </script>
 </body>
 </html>
