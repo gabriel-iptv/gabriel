@@ -1,551 +1,847 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GABRIELIPTV</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            height: 100vh;
-            overflow: hidden;
-            background-color: #fff;
-        }
-
-        
-        .menu-overlay {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 250px;
-            height: 60%;
-            background-color: rgba(50, 50, 50, 0.9);
-            color: white;
-            z-index: 10;
-            padding: 20px;
-            overflow-y: auto;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
-
-        .menu-overlay.open {
-            display: block;
-        }
-
-        .menu-overlay h2 {
-            font-size: 18px;
-            text-align: center;
-            margin-bottom: 15px;
-        }
-
-        .menu-overlay ul {
-            list-style-type: none;
-            padding: 0;
-            margin: 0;
-            max-height: 80%;
-            overflow-y: auto;
-        }
-
-        .menu-overlay li {
-            margin: 8px 0;
-            font-size: 12px;
-            cursor: pointer;
-            padding: 8px;
-            border-radius: 5px;
-            background-color: rgba(0, 0, 0, 0.1);
-            color: white;
-            transition: background-color 0.3s ease;
-            text-align: center;
-        }
-
-        .menu-overlay li:hover {
-            background-color: rgba(0, 0, 0, 0.2);
-        }
-
-        .menu-overlay li.active {
-            background-color: #4CAF50;
-            color: white;
-        }
-
-        .menu-overlay li img {
-            width: 18px;
-            height: auto;
-            margin-right: 10px;
-            vertical-align: middle;
-        }
-
-        /* Player container */
-        .player-container {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            width: 100%;
-            height: 100%;
-        }
-
-        #player {
-            width: 100%;
-            height: 100%;
-            background-color: #fff;
-        }
-
-        /* Hamburger Menu Button */
-        .menu-button {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            background-color: transparent;
-            border: none;
-            color: white; /* Changed to white */
-            font-size: 30px;
-            cursor: pointer;
-            z-index: 11;
-        }
-
-        .menu-button:hover {
-            color: #4CAF50;
-        }
-
-        /* Fullscreen button for landscape */
-        .fullscreen-button {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background-color: transparent;
-            border: none;
-            color: white; /* Changed to white */
-            font-size: 20px; /* Reduced size */
-            cursor: pointer;
-            z-index: 11;
-            display: none; /* Hidden by default */
-        }
-
-        .fullscreen-button:hover {
-            color: #4CAF50;
-        }
-
-        /* Show fullscreen button in landscape mode */
-        @media (orientation: landscape) {
-            .fullscreen-button {
-                display: inline-block; /* Visible only in landscape mode */
-            }
-        }
-
-        /* Footer text styling */
-        .footer-text {
-            font-size: 12px;
-            text-align: center;
-            margin-top: 20px;
-            color: white;
-        }
-
-        .footer-text a {
-            color: #0000FF;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        .footer-text a:hover {
-            text-decoration: underline;
-        }
-    </style>
-    <script src="https://ssl.p.jwpcdn.com/player/v/8.27.1/jwpsrv.js"></script>
-    <script src="https://ssl.p.jwpcdn.com/player/v/8.27.1/jwplayer.js"></script>
-    <script src="channels.js"></script>
-    <script>
-        jwplayer.key = 'XSuP4qMl+9tK17QNb+4+th2Pm9AWgMO/cYH8CI0HGGr7bdjo';
-
-
-        let isFullscreen = false;
-
-        function loadStream(channelKey) {
-    const channel = channels[channelKey];
-    currentChannelName = channelKey;
-    updateMenuButton(); // Update menu button text
-
-    if (channel.type === "youtube") {
-        const playerContainer = document.getElementById("player");
-        playerContainer.innerHTML = `
-            <iframe
-                id="youtube-player"
-                src="${channel.url}"
-                frameborder="0"
-                allow="autoplay; fullscreen"
-                allowfullscreen
-                width="100%"
-                height="100%"
-            ></iframe>
-        `;
-    } else {
-        jwplayer("player").setup({
-            file: channel.url,
-            type: channel.type,
-            drm: channel.type === "mpd" ? {
-                clearkey: {
-                    keyId: channel.keyId,
-                    key: channel.key,
-                },
-            } : undefined,
-            width: "100%",
-            height: "100%",
-            autostart: true,
-            
-            // Added Buffer Optimizations
-            preload: 'auto',            // Preload the video for quicker start
-            bufferlength: 2,           // Increase buffer length to 10 seconds
-            mute: false,                // Ensure mute is off by default
-            playbackRateControls: true, // Enable playback speed controls for better streaming adaptability
-            stretching: 'uniform'       // Maintain video aspect ratio for smoother display
-        });
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Livestream Player</title>
+  <link rel="icon" href="https://img.freepik.com/premium-psd/play-icon-button-black-background_609989-2403.jpg">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/shaka-player@latest/dist/controls.css">
+  <script src="https://cdn.jsdelivr.net/npm/shaka-player@latest/dist/shaka-player.ui.debug.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css?family=Poppins');
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+      background: #000;
+      color: #fff;
     }
-
-    // Highlight the active channel in the menu
-    const channelItems = document.querySelectorAll(".menu-overlay li");
-    channelItems.forEach((item) => item.classList.remove("active"));
-    document.getElementById(channelKey).classList.add("active");
-
-    // Close the menu automatically
-    toggleMenu();
-        }
-
-        function toggleMenu() {
-            const menuOverlay = document.querySelector('.menu-overlay');
-            menuOverlay.classList.toggle('open');
-        }
-
-        function updateMenuButton() {
-            const menuButton = document.querySelector('.menu-button');
-            menuButton.textContent = `≡`; // Hamburger icon
-        }
-
-        function enterFullscreen() {
-            const body = document.body;
-            if (!document.fullscreenElement) {
-                body.requestFullscreen().then(() => {
-                    body.classList.add('fullscreen');
-                    isFullscreen = true;
-                    updateFullscreenButton();
-                });
-            }
-        }
-
-        function exitFullscreen() {
-            if (document.fullscreenElement) {
-                document.exitFullscreen().then(() => {
-                    document.body.classList.remove('fullscreen');
-                    isFullscreen = false;
-                    updateFullscreenButton();
-                });
-            }
-        }
-
-        function toggleFullscreen() {
-            if (isFullscreen) {
-                exitFullscreen();
-            } else {
-                enterFullscreen();
-            }
-        }
-
-        function updateFullscreenButton() {
-            const fullscreenButton = document.querySelector('.fullscreen-button');
-            fullscreenButton.textContent = isFullscreen ? '⛝' : '⛶'; // Change icon based on fullscreen state
-        }
-
-        function adjustLogoForFullscreen() {
-            const isFullscreen = !!document.fullscreenElement;
-            const logos = document.querySelectorAll('.menu-overlay li img');
-            logos.forEach((logo) => {
-                logo.style.width = isFullscreen ? '30px' : ''; // Larger size in fullscreen
-            });
-        }
-
-        document.addEventListener('fullscreenchange', adjustLogoForFullscreen);
-
-        window.onload = function() {
-            // Load the first channel by default
-            loadStream('tv5');
-            // Automatically enter fullscreen on page load
-            enterFullscreen();
-        };
-
-        Object.defineProperty(navigator, 'userAgent', {
-      get: function () {
-        return 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.4044.138 Safari/537.36';
-      }
-    });
-        
-    </script>
+    #wrapper {
+      width: 100%;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    #video-container {
+      width: 90%;
+      max-width: 800px;
+      aspect-ratio: 16/9;
+      position: relative;
+      background: #000;
+    }
+    iframe, video {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+    #menu-button, #fullscreen-button {
+      position: absolute;
+      background: rgba(0, 0, 0, 0.5);
+      color: #fff;
+      padding: 10px;
+      cursor: pointer;
+      border-radius: 50%;
+      font-size: 24px;
+      z-index: 10;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+    #menu-button {
+      left: 10px;
+    }
+    #fullscreen-button {
+      right: 10px;
+    }
+    #channel-menu {
+      display: none;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(0, 0, 0, 0.8);
+      padding: 20px;
+      border-radius: 10px;
+      z-index: 11;
+      max-height: 70%;
+      overflow-y: auto;
+      width: 250px;
+      text-align: center;
+    }
+    #channel-menu h2 {
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    #channel-menu button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 10px 0;
+      background: #333;
+      color: #fff;
+      border: none;
+      padding: 10px;
+      border-radius: 5px;
+      font-size: 18px;
+      cursor: pointer;
+      width: 100%;
+    }
+    #channel-menu button:hover {
+      background: #555;
+    }
+    .channel-logo {
+      width: 30px;
+      height: 30px;
+      margin-right: 10px;
+    }
+    #channel-menu p {
+      font-size: 14px;
+      margin-top: 20px;
+      text-align: center;
+    }
+  </style>
 </head>
 <body>
-    <!-- Hamburger Menu Button -->
-    <button class="menu-button" onclick="toggleMenu()">≡</button>
-
-    <!-- Fullscreen Button (only shown in landscape mode) -->
-    <button class="fullscreen-button" onclick="toggleFullscreen()">⛶</button>
-
-    <!-- Menu Overlay -->
-    <div class="menu-overlay">
-        <h2 id="current-channel">Channel List</h2>
-        <ul>
-            <li id="tv5" onclick="loadStream('tv5')">
-    <img src="https://i.imgur.com/Ddyfzrn.png" alt="TV5 Logo" class="channel-logo">TV5
-<li id="a2z" onclick="loadStream('a2z')">
-    <img src="https://i.imgur.com/43nZ2rv.png" alt="A2Z Logo" class="channel-logo">A2Z
-<li id="GmaPinoyTV" onclick="loadStream('GmaPinoyTV')">
-    <img src="https://i.imgur.com/Eo0f51v.png" alt="GMAPINOY Logo" class="channel-logo">GMA Pinoy TV</li>
-<li id="TFC" onclick="loadStream('TFC')">
-    <img src="https://i.imgur.com/zZWj5vn.png" alt="TFC Logo" class="channel-logo">TFC</li>
-<li id="pbo" onclick="loadStream('pbo')">
-    <img src="https://i.imgur.com/buOVATz.png" alt="PBO Logo" class="channel-logo">PBO</li>
-<li id="sarisari" onclick="loadStream('sarisari')">
-    <img src="https://i.imgur.com/MXxN1UO.png" alt="Sari Logo" class="channel-logo">Sari Sari</li>
-<li id="viva" onclick="loadStream('viva')">
-    <img src="https://i.imgur.com/51RWtvd.png" alt="Viva Logo" class="channel-logo">Viva Cinema</li>
-<li id="cinemaone" onclick="loadStream('cinemaone')">
-    <img src="https://i.imgur.com/moSPpuJ.png" alt="Cinema Logo" class="channel-logo">Cinema One</li>
-<li id="cinemo" onclick="loadStream('cinemo')">
-    <img src="https://i.imgur.com/2Jn7QHG.png" alt="Cinemo Logo" class="channel-logo">CineMo!</li>
-<li id="anc" onclick="loadStream('anc')">
-    <img src="https://i.imgur.com/Bcu69bU.png" alt="ANC Logo" class="channel-logo">ANC</li>
-<li id="KapamilyaChannel" onclick="loadStream('KapamilyaChannel')">
-    <img src="https://i.imgur.com/8YT2rMz.png" alt="Kapamilya Logo" class="channel-logo">Kapamilya Online Live</li>
-<li id="GMA" onclick="loadStream('GMA')">
-    <img src="https://i.imgur.com/nMSt2j0.png" alt="GMA Logo" class="channel-logo">GMA Kapuso Stream</li>
-<li id="tvn_movies" onclick="loadStream('tvn_movies')">
-    <img src="https://imgur.com/12f0Qk8.png" alt="TVNMOV Logo" class="channel-logo">TVN Movies Pinoy</li>
-<li id="cg_tagalogmovie" onclick="loadStream('cg_tagalogmovie')">
-    <img src="https://i.imgur.com/6mNCite.png" alt="TMC Logo" class="channel-logo">TMC</li>
-<li id="animax" onclick="loadStream('Animax')">
-    <img src="https://i.imgur.com/iYRTs2n.png" alt="Animax Logo" class="channel-logo">Animax</li>
-<li id="cartoon_net_hd" onclick="loadStream('cartoon_net_hd')">
-    <img src="https://i.imgur.com/R1fV2uY.png" alt="CartoonnetLogo" class="channel-logo">Cartoon Network</li>
-<li id="Cartoonito" onclick="loadStream('Cartoonito')">
-   <img src="https://i.imgur.com/x1wehbs.png" alt="Cartoonito Logo" class="channel-logo">Cartoonito</li>
-<li id="dreamworks_tag" onclick="loadStream('dreamworks_tag')">
-    <img src="https://i.imgur.com/fh1Lg7b.png" alt="dreamtag Logo" class="channel-logo">DreamWorks Tagalized</li>
-<li id="dreamworks_hd" onclick="loadStream('dreamworks_hd')">
-    <img src="https://i.imgur.com/fh1Lg7b.png" alt="dreamhd Logo" class="channel-logo">DreamWorks</li>
-<li id="nickjr" onclick="loadStream('nickjr')">
-    <img src="https://i.imgur.com/nliH2PY.png" alt="nickjr Logo" class="channel-logo">Nick Jr</li>
-<li id="nickelodeon" onclick="loadStream('nickelodeon')">
-    <img src="https://i.imgur.com/tIRSRoR.png" alt="Nick Logo" class="channel-logo">Nickelodeon</li>
-<li id="HBO" onclick="loadStream('HBO')">
-        <img src="https://i.imgur.com/fHBIgs6.png" alt="HBO Logo" class="channel-logo"> HBO
-    </li>
-    <li id="hbo_family" onclick="loadStream('hbo_family')">
-        <img src="https://i.imgur.com/WANpEkc.png" alt="HBO Family Logo" class="channel-logo"> HBO Family
-    </li>
-    <li id="hbo_signature" onclick="loadStream('hbo_signature')">
-        <img src="https://i.imgur.com/Q2ki7HC.png" alt="HBO Signature Logo" class="channel-logo"> HBO Signature
-    </li>
-    <li id="hbo_hits" onclick="loadStream('hbo_hits')">
-        <img src="https://i.imgur.com/iCnfJS0.png" alt="HBO Hits Logo" class="channel-logo"> HBO Hits
-    </li>
-    <li id="cinemax" onclick="loadStream('cinemax')">
-        <img src="https://i.imgur.com/r8qzNiy.png" alt="Cinemax Logo" class="channel-logo"> Cinemax
-    </li>
-    <li id="hits_now" onclick="loadStream('hits_now')">
-        <img src="https://i.imgur.com/S3pNx8G.png" alt="Hits Now Logo" class="channel-logo"> Hits Now
-    </li>
-    <li id="HITS" onclick="loadStream('HITS')">
-        <img src="https://i.imgur.com/jghDgUJ.png" alt="Hits Logo" class="channel-logo"> Hits
-    </li>
-    <li id="HitsMovies" onclick="loadStream('HitsMovies')">
-        <img src="https://i.imgur.com/zzdj40q.png" alt="Hits Movies Logo" class="channel-logo"> Hits Movies
-    </li>
-    <li id="AXN" onclick="loadStream('AXN')">
-        <img src="https://i.imgur.com/Dj6tVaG.png" alt="AXN Logo" class="channel-logo"> AXN
-    </li>
-    <li id="WarnerTV" onclick="loadStream('WarnerTV')">
-        <img src="https://i.imgur.com/vGEL2Ne.png" alt="Warner TV Logo" class="channel-logo"> Warner TV
-    </li>
-    <li id="blueant_extreme" onclick="loadStream('blueant_extreme')">
-        <img src="https://i.imgur.com/PJZmoyW.png" alt="Blue Ant Extreme Logo" class="channel-logo"> Rock Action
-    </li>
-    <li id="rock_entertainment" onclick="loadStream('rock_entertainment')">
-        <img src="https://i.imgur.com/DP36vpY.png" alt="Rock Entertainment Logo" class="channel-logo"> Rock Entertainment
-    </li>
-    <li id="thrill" onclick="loadStream('thrill')">
-        <img src="https://i.imgur.com/Szf7VBM.png" alt="Thrill Logo" class="channel-logo"> Thrill
-    </li>
-    <li id="ibc13" onclick="loadStream('ibc13')">
-        <img src="https://i.imgur.com/Org4yTu.png" alt="IBC13 Logo" class="channel-logo"> IBC13
-    </li>
-    <li id="buko" onclick="loadStream('buko')">
-        <img src="https://i.imgur.com/Wv0K5Yc.png" alt="BUKO Logo" class="channel-logo"> BUKO Channel
-    </li>
-    <li id="KnowledgeChannel" onclick="loadStream('KnowledgeChannel')">
-        <img src="https://i.imgur.com/UIqEr2y.png" alt="Knowledge Channel Logo" class="channel-logo"> Knowledge Channel
-    </li>
-    <li id="bilyonaryoch" onclick="loadStream('bilyonaryoch')">
-        <img src="https://i.imgur.com/Z5ZyJ8c.png" alt="Bilyonaryo Logo" class="channel-logo"> Bilyonaryo Channel
-    </li>
-    <li id="TVUP" onclick="loadStream('TVUP')">
-        <img src="https://i.imgur.com/P0UNHfH.png" alt="TVUP Logo" class="channel-logo"> TVUP
-    </li>
-    <li id="tvmaria" onclick="loadStream('tvmaria')">
-        <img src="https://i.imgur.com/G3kbHMQ.png" alt="tvmaria Logo" class="channel-logo">TV Maria
-    </li>
-    <li id="truefmtv" onclick="loadStream('truefmtv')">
-        <img src="https://i.imgur.com/zPOYiLs.png" alt="True FM TV Logo" class="channel-logo"> True FM TV
-    </li>
-    <li id="teleradyo" onclick="loadStream('teleradyo')">
-        <img src="https://i.imgur.com/G36wUtQ.png" alt="Teleradyo Logo" class="channel-logo"> Teleradyo
-    </li>
-    <li id="MYX" onclick="loadStream('MYX')">
-        <img src="https://i.imgur.com/VkYFPIe.png" alt="MYX Logo" class="channel-logo"> MYX
-    </li>
-    <li id="tvn_plus" onclick="loadStream('tvn_plus')">
-        <img src="https://i.imgur.com/gmM3ncL.png" alt="TVN Logo" class="channel-logo"> TVN
-    </li>
-    <li id="RPTV" onclick="loadStream('RPTV')">
-        <img src="https://i.imgur.com/GjQEEvq.png" alt="RPTV Logo" class="channel-logo"> RPTV
-    </li>
-    <li id="MPTV" onclick="loadStream('MPTV')">
-        <img src="https://i.imgur.com/BMCnoRn.png" alt="MPTV Logo" class="channel-logo"> MPTV
-    </li>
-    <li id="uaap_varsity" onclick="loadStream('uaap_varsity')">
-        <img src="https://i.imgur.com/rifinVV.png" alt="UAAP Varsity Logo" class="channel-logo"> UAAP Varsity
-    </li>
-    <li id="pba_rush_hd" onclick="loadStream('pba_rush_hd')">
-        <img src="https://i.imgur.com/J4QCDLG.png" alt="PBA Rush Logo" class="channel-logo"> PBA Rush
-    </li>
-    <li id="NBAPH" onclick="loadStream('NBAPH')">
-        <img src="https://i.imgur.com/sG7zuX0.png" alt="NBA TV Philippines Logo" class="channel-logo"> NBA TV Philippines
-    </li>
-    <li id="one_sports_plus_hd" onclick="loadStream('one_sports_plus_hd')">
-        <img src="https://i.imgur.com/rKCkaHh.png" alt="One Sports Plus Logo" class="channel-logo"> One Sports Plus
-    </li>
-    <li id="oneph" onclick="loadStream('oneph')">
-        <img src="https://i.imgur.com/syEhuvH.png" alt="One PH Logo" class="channel-logo"> One PH
-    </li>
-    <li id="onesports" onclick="loadStream('onesports')">
-        <img src="https://i.imgur.com/iyBXXpU.png" alt="One Sports Logo" class="channel-logo"> One Sports
-    </li>
-    <li id="onenews_hd" onclick="loadStream('onenews_hd')">
-        <img src="https://i.imgur.com/bpRiu54.png" alt="One News Logo" class="channel-logo"> One News
-    </li>
-    <li id="ptv4" onclick="loadStream('ptv4')">
-        <img src="https://i.imgur.com/Ktl7qZt.png" alt="PTV4 Logo" class="channel-logo"> PTV4
-    </li>
-    <li id="taptv" onclick="loadStream('taptv')">
-        <img src="https://i.imgur.com/KJaSftF.png" alt="TAP TV Logo" class="channel-logo"> TAP TV
-    </li>
-    <li id="tap_edge" onclick="loadStream('tap_edge')">
-        <img src="https://i.imgur.com/EKt9NGv.png" alt="TAP Edge Logo" class="channel-logo"> TAP Edge
-    </li>
-    <li id="tap_sports" onclick="loadStream('tap_sports')">
-        <img src="https://i.imgur.com/EEDMg6S.png" alt="TAP Sports Logo" class="channel-logo"> TAP Sports
-    </li>
-    <li id="TapMovies" onclick="loadStream('TapMovies')">
-        <img src="https://i.imgur.com/5mRcvMS.png" alt="Tap Movies Logo" class="channel-logo"> Tap Movies
-    </li>
-    <li id="tapactionflix_hd" onclick="loadStream('tapactionflix_hd')">
-        <img src="https://i.imgur.com/70wmIdp.png" alt="Tap Action Flix Logo" class="channel-logo"> Tap Action Flix
-    </li>
-    <li id="cctv4" onclick="loadStream('cctv4')">
-        <img src="https://i.imgur.com/siVwIW8.png" alt="CCTV4 Logo" class="channel-logo"> CCTV4
-    </li>
-    <li id="arirang" onclick="loadStream('arirang')">
-        <img src="https://i.imgur.com/say6vAQ.png" alt="Arirang Logo" class="channel-logo"> Arirang Korea
-    </li>
-    <li id="bbcearth_hd" onclick="loadStream('bbcearth_hd')">
-        <img src="https://i.imgur.com/TE9MEV1.png" alt="BBC Earth Logo" class="channel-logo"> BBC Earth
-    </li>
-    <li id="discovery" onclick="loadStream('discovery')">
-        <img src="https://i.imgur.com/xk1u2TS.png" alt="Discovery Logo" class="channel-logo"> Discovery Channel
-    </li>
-    <li id="kbs_world" onclick="loadStream('kbs_world')">
-        <img src="https://i.imgur.com/H2IWDLJ.png" alt="KBS World Logo" class="channel-logo"> KBS World
-    </li>
-    <li id="kix_hd" onclick="loadStream('kix_hd')">
-        <img src="https://i.imgur.com/B8Fmzer.png" alt="Kix HD Logo" class="channel-logo"> Kix
-    </li>
-    <li id="lifetime" onclick="loadStream('lifetime')">
-        <img src="https://i.imgur.com/iHplX00.png" alt="Lifetime Logo" class="channel-logo"> Lifetime
-    </li>
-    <li id="hgtv_hd" onclick="loadStream('hgtv_hd')">
-        <img src="https://i.imgur.com/E7uzV5q.png" alt="HGTV HD Logo" class="channel-logo"> HGTV
-    </li>
-    <li id="asianfoodnetwork" onclick="loadStream('asianfoodnetwork')">
-        <img src="https://i.imgur.com/O5jBcL2.png" alt="Asian Food Network Logo" class="channel-logo"> Asian Food Network
-    </li>
-    <li id="travel_channel" onclick="loadStream('travel_channel')">
-        <img src="https://i.imgur.com/sojhfxX.png" alt="Travel Channel Logo" class="channel-logo"> Travel Channel
-    </li>
-    <li id="crime_investigation" onclick="loadStream('crime_investigation')">
-        <img src="https://i.imgur.com/GowLsrU.png" alt="Crime & Investigation Logo" class="channel-logo"> Crime Investigation
-    </li>
-    <li id="tech_storm" onclick="loadStream('tech_storm')">
-        <img src="https://i.imgur.com/yt8UxLj.png" alt="Tech Storm Logo" class="channel-logo"> Tech Storm
-    </li>
-    <li id="aljazeera" onclick="loadStream('aljazeera')">
-        <img src="https://i.imgur.com/3n9d0wO.png" alt="Al Jazeera Logo" class="channel-logo"> Al Jazeera
-    </li>
-    <li id="bbcworld_news" onclick="loadStream('bbcworld_news')">
-        <img src="https://i.imgur.com/onQ2oxw.png" alt="BBC World News Logo" class="channel-logo"> BBC World News
-    </li>
-    <li id="channelnews_asia" onclick="loadStream('channelnews_asia')">
-        <img src="https://i.imgur.com/NWP3n1k.png" alt="Channel News Asia Logo" class="channel-logo"> CNA
-    </li>
-    <li id="abc_australia" onclick="loadStream('abc_australia')">
-        <img src="https://i.imgur.com/qQ33TVM.png" alt="ABC Australia Logo" class="channel-logo"> ABC Australia
-    </li>
-    <li id="SPOTV_HD" onclick="loadStream('SPOTV_HD')">
-        <img src="https://i.imgur.com/rAY5j3t.png" alt="SPOTV Logo" class="channel-logo"> SPOTV
-    </li>
-    <li id="SPOTV_HD2" onclick="loadStream('SPOTV_HD2')">
-        <img src="https://i.imgur.com/GTwZ19i.png" alt="SPOTV 2 Logo" class="channel-logo"> SPOTV2
-    </li>
-    <li id="premiersports_hd" onclick="loadStream('premiersports_hd')">
-        <img src="https://i.imgur.com/dBmvkdJ.png" alt="Premier Sports Logo" class="channel-logo"> Premier Sports
-    </li>
-    <li id="premier_tennishd" onclick="loadStream('premier_tennishd')">
-        <img src="https://i.imgur.com/xX9NPje.png" alt="Premier Sports 2 Logo" class="channel-logo"> Premier Sports 2
-    </li>
-    <li id="EUROSPORTS" onclick="loadStream('EUROSPORTS')">
-        <img src="https://i.imgur.com/gY1eLYC.png" alt="Eurosports Logo" class="channel-logo"> Eurosports
-    </li>
-    <li id="foodnetwork_hd" onclick="loadStream('foodnetwork_hd')">
-        <img src="https://i.imgur.com/EXC1yRz.png" alt="Food Network Logo" class="channel-logo"> Food Network
-    </li>
-    <li id="depedchannel" onclick="loadStream('depedchannel')">
-        <img src="https://i.imgur.com/TyFFBWn.png" alt="DepEd Channel Logo" class="channel-logo"> DepEd Channel
-    </li>
-    <li id="history_hd" onclick="loadStream('history_hd')">
-        <img src="https://i.imgur.com/BkoC446.png" alt="History HD Logo" class="channel-logo"> History
-    </li>
-    <li id="animal_planet" onclick="loadStream('animal_planet')">
-        <img src="https://i.imgur.com/1NcoovM.png" alt="Animal Planet Logo" class="channel-logo"> Animal Planet
-    </li>
-    <li id="fashiontv_hd" onclick="loadStream('fashiontv_hd')">
-        <img src="https://i.imgur.com/wzjqyZE.png" alt="Fashion TV HD Logo" class="channel-logo"> Fashion TV
-    </li>
-    <li id="bloomberg" onclick="loadStream('bloomberg')">
-        <img src="https://i.imgur.com/pl4w2NN.png" alt="Bloomberg Logo" class="channel-logo"> Bloomberg
-    </li>
-    <li id="test" onclick="loadStream('test')">
-        <img src="https://i.imgur.com/pl4w2NN.png" alt="Bloomberg Logo" class="channel-logo">test
-    </li>
-        </ul>
-        <div class="footer-text">
-            This IPTV APP was created by <a href="https://www.facebook.com/gabriel.totanes" target="_blank">GABRIEL</a> and this is for free
-        </div>
+  <div id="wrapper">
+    <div id="video-container">
+      <div id="menu-button" onclick="toggleMenu()">☰</div>
+      <div id="fullscreen-button" onclick="toggleFullscreen()">⛶</div>
+      <div id="channel-menu">
+        <h2>Channel List</h2>
+        <div id="channel-buttons"></div>
+        <p>This app was created by Gabriel and this is for free!</p>
+      </div>
+      <iframe id="youtube-video" style="display:none;" allowfullscreen></iframe>
+      <video id="video" controls autoplay></video>
     </div>
+  </div>
 
-    <!-- Player Container -->
-    <div class="player-container">
-        <div id="player"></div>
-    </div>
-</
+  <script>
+    const activationCode = '2024';
 
-    
+    function requestActivation() {
+      const userCode = prompt('Please enter the activation code:');
+      if (userCode !== activationCode) {
+        alert('Incorrect activation code. Access denied.');
+        document.body.innerHTML = '<h1>Access Denied</h1>';
+      } else {
+        initializePlayer();
+      }
+    }
+
+    const streams = [
+      {
+        name: 'TV5',
+        logo: 'https://i.imgur.com/Ddyfzrn.png',
+        type: 'mpegdash',
+        manifestUri: 'https://qp-pldt-live-grp-02-prod.akamaized.net/out/u/tv5_hd.mpd',
+        clearKey: { '2615129ef2c846a9bbd43a641c7303ef': '07c7f996b1734ea288641a68e1cfdc4d' }
+      },
+      {
+        name: 'A2Z',
+        logo: 'https://i.imgur.com/43nZ2rv.png',
+        type: 'mpegdash',
+        manifestUri: 'https://qp-pldt-live-grp-02-prod.akamaized.net/out/u/cg_a2z.mpd',
+        clearKey: { 'f703e4c8ec9041eeb5028ab4248fa094': 'c22f2162e176eee6273a5d0b68d19530' }
+      },
+       {
+        name: 'Kapamilya Online Live',
+        logo: 'https://i.imgur.com/8YT2rMz.png',
+        type: 'youtube',
+        embedUrl: 'https://www.youtube.com/embed/vC5Wu78HcFQ?autoplay=1&mute=0'
+      },
+       {
+        name: 'GMA Kapuso Stream',
+        logo: 'https://i.imgur.com/nMSt2j0.png',
+        type: 'youtube',
+        embedUrl: 'https://www.youtube.com/embed/yakDKpdSHkQ?autoplay=1&mute=0'
+      },
+      {
+        name: 'GMA Pinoy TV',
+        logo: 'https://i.imgur.com/Eo0f51v.png',
+        type: 'mpegdash',
+        manifestUri: 'https://cdn-uw2-prod.tsv2.amagi.tv/linear/amg01006-abs-cbn-abscbn-gma-x7-dash-abscbnono/7c693236-e0c1-40a3-8bd0-bb25e43f5bfc/index.mpd',
+        clearKey: { 'c95ed4c44b0b4f7fa1c6ebbbbaab21a1': '47635b8e885e19f2ccbdff078c207058' }
+      },
+      {
+        name: 'TFC',
+        logo: 'https://i.imgur.com/zZWj5vn.png',
+        type: 'mpegdash',
+        manifestUri: 'https://cdn-ue1-prod.tsv2.amagi.tv/linear/amg01006-abs-cbn-tfcasia-dash-abscbnono/7045bc3c-9492-42d4-974e-a3b217776e57/index.mpd',
+        clearKey: { '9568cc84e1d944f38eac304517eab6fd': 'f12142af8f39b3bab79d3679d3665ebe' }
+      },
+      {
+        name: 'PBO',
+        logo: 'https://i.imgur.com/buOVATz.png',
+        type: 'mpegdash',
+        manifestUri: 'https://qp-pldt-live-grp-04-prod.akamaized.net/out/u/pbo_sd.mpd',
+        clearKey: { 'dcbdaaa6662d4188bdf97f9f0ca5e830': '31e752b441bd2972f2b98a4b1bc1c7a1' }
+      },
+      {
+        name: 'Sari-Sari',
+        logo: 'https://i.imgur.com/MXxN1UO.png',
+        type: 'mpegdash',
+        manifestUri: 'https://qp-pldt-live-grp-06-prod.akamaized.net/out/u/cg_sari_sari_sd.mpd',
+        clearKey: { '0a7ab3612f434335aa6e895016d8cd2d': 'b21654621230ae21714a5cab52daeb9d' }
+      },
+      {
+        name: 'Viva Cinema',
+        logo: 'https://i.imgur.com/51RWtvd.png',
+        type: 'mpegdash',
+        manifestUri: 'https://qp-pldt-live-grp-06-prod.akamaized.net/out/u/viva_sd.mpd',
+        clearKey: { '07aa813bf2c147748046edd930f7736e': '3bd6688b8b44e96201e753224adfc8fb' }
+      },
+      {
+        name: 'Cinema One',
+        logo: 'https://i.imgur.com/moSPpuJ.png',
+        type: 'hls',
+        manifestUri: 'https://cinemaone-abscbn-ono.amagi.tv/index.m3u8'
+      },
+      {
+        name: 'Cinemo',
+        logo: 'https://i.imgur.com/2Jn7QHG.png',
+        type: 'hls',
+        manifestUri: 'https://cinemo-abscbn-ono.amagi.tv/playlist.m3u8'
+      },
+      {
+        name: 'ANC',
+        logo: 'https://i.imgur.com/Bcu69bU.png',
+        type: 'mpegdash',
+        manifestUri: 'https://cdn-ue1-prod.tsv2.amagi.tv/linear/amg01006-abs-cbn-anc-global-dash-abscbnono/index.mpd',
+        clearKey: { '4bbdc78024a54662854b412d01fafa16': '6039ec9b213aca913821677a28bd78ae' }
+      },
+      {
+        name: 'TVN Movies Pinoy',
+        logo: 'https://imgur.com/12f0Qk8.png',
+        type: 'mpegdash',
+        manifestUri: 'https://qp-pldt-live-grp-07-prod.akamaized.net/out/u/cg_tvnmovie.mpd',
+        clearKey: { '2e53f8d8a5e94bca8f9a1e16ce67df33': '3471b2464b5c7b033a03bb8307d9fa35' }
+      },
+  {
+        name: 'TMC',
+        logo: 'https://i.imgur.com/6mNCite.png',
+        type: 'mpegdash',
+        manifestUri: 'https://qp-pldt-live-grp-07-prod.akamaized.net/out/u/cg_tagalogmovie.mpd',
+        clearKey: { '96701d297d1241e492d41c397631d857': 'ca2931211c1a261f082a3a2c4fd9f91b' }
+      },
+{
+        name: 'Animax',
+        logo: 'https://i.imgur.com/iYRTs2n.png',
+        type: 'mpegdash',
+        manifestUri: 'https://tglmp01.akamaized.net/out/v1/de55fad9216e4fe7ad8d2eed456ba1ec/manifest.mpd',
+        clearKey: { 'edf1a715de9748638dd2fad75a419af2': '2f5a3199b26e9b693ae881af7ff864cf' }
+      },
+{
+        name: 'Cartoon Network',
+        logo: 'https://i.imgur.com/R1fV2uY.png',
+        type: 'mpegdash',
+        manifestUri: 'https://qp-pldt-live-grp-12-prod.akamaized.net/out/u/dr_cartoonnetworkhd.mpd',
+        clearKey: { 'a2d1f552ff9541558b3296b5a932136b': 'cdd48fa884dc0c3a3f85aeebca13d444' }
+      },
+{
+        name: 'Cartoonito',
+        logo: 'https://i.imgur.com/x1wehbs.png',
+        type: 'mpegdash',
+        manifestUri: 'https://atemecdnbalancer-voe.sysln.id/live/eds/CartoonitoHD/mpd/CartoonitoHD.mpd',
+        clearKey: { '955574ee2b674f0fbbad818fb384c233': '51d2893619bdd062fb4c0cdaafefbf27' }
+      },
+      {
+        name: 'Disney Channel',
+        logo: 'https://i.imgur.com/NVRbZfJ.png',
+        type: 'hls',
+        manifestUri: 'https://disney-channel.13l.link/live/Disney/index.m3u8'
+      },
+{
+        name: 'DreamWorks Tagalized',
+        logo: 'https://i.imgur.com/fh1Lg7b.png',
+        type: 'mpegdash',
+        manifestUri: 'https://qp-pldt-live-grp-07-prod.akamaized.net/out/u/cg_dreamworktag.mpd',
+        clearKey: { '564b3b1c781043c19242c66e348699c5': 'd3ad27d7fe1f14fb1a2cd5688549fbab' }
+      },
+{
+        name: 'DreamWorks',
+        logo: 'https://i.imgur.com/fh1Lg7b.png',
+        type: 'mpegdash',
+        manifestUri: 'https://qp-pldt-live-grp-02-prod.akamaized.net/out/u/cg_dreamworks_hd1.mpd',
+        clearKey: { '4ab9645a2a0a47edbd65e8479c2b9669': '8cb209f1828431ce9b50b593d1f44079' }
+      },
+      {
+        name: 'PBS',
+        logo: 'https://imgur.com/RNtLJ3S.png',
+        type: 'hls',
+        manifestUri: 'https://2-fss-2.streamhoster.com/pl_140/amlst:200914-1298290/chunklist_b2000000.m3u8'
+      },
+{
+        name: 'Moonbug Kids',
+        logo: 'https://i.imgur.com/H5Ha3ll.png',
+        type: 'mpegdash',
+        manifestUri: 'https://qp-pldt-live-grp-06-prod.akamaized.net/out/u/cg_moonbug_kids_sd.mpd',
+        clearKey: { '0bf00921bec94a65a124fba1ef52b1cd': '0f1488487cbe05e2badc3db53ae0f29f' }
+      },
+  {
+        name: 'Nickelodeon',
+        logo: 'https://i.imgur.com/tIRSRoR.png',
+        type: 'mpegdash',
+        manifestUri: 'https://linearjitp-playback.astro.com.my/dash-wv/linear/2511/default_primary.mpd',
+        clearKey: { 'd8520e96a1283ab6e5be538474bfa810': 'bda5f7bbc1e44096f779a0619fe9881f' }
+      },
+{
+        name: 'Nick Jr',
+        logo: 'https://i.imgur.com/nliH2PY.png',
+        type: 'mpegdash',
+        manifestUri: 'https://linearjitp-playback.astro.com.my/dash-wv/linear/9982/default_primary.mpd',
+        clearKey: { 'fa65220c9f76e424173899df533a6d10': 'b4abbee95b69b3e80a0d141272c870db' }
+      },
+{
+        name: 'HBO',
+        logo: 'https://i.imgur.com/fHBIgs6.png',
+        type: 'mpegdash',
+        manifestUri: 'https://qp-pldt-live-grp-03-prod.akamaized.net/out/u/cg_hbohd.mpd',
+        clearKey: { 'd47ebabf7a21430b83a8c4b82d9ef6b1': '54c213b2b5f885f1e0290ee4131d425b' }
+      },
+{
+        name: 'HBO Family',
+        logo: 'https://i.imgur.com/WANpEkc.png',
+        type: 'mpegdash',
+        manifestUri: 'https://qp-pldt-live-grp-03-prod.akamaized.net/out/u/cg_hbofam.mpd',
+        clearKey: { '872910c843294319800d85f9a0940607': 'f79fd895b79c590708cf5e8b5c6263be' }
+      },
+{
+        name: 'HBO Signature',
+        logo: 'https://i.imgur.com/Q2ki7HC.png',
+        type: 'mpegdash',
+        manifestUri: 'https://qp-pldt-live-grp-01-prod.akamaized.net/out/u/cg_hbosign.mpd',
+        clearKey: { 'a06ca6c275744151895762e0346380f5': '559da1b63eec77b5a942018f14d3f56f' }
+      },
+{
+        name: 'HBO Hits',
+        logo: 'https://i.imgur.com/iCnfJS0.png',
+        type: 'mpegdash',
+        manifestUri: 'https://qp-pldt-live-grp-09-prod.akamaized.net/out/u/cg_hbohits.mpd',
+        clearKey: { 'b04ae8017b5b4601a5a0c9060f6d5b7d': 'a8795f3bdb8a4778b7e888ee484cc7a1' }
+      },
+{
+        name: 'Cinemax',
+        logo: 'https://i.imgur.com/r8qzNiy.png',
+        type: 'mpegdash',
+        manifestUri: 'https://qp-pldt-live-grp-01-prod.akamaized.net/out/u/cg_cinemax.mpd',
+        clearKey: { 'b207c44332844523a3a3b0469e5652d7': 'fe71aea346db08f8c6fbf0592209f955' }
+      },
+{
+        name: 'Hits Now',
+        logo: 'https://i.imgur.com/S3pNx8G.png',
+        type: 'mpegdash',
+        manifestUri: 'https://qp-pldt-live-grp-09-prod.akamaized.net/out/u/cg_hitsnow.mpd',
+        clearKey: { '14439a1b7afc4527bb0ebc51cf11cbc1': '92b0287c7042f271b266cc11ab7541f1' }
+      },
+  {
+        name: 'Hits',
+        logo: 'https://i.imgur.com/jghDgUJ.png',
+        type: 'mpegdash',
+        manifestUri: 'https://qp-pldt-live-grp-04-prod.akamaized.net/out/u/hits_hd1.mpd',
+        clearKey: { 'dac605bc197e442c93f4f08595a95100': '975e27ffc1b7949721ee3ccb4b7fd3e5' }
+      },
+{
+        name: 'Hits Movies',
+        logo: 'https://i.imgur.com/zzdj40q.png',
+        type: 'mpegdash',
+        manifestUri: 'https://qp-pldt-live-grp-12-prod.akamaized.net/out/u/dr_hitsmovies.mpd',
+        clearKey: { 'f56b57b32d7e4b2cb21748c0b56761a7': '3df06a89aa01b32655a77d93e09e266f' }
+      },
+{
+        name: 'AXN',
+        logo: 'https://i.imgur.com/Dj6tVaG.png',
+        type: 'mpegdash',
+        manifestUri: 'https://qp-pldt-live-grp-06-prod.akamaized.net/out/u/cg_axn_sd.mpd',
+        clearKey: { 'fd5d928f5d974ca4983f6e9295dfe410': '3aaa001ddc142fedbb9d5557be43792f' }
+      },
+{
+        name: 'Warner TV',
+        logo: 'https://i.imgur.com/vGEL2Ne.png',
+        type: 'mpegdash',
+        manifestUri: 'https://qp-pldt-live-grp-11-prod.akamaized.net/out/u/dr_warnertvhd.mpd',
+        clearKey: { '4503cf86bca3494ab95a77ed913619a0': 'afc9c8f627fb3fb255dee8e3b0fe1d71' }
+      },
+{
+        name: 'Rock Action',
+        logo: 'https://i.imgur.com/PJZmoyW.png',
+        type: 'mpegdash',
+        manifestUri: 'https://tglmp04.akamaized.net/out/v1/421a3cd3bdcd492f8f4b5efb2363ed2c/manifest.mpd',
+        clearKey: { '2341c2ecd3cf4865881bb0fa1287de8f': 'ad45202e64f66ef36b3f60fac93cc47f' }
+      },
+{
+        name: 'Rock Entertainment',
+        logo: 'https://i.imgur.com/DP36vpY.png',
+        type: 'mpegdash',
+        manifestUri: 'https://tglmp02.akamaized.net/out/v1/621a7089e63144e4be7891cd9bfb10e2/manifest.mpd',
+        clearKey: { '9229814c629b406f8de98d2f23c968a0': '40b9f250455b43b3b2ea6845ab81abca' }
+      },
+{
+        name: 'Thrill',
+        logo: 'https://i.imgur.com/Szf7VBM.png',
+        type: 'mpegdash',
+        manifestUri: 'https://qp-pldt-live-grp-06-prod.akamaized.net/out/u/cg_thrill_sd.mpd',
+        clearKey: { '928114ffb2394d14b5585258f70ed183': 'a82edc340bc73447bac16cdfed0a4c62' }
+      },
+{
+        name: 'Lotus Macau',
+        logo: 'https://i.imgur.com/sKfzEuf.png',
+        type: 'mpegdash',
+        manifestUri: 'https://qp-pldt-live-grp-07-prod.akamaized.net/out/u/lotusmacau_prd.mpd',
+        clearKey: { '60dc692e64ea443a8fb5ac186c865a9b': '01bdbe22d59b2a4504b53adc2f606cc1' }
+      },
+{
+        name: 'IBC13',
+        logo: 'https://i.imgur.com/Org4yTu.png',
+        type: 'mpegdash',
+        manifestUri: 'https://qp-pldt-live-grp-07-prod.akamaized.net/out/u/ibc13_sd.mpd',
+        clearKey: { '04e292bc99bd4ccba89e778651914254': 'ff0a62bdf8920ce453fe680330b563a5' }
+      },
+{
+        name: 'PTV4',
+        logo: 'https://i.imgur.com/Ktl7qZt.png',
+        type: 'mpegdash',
+        manifestUri: 'https://qp-pldt-live-grp-02-prod.akamaized.net/out/u/cg_ptv4_sd.mpd',
+        clearKey: { '71a130a851b9484bb47141c8966fb4a3': 'ad1f003b4f0b31b75ea4593844435600' }
+      },
+{
+        name: 'DepEd Channel',
+        logo: 'https://i.imgur.com/TyFFBWn.png',
+        type: 'mpegdash',
+        manifestUri: 'https://qp-pldt-live-grp-07-prod.akamaized.net/out/u/depedch_sd.mpd',
+        clearKey: { '0f853706412b11edb8780242ac120002': '2157d6529d80a760f60a8b5350dbc4df' }
+      },
+{
+        name: 'Buko Channel',
+        logo: 'https://i.imgur.com/Wv0K5Yc.png',
+        type: 'mpegdash',
+        manifestUri: 'https://qp-pldt-live-grp-06-prod.akamaized.net/out/u/cg_buko_sd.mpd',
+        clearKey: { 'd273c085f2ab4a248e7bfc375229007d': '7932354c3a84f7fc1b80efa6bcea0615' }
+      },
+{
+        name: 'Knowledge Channel',
+        logo: 'https://i.imgur.com/UIqEr2y.png',
+        type: 'mpegdash',
+        manifestUri: 'https://qp-pldt-live-grp-13-prod.akamaized.net/out/u/dr_knowledgechannel.mpd',
+        clearKey: { '0f856fa0412b11edb8780242ac120002': '783374273ef97ad3bc992c1d63e091e7' }
+      },
+{
+        name: 'Bilyonaryo Channel',
+        logo: 'https://i.imgur.com/Z5ZyJ8c.png',
+        type: 'mpegdash',
+        manifestUri: 'https://qp-pldt-live-grp-05-prod.akamaized.net/out/u/bilyonaryoch.mpd',
+        clearKey: { '227ffaf09bec4a889e0e0988704d52a2': 'b2d0dce5c486891997c1c92ddaca2cd2' }
+      },
+{
+        name: 'TVUP',
+        logo: 'https://i.imgur.com/P0UNHfH.png',
+        type: 'mpegdash',
+        manifestUri: 'https://qp-pldt-live-grp-09-prod.akamaized.net/out/u/tvup_prd.mpd',
+        clearKey: { '83e813ccd4ca4837afd611037af02f63': 'a97c515dbcb5dcbc432bbd09d15afd41' }
+      },
+{
+        name: 'TV Maria',
+        logo: 'https://i.imgur.com/G3kbHMQ.png',
+        type: 'mpegdash',
+        manifestUri: 'https://qp-pldt-live-grp-07-prod.akamaized.net/out/u/tvmaria_prd.mpd',
+        clearKey: { 'fa3998b9a4de40659725ebc5151250d6': '998f1294b122bbf1a96c1ddc0cbb229f' }
+      },
+{
+        name: 'True FM TV',
+        logo: 'https://i.imgur.com/zPOYiLs.png',
+        type: 'mpegdash',
+        manifestUri: 'https://qp-pldt-live-grp-08-prod.akamaized.net/out/u/truefm_tv.mpd',
+        clearKey: { '0559c95496d44fadb94105b9176c3579': '40d8bb2a46ffd03540e0c6210ece57ce' }
+      },
+{
+        name: 'Teleradyo',
+        logo: 'https://i.imgur.com/G36wUtQ.png',
+        type: 'mpegdash',
+        manifestUri: 'https://cdn-ue1-prod.tsv2.amagi.tv/linear/amg01006-abs-cbn-teleradyo-dash-abscbnono/index.mpd',
+        clearKey: { '47c093e0c9fd4f80839a0337da3dd876': '50547394045b3d047dc7d92f57b5fb33' }
+      },
+{
+        name: 'MYX',
+        logo: 'https://i.imgur.com/VkYFPIe.png',
+        type: 'hls',
+        manifestUri: 'https://myxnola-abscbn-ono.amagi.tv/index.m3u8'
+      },
+{
+        name: 'TVN',
+        logo: 'https://i.imgur.com/gmM3ncL.png',
+        type: 'mpegdash',
+        manifestUri: 'https://qp-pldt-live-grp-09-prod.akamaized.net/out/u/cg_tvnpre.mpd',
+        clearKey: { 'e1bde543e8a140b38d3f84ace746553e': 'b712c4ec307300043333a6899a402c10' }
+      },
+{
+        name: 'RPTV',
+        logo: 'https://i.imgur.com/GjQEEvq.png',
+        type: 'mpegdash',
+        manifestUri: 'https://qp-pldt-live-grp-03-prod.akamaized.net/out/u/cnn_rptv_prod_hd.mpd',
+        clearKey: { '1917f4caf2364e6d9b1507326a85ead6': 'a1340a251a5aa63a9b0ea5d9d7f67595' }
+      },
+{
+        name: 'MPTV',
+        logo: 'https://i.imgur.com/BMCnoRn.png',
+        type: 'mpegdash',
+        manifestUri: 'https://qp-pldt-live-grp-09-prod.akamaized.net/out/u/cg_mptv.mpd',
+        clearKey: { '6aab8f40536f4ea98e7c97b8f3aa7d4e': '139aa5a55ade471faaddacc4f4de8807' }
+      },
+{
+        name: 'UAAP Varsity',
+        logo: 'https://i.imgur.com/rifinVV.png',
+        type: 'mpegdash',
+        manifestUri: 'https://qp-pldt-live-grp-04-prod.akamaized.net/out/u/cg_uaap_cplay_sd.mpd',
+        clearKey: { '95588338ee37423e99358a6d431324b9': '6e0f50a12f36599a55073868f814e81e' }
+      },
+{
+        name: 'PBA Rush',
+        logo: 'https://i.imgur.com/J4QCDLG.png',
+        type: 'mpegdash',
+        manifestUri: 'https://qp-pldt-live-grp-01-prod.akamaized.net/out/u/cg_pbarush_hd1.mpd',
+        clearKey: { '76dc29dd87a244aeab9e8b7c5da1e5f3': '95b2f2ffd4e14073620506213b62ac82' }
+      },
+{
+        name: 'NBA TV Philippines',
+        logo: 'https://i.imgur.com/sG7zuX0.png',
+        type: 'mpegdash',
+        manifestUri: 'https://qp-pldt-live-grp-02-prod.akamaized.net/out/u/pl_nba.mpd',
+        clearKey: { 'f36eed9e95f140fabbc88a08abbeafff': '0125600d0eb13359c28bdab4a2ebe75a' }
+      },
+{
+        name: 'One Sports Plus',
+        logo: 'https://i.imgur.com/rKCkaHh.png',
+        type: 'mpegdash',
+        manifestUri: 'https://qp-pldt-live-grp-03-prod.akamaized.net/out/u/cg_onesportsplus_hd1.mpd',
+        clearKey: { '322d06e9326f4753a7ec0908030c13d8': '1e3e0ca32d421fbfec86feced0efefda' }
+      },
+{
+        name: 'One PH',
+        logo: 'https://i.imgur.com/syEhuvH.png',
+        type: 'mpegdash',
+        manifestUri: 'https://qp-pldt-live-grp-04-prod.akamaized.net/out/u/oneph_sd.mpd',
+        clearKey: { '92834ab4a7e1499b90886c5d49220e46': 'a7108d9a6cfcc1b7939eb111daf09ab3' }
+      },
+{
+        name: 'One Sports',
+        logo: 'https://i.imgur.com/iyBXXpU.png',
+        type: 'mpegdash',
+        manifestUri: 'https://qp-pldt-live-grp-07-prod.akamaized.net/out/u/cg_onesports_hd.mpd',
+        clearKey: { '53c3bf2eba574f639aa21f2d4409ff11': '3de28411cf08a64ea935b9578f6d0edd' }
+      },
+{
+        name: 'One News',
+        logo: 'https://i.imgur.com/bpRiu54.png',
+        type: 'mpegdash',
+        manifestUri: 'https://qp-pldt-live-grp-04-prod.akamaized.net/out/u/onenews_hd1.mpd',
+        clearKey: { 'd39eb201ae494a0b98583df4d110e8dd': '6797066880d344422abd3f5eda41f45f' }
+      },
+{
+        name: 'TAP TV',
+        logo: 'https://i.imgur.com/KJaSftF.png',
+        type: 'mpegdash',
+        manifestUri: 'https://qp-pldt-live-grp-06-prod.akamaized.net/out/u/cg_taptv_sd.mpd',
+        clearKey: { 'f6804251e90b4966889b7df94fdc621e': '55c3c014f2bd12d6bd62349658f24566' }
+      },
+{
+        name: 'Tap Edge',
+        logo: 'https://i.imgur.com/EKt9NGv.png',
+        type: 'mpegdash',
+        manifestUri: 'https://qp-pldt-live-grp-12-prod.akamaized.net/out/u/dr_tapedge.mpd',
+        clearKey: { '0f854034412b11edb8780242ac120002': 'af8ad1c5e3f2e1b751a4f64608f24275' }
+      },
+{
+        name: 'Tap Sports',
+        logo: 'https://i.imgur.com/EEDMg6S.png',
+        type: 'mpegdash',
+        manifestUri: 'https://qp-pldt-live-grp-11-prod.akamaized.net/out/u/dr_tapsports.mpd',
+        clearKey: { 'eabd2d95c89e42f2b0b0b40ce4179ea0': '0e7e35a07e2c12822316c0dc4873903f' }
+      },
+{
+        name: 'Tap Movies',
+        logo: 'https://i.imgur.com/5mRcvMS.png',
+        type: 'mpegdash',
+        manifestUri: 'https://qp-pldt-live-grp-13-prod.akamaized.net/out/u/dr_popupppvhd.mpd',
+        clearKey: { '286e1c2d622c4c73b5c3d72e4a848abd': 'b7fad67599c1ce3c2fbc9d02b901be05' }
+      },
+{
+        name: 'Tap Action Flix',
+        logo: 'https://i.imgur.com/70wmIdp.png',
+        type: 'mpegdash',
+        manifestUri: 'https://qp-pldt-live-grp-06-prod.akamaized.net/out/u/cg_tapactionflix_hd1.mpd',
+        clearKey: { 'bee1066160c0424696d9bf99ca0645e3': 'f5b72bf3b89b9848de5616f37de040b7' }
+      },
+{
+        name: 'CCTV4',
+        logo: 'https://i.imgur.com/siVwIW8.png',
+        type: 'mpegdash',
+        manifestUri: 'https://qp-pldt-live-grp-12-prod.akamaized.net/out/u/dr_cctv4.mpd',
+        clearKey: { 'b83566836c0d4216b7107bd7b8399366': '32d50635bfd05fbf8189a0e3f6c8db09' }
+      },
+{
+        name: 'Arirang Korea',
+        logo: 'https://i.imgur.com/say6vAQ.png',
+        type: 'mpegdash',
+        manifestUri: 'https://qp-pldt-live-grp-01-prod.akamaized.net/out/u/arirang_sd.mpd',
+        clearKey: { '13815d0fa026441ea7662b0c9de00bcf': '2d99a55743677c3879a068dd9c92f824' }
+      },
+{
+        name: 'BBC Earth',
+        logo: 'https://i.imgur.com/TE9MEV1.png',
+        type: 'mpegdash',
+        manifestUri: 'https://qp-pldt-live-grp-03-prod.akamaized.net/out/u/cg_bbcearth_hd1.mpd',
+        clearKey: { '34ce95b60c424e169619816c5181aded': '0e2a2117d705613542618f58bf26fc8e' }
+      },
+{
+        name: 'Discovery Channel',
+        logo: 'https://i.imgur.com/xk1u2TS.png',
+        type: 'mpegdash',
+        manifestUri: 'https://qp-pldt-live-grp-13-prod.akamaized.net/out/u/dr_discovery.mpd',
+        clearKey: { 'd9ac48f5131641a789328257e778ad3a': 'b6e67c37239901980c6e37e0607ceee6' }
+      },
+{
+        name: 'KBS World',
+        logo: 'https://i.imgur.com/H2IWDLJ.png',
+        type: 'mpegdash',
+        manifestUri: 'https://qp-pldt-live-grp-12-prod.akamaized.net/out/u/dr_kbsworld.mpd',
+        clearKey: { '22ff2347107e4871aa423bea9c2bd363': 'c6e7ba2f48b3a3b8269e8bc360e60404' }
+      },
+{
+        name: 'Kix',
+        logo: 'https://i.imgur.com/B8Fmzer.png',
+        type: 'mpegdash',
+        manifestUri: 'https://qp-pldt-live-grp-06-prod.akamaized.net/out/u/kix_hd1.mpd',
+        clearKey: { 'a8d5712967cd495ca80fdc425bc61d6b': 'f248c29525ed4c40cc39baeee9634735' }
+      },
+{
+        name: 'Lifetime',
+        logo: 'https://i.imgur.com/iHplX00.png',
+        type: 'mpegdash',
+        manifestUri: 'https://qp-pldt-live-grp-11-prod.akamaized.net/out/u/dr_lifetime.mpd',
+        clearKey: { 'cf861d26e7834166807c324d57df5119': '64a81e30f6e5b7547e3516bbf8c647d0' }
+      },
+{
+        name: 'HGTV',
+        logo: 'https://i.imgur.com/E7uzV5q.png',
+        type: 'mpegdash',
+        manifestUri: 'https://qp-pldt-live-grp-08-prod.akamaized.net/out/u/hgtv_hd1.mpd',
+        clearKey: { 'f0e3ab943318471abc8b47027f384f5a': '13802a79b19cc3485d2257165a7ef62a' }
+      },
+{
+        name: 'Asian Food Network',
+        logo: 'https://i.imgur.com/O5jBcL2.png',
+        type: 'mpegdash',
+        manifestUri: 'https://qp-pldt-live-grp-07-prod.akamaized.net/out/u/asianfoodnetwork_sd.mpd',
+        clearKey: { '1619db30b9ed42019abb760a0a3b5e7f': '5921e47fb290ae263291b851c0b4b6e4' }
+      },
+{
+        name: 'Travel Channel',
+        logo: 'https://i.imgur.com/sojhfxX.png',
+        type: 'mpegdash',
+        manifestUri: 'https://qp-pldt-live-grp-08-prod.akamaized.net/out/u/travel_channel_sd.mpd',
+        clearKey: { 'f3047fc13d454dacb6db4207ee79d3d3': 'bdbd38748f51fc26932e96c9a2020839' }
+      },
+{
+        name: 'Tech Storm',
+        logo: 'https://i.imgur.com/yt8UxLj.png',
+        type: 'mpegdash',
+        manifestUri: 'https://cdn08jtedge.indihometv.com/dassdvr/133/techstorm/manifest.mpd',
+        clearKey: { '69646b755f3130303030303030303030': 'e4a2359b05563399f1d9adfce641724a' }
+      },
+{
+        name: 'Crime+Investigation',
+        logo: 'https://i.imgur.com/GowLsrU.png',
+        type: 'mpegdash',
+        manifestUri: 'https://qp-pldt-live-grp-12-prod.akamaized.net/out/u/dr_crime_invest.mpd',
+        clearKey: { '21e2843b561c4248b8ea487986a16d33': 'db6bb638ccdfc1ad1a3e98d728486801' }
+      },
+{
+        name: 'Al Jazeera',
+        logo: 'https://i.imgur.com/3n9d0wO.png',
+        type: 'mpegdash',
+        manifestUri: 'https://qp-pldt-live-grp-12-prod.akamaized.net/out/u/dr_aljazeera.mpd',
+        clearKey: { '0f85362a412b11edb8780242ac120002': 'd643dfbbfca6dc64e7f58fd67ea4b7d5' }
+      },
+{
+        name: 'BBC World News',
+        logo: 'https://i.imgur.com/onQ2oxw.png',
+        type: 'mpegdash',
+        manifestUri: 'https://qp-pldt-live-grp-04-prod.akamaized.net/out/u/bbcworld_news_sd.mpd',
+        clearKey: { 'f59650be475e4c34a844d4e2062f71f3': '119639e849ddee96c4cec2f2b6b09b40' }
+      },
+{
+        name: 'CNA',
+        logo: 'https://i.imgur.com/NWP3n1k.png',
+        type: 'mpegdash',
+        manifestUri: 'https://qp-pldt-live-grp-13-prod.akamaized.net/out/u/dr_channelnewsasia.mpd',
+        clearKey: { 'b259df9987364dd3b778aa5d42cb9acd': '753e3dba96ab467e468269e7e33fb813' }
+      },
+{
+        name: 'ABC Australia',
+        logo: 'https://i.imgur.com/qQ33TVM.png',
+        type: 'mpegdash',
+        manifestUri: 'https://qp-pldt-live-grp-10-prod.akamaized.net/out/u/dr_abc_aus.mpd',
+        clearKey: { '389497f9f8584a57b234e27e430e04b7': '3b85594c7f88604adf004e45c03511c0' }
+      },
+{
+        name: 'SPOTV',
+        logo: 'https://i.imgur.com/rAY5j3t.png',
+        type: 'mpegdash',
+        manifestUri: 'https://qp-pldt-live-grp-11-prod.akamaized.net/out/u/dr_spotvhd.mpd',
+        clearKey: { 'ec7ee27d83764e4b845c48cca31c8eef': '9c0e4191203fccb0fde34ee29999129e' }
+      },
+{
+        name: 'SPOTV2',
+        logo: 'https://i.imgur.com/GTwZ19i.png',
+        type: 'mpegdash',
+        manifestUri: 'https://qp-pldt-live-grp-13-prod.akamaized.net/out/u/dr_spotv2hd.mpd',
+        clearKey: { '7eea72d6075245a99ee3255603d58853': '6848ef60575579bf4d415db1032153ed' }
+      },
+{
+        name: 'Premier Sports',
+        logo: 'https://i.imgur.com/dBmvkdJ.png',
+        type: 'mpegdash',
+        manifestUri: 'https://qp-pldt-live-grp-03-prod.akamaized.net/out/u/cg_premiersports_hd1.mpd',
+        clearKey: { 'fc19c98cb9504a0fb78b22fea0a4b814': 'ea683112a96d4ae6c32d4ea13923e8c7' }
+      },
+{
+        name: 'Premier Sports 2',
+        logo: 'https://i.imgur.com/xX9NPje.png',
+        type: 'mpegdash',
+        manifestUri: 'https://qp-pldt-live-grp-13-prod.akamaized.net/out/u/dr_premiertennishd.mpd',
+        clearKey: { '59454adb530b4e0784eae62735f9d850': '61100d0b8c4dd13e4eb8b4851ba192cc' }
+      },
+{
+        name: 'Eurosports',
+        logo: 'https://i.imgur.com/gY1eLYC.png',
+        type: 'mpegdash',
+        manifestUri: 'https://atemeshield1-voe.sysln.id/live/eds/EUROSPORTHD/mpd/EUROSPORTHD.mpd',
+        clearKey: { '47c03f29f04747d2a298c0ad63f3b2c1': '8b48b2cb2743b91d5f20cf2622067f3a' }
+      },
+{
+        name: 'History',
+        logo: 'https://i.imgur.com/BkoC446.png',
+        type: 'mpegdash',
+        manifestUri: 'https://qp-pldt-live-grp-11-prod.akamaized.net/out/u/dr_historyhd.mpd',
+        clearKey: { 'a7724b7ca2604c33bb2e963a0319968a': '6f97e3e2eb2bade626e0281ec01d3675' }
+      },
+{
+        name: 'Animal Planet',
+        logo: 'https://i.imgur.com/1NcoovM.png',
+        type: 'mpegdash',
+        manifestUri: 'https://qp-pldt-live-grp-02-prod.akamaized.net/out/u/cg_animal_planet_sd.mpd',
+        clearKey: { '436b69f987924fcbbc06d40a69c2799a': 'c63d5b0d7e52335b61aeba4f6537d54d' }
+      },
+{
+        name: 'Fashion TV',
+        logo: 'https://i.imgur.com/wzjqyZE.png',
+        type: 'mpegdash',
+        manifestUri: 'https://qp-pldt-live-grp-11-prod.akamaized.net/out/u/dr_fashiontvhd.mpd',
+        clearKey: { '971ebbe2d887476398e97c37e0c5c591': '472aa631b1e671070a4bf198f43da0c7' }
+      },
+{
+        name: 'Food Network',
+        logo: 'https://i.imgur.com/EXC1yRz.png',
+        type: 'mpegdash',
+        manifestUri: 'https://qp-pldt-live-grp-09-prod.akamaized.net/out/u/cg_foodnetwork_hd1.mpd',
+        clearKey: { 'b7299ea0af8945479cd2f287ee7d530e': 'b8ae7679cf18e7261303313b18ba7a14' }
+      },
+{
+        name: 'Bloomberg',
+        logo: 'https://i.imgur.com/pl4w2NN.png',
+        type: 'mpegdash',
+        manifestUri: 'https://qp-pldt-live-grp-09-prod.akamaized.net/out/u/bloomberg_sd.mpd',
+        clearKey: { 'ef7d9dcfb99b406cb79fb9f675cba426': 'b24094f6ca136af25600e44df5987af4' }
+      },
+      
+    ];
+
+    let player;
+    const videoElement = document.getElementById('video');
+    const youtubeElement = document.getElementById('youtube-video');
+    const channelButtonsContainer = document.getElementById('channel-buttons');
+
+    function initializePlayer() {
+      if (!shaka.Player.isBrowserSupported()) {
+        alert('Browser not supported!');
+        return;
+      }
+      player = new shaka.Player(videoElement);
+      createChannelButtons();
+      changeChannel(0);
+    }
+
+    async function loadMPEGDash(index) {
+      const { manifestUri, clearKey } = streams[index];
+      player.configure({ drm: { clearKeys: clearKey } });
+      try {
+        await player.load(manifestUri);
+        youtubeElement.style.display = 'none';
+        videoElement.style.display = 'block';
+      } catch (error) {
+        alert(`Failed to load channel: ${streams[index].name}`);
+      }
+    }
+
+    async function loadHLS(index) {
+      const { manifestUri } = streams[index];
+      try {
+        await player.load(manifestUri);
+        youtubeElement.style.display = 'none';
+        videoElement.style.display = 'block';
+      } catch (error) {
+        alert(`Failed to load channel: ${streams[index].name}`);
+      }
+    }
+
+    function loadYouTube(embedUrl) {
+      videoElement.style.display = 'none';
+      youtubeElement.style.display = 'block';
+      youtubeElement.src = embedUrl;
+    }
+
+    function changeChannel(index) {
+      if (!player) return;
+      const stream = streams[index];
+      if (stream.type === 'mpegdash') {
+        loadMPEGDash(index);
+      } else if (stream.type === 'hls') {
+        loadHLS(index);
+      } else if (stream.type === 'youtube') {
+        loadYouTube(stream.embedUrl);
+      }
+      toggleMenu();
+    }
+
+    function toggleMenu() {
+      const menu = document.getElementById('channel-menu');
+      menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+    }
+
+    function toggleFullscreen() {
+      const container = document.getElementById('video-container');
+      if (!document.fullscreenElement) {
+        container.requestFullscreen();
+      } else {
+        document.exitFullscreen();
+      }
+    }
+
+    function createChannelButtons() {
+      streams.forEach((stream, index) => {
+        const button = document.createElement('button');
+        const logo = document.createElement('img');
+        logo.src = stream.logo;
+        logo.classList.add('channel-logo');
+        button.appendChild(logo);
+        button.appendChild(document.createTextNode(stream.name));
+        button.onclick = () => changeChannel(index);
+        channelButtonsContainer.appendChild(button);
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', requestActivation);
+  </script>
+</body>
+</html>
