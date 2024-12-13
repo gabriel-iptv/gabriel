@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GABRIEL IPTV</title>
+  <title>Livestream Player</title>
   <link rel="icon" href="https://img.freepik.com/premium-psd/play-icon-button-black-background_609989-2403.jpg">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/shaka-player@latest/dist/controls.css">
   <script src="https://cdn.jsdelivr.net/npm/shaka-player@latest/dist/shaka-player.ui.debug.js"></script>
@@ -70,8 +70,15 @@
       text-align: center;
     }
     #channel-menu h2 {
-      margin-bottom: 20px;
+      margin-bottom: 10px;
       text-align: center;
+    }
+    #channel-menu input {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+      border-radius: 5px;
+      border: none;
     }
     #channel-menu button {
       display: flex;
@@ -100,6 +107,12 @@
       margin-top: 20px;
       text-align: center;
     }
+    #no-channel-message {
+      display: none;
+      font-size: 14px;
+      color: #f00;
+      margin-top: 10px;
+    }
   </style>
 </head>
 <body>
@@ -109,7 +122,9 @@
       <div id="fullscreen-button" onclick="toggleFullscreen()">⛶</div>
       <div id="channel-menu">
         <h2>Channel List</h2>
+        <input type="text" id="search-bar" placeholder="Search channel..." oninput="filterChannels()">
         <div id="channel-buttons"></div>
+        <p id="no-channel-message">No channel found</p>
         <p>This app was created by Gabriel and this is for free!</p>
       </div>
       <iframe id="youtube-video" style="display:none;" allowfullscreen></iframe>
@@ -126,7 +141,6 @@
       const storedActivationStatus = localStorage.getItem(activationKey);
       const storedCode = localStorage.getItem(activationCodeKey);
 
-      // Check if activation code has changed or if activation has not occurred
       if (storedActivationStatus !== 'true' || storedCode !== activationCode) {
         requestActivation();
       } else {
@@ -165,7 +179,7 @@
         name: 'Kapamilya Channel',
         logo: 'https://i.imgur.com/fRETRXx.png',
         type: 'mpegdash',
-        manifestUri: 'https://cdn-ue1-prod.tsv2.amagi.tv/linear/amg01006-abs-cbn-kapcha-dash-abscbnono/c1d18480-b845-4414-a1bb-771327c4a685/index.mpd',
+        manifestUri: 'https://cdn-ue1-prod.tsv2.amagi.tv/linear/amg01006-abs-cbn-kapcha-dash-abscbnono/index.mpd',
         clearKey: { 'bd17afb5dc9648a39be79ee3634dd4b8': '3ecf305d54a7729299b93a3d69c02ea5' }
       },
        {
@@ -789,41 +803,20 @@
       youtubeElement.style.display = 'none';
     }
 
-  async function loadMPEGDash(index) {
-    const { manifestUri, clearKey } = streams[index];
-
-    // Enhanced DRM Configuration for ClearKey
-    player.configure({
-      drm: {
-        clearKeys: clearKey,
-        advanced: {
-          'com.widevine.alpha': {
-            videoRobustness: 'SW_SECURE_DECODE',
-            audioRobustness: 'SW_SECURE_DECODE'
-          }
+    async function loadMPEGDash(index) {
+      const { manifestUri, clearKey } = streams[index];
+      player.configure({
+        drm: {
+          clearKeys: clearKey
         }
-      },
-      streaming: {
-        bufferingGoal: 30,
-        rebufferingGoal: 15,
-        retryParameters: {
-          maxAttempts: 5,
-          baseDelay: 1000,
-          backoffFactor: 2,
-          fuzzFactor: 0.5,
-          timeout: 0 // No timeout for manifest loading
-        }
+      });
+      try {
+        await player.load(manifestUri);
+        videoElement.style.display = 'block';
+      } catch (error) {
+        alert(`Failed to load channel: ${streams[index].name}`);
       }
-    });
-
-    try {
-      await player.load(manifestUri);
-      videoElement.style.display = 'block';
-    } catch (error) {
-      console.error(`Error loading MPEG-DASH stream: ${error}`);
-      alert(`Failed to load channel: ${streams[index].name}`);
     }
-  }
 
     async function loadHLS(index) {
       const { manifestUri } = streams[index];
@@ -879,7 +872,25 @@
         channelButtonsContainer.appendChild(button);
       });
     }
-  
+
+    function filterChannels() {
+      const searchTerm = document.getElementById('search-bar').value.toLowerCase();
+      const buttons = document.querySelectorAll('#channel-buttons button');
+      let anyVisible = false;
+
+      buttons.forEach(button => {
+        const channelName = button.textContent.toLowerCase();
+        if (channelName.includes(searchTerm)) {
+          button.style.display = 'flex';
+          anyVisible = true;
+        } else {
+          button.style.display = 'none';
+        }
+      });
+
+      const noChannelMessage = document.getElementById('no-channel-message');
+      noChannelMessage.style.display = anyVisible ? 'none' : 'block';
+    }
 
     document.addEventListener('DOMContentLoaded', checkActivation);
   </script>
