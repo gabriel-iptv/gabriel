@@ -4,172 +4,141 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Livestream Player</title>
-  <link rel="icon" href="https://img.freepik.com/premium-psd/play-icon-button-black-background_609989-2403.jpg">
+  <title>Netflix-Style Livestream Player</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/shaka-player@latest/dist/controls.css">
   <script src="https://cdn.jsdelivr.net/npm/shaka-player@latest/dist/shaka-player.ui.debug.js"></script>
   <style>
-    @import url('https://fonts.googleapis.com/css?family=Poppins');
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
     body {
       margin: 0;
-      padding: 0;
-      font-family: 'Poppins', sans-serif;
-      background: #000;
+      font-family: 'Roboto', sans-serif;
+      background: #141414;
       color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+      box-sizing: border-box;
     }
+
     #wrapper {
       width: 100%;
-      height: 100vh;
+      max-width: 900px;
+      text-align: center;
+    }
+
+    #video-container {
+      width: 100%;
+      position: relative;
+      margin-bottom: 20px;
+    }
+
+    video, iframe {
+      width: 100%;
+      height: auto;
+      aspect-ratio: 16 / 9;
+      background: #000;
+      border-radius: 10px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7);
+    }
+
+    #search-bar {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border-radius: 5px;
+      border: none;
+      font-size: 16px;
+    }
+
+    #channel-slider {
       display: flex;
-      justify-content: center;
+      overflow-x: auto;
+      gap: 15px;
+      padding-bottom: 10px;
+      scroll-behavior: smooth;
+    }
+
+    #channel-slider::-webkit-scrollbar {
+      height: 8px;
+    }
+
+    #channel-slider::-webkit-scrollbar-thumb {
+      background: #555;
+      border-radius: 4px;
+    }
+
+    .channel-card {
+      flex: 0 0 auto;
+      width: 120px;
+      background: #222;
+      border-radius: 10px;
+      padding: 10px;
+      text-align: center;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.2s;
+      outline: none;
+      display: flex;
+      flex-direction: column;
       align-items: center;
     }
-    #video-container {
-      width: 90%;
-      max-width: 800px;
-      aspect-ratio: 16/9;
-      position: relative;
-      background: #000;
+
+    .channel-card:focus,
+    .channel-card:hover {
+      background: #e50914;
+      transform: scale(1.05);
+      outline: 2px solid #fff;
     }
-    iframe, video {
-      width: 100%;
-      height: 100%;
+
+    .channel-logo {
+      width: 100px;
+      height: 100px;
+      margin-bottom: 8px;
+      border-radius: 5px;
       object-fit: contain;
     }
-    #menu-button, #fullscreen-button {
-      position: absolute;
-      background: rgba(0, 0, 0, 0.5);
-      color: #fff;
-      padding: 10px;
-      cursor: pointer;
-      border-radius: 50%;
-      font-size: 24px;
-      z-index: 10;
-      top: 50%;
-      transform: translateY(-50%);
-    }
-    #menu-button {
-      left: 10px;
-    }
-    #fullscreen-button {
-      right: 10px;
-    }
-    #channel-menu {
-      display: none;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: rgba(0, 0, 0, 0.8);
-      padding: 20px;
-      border-radius: 10px;
-      z-index: 11;
-      max-height: 70%;
-      overflow-y: auto;
-      width: 300px;
-      text-align: center;
-    }
-    #channel-menu h2 {
-      margin-bottom: 10px;
-      text-align: center;
-    }
-    #search-bar {
-      width: 80%;
-      padding: 8px;
-      margin: 10px auto;
-      border-radius: 5px;
-      border: none;
-      font-size: 16px;
-      display: block;
-    }
-    #channel-buttons {
-      overflow-y: auto;
-      max-height: 400px;
-    }
-    #channel-menu button {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 5px 0;
-      background: #333;
-      color: #fff;
-      border: none;
-      padding: 10px;
-      border-radius: 5px;
-      font-size: 16px;
-      cursor: pointer;
-      width: 100%;
-    }
-    #channel-menu button:focus {
-      outline: 2px solid #00f;
-    }
-    #channel-menu button:hover {
-      background: #555;
-    }
-    .channel-logo {
-      width: 30px;
-      height: 30px;
-      margin-right: 10px;
-    }
-    #channel-menu p {
+
+    .channel-name {
       font-size: 14px;
+      font-weight: 700;
+      margin-top: 8px;
+      white-space: nowrap;
+    }
+
+    #footer {
       margin-top: 20px;
-      text-align: center;
+      font-size: 16px;
+      color: #aaa;
     }
-    #no-channel-message {
-      display: none;
-      font-size: 14px;
-      color: #f00;
-      margin-top: 10px;
+
+    #footer a {
+      color: #e50914;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    #footer a:hover {
+      text-decoration: underline;
     }
   </style>
 </head>
 <body>
   <div id="wrapper">
     <div id="video-container">
-      <div id="menu-button" onclick="toggleMenu()">☰</div>
-      <div id="fullscreen-button" onclick="toggleFullscreen()">⛶</div>
-      <div id="channel-menu">
-        <h2>Channel List</h2>
-        <input type="text" id="search-bar" placeholder="Search channel..." oninput="filterChannels()">
-        <div id="channel-buttons"></div>
-        <p id="no-channel-message">No channel found</p>
-        <p>This app was created by Gabriel and this is for free!</p>
-      </div>
       <iframe id="youtube-video" style="display:none;" allowfullscreen></iframe>
       <video id="video" controls autoplay></video>
+    </div>
+    <input type="text" id="search-bar" placeholder="Search channel..." oninput="filterChannels()">
+    <div id="channel-slider"></div>
+    <div id="footer">
+      This web was created by <a href="https://example.com" target="_blank">Gabriel</a> and this is for free!
     </div>
   </div>
 
   <script>
-    const activationCode = '2024';
-    const activationKey = 'activationStatus';
-    const activationCodeKey = 'activationCode';
-
-    function checkActivation() {
-      const storedActivationStatus = localStorage.getItem(activationKey);
-      const storedCode = localStorage.getItem(activationCodeKey);
-
-      if (storedActivationStatus !== 'true' || storedCode !== activationCode) {
-        requestActivation();
-      } else {
-        initializePlayer();
-      }
-    }
-
-    function requestActivation() {
-      const userCode = prompt('Please enter the activation code:');
-      if (userCode !== activationCode) {
-        alert('Incorrect activation code. Access denied.');
-        document.body.innerHTML = '<h1>Access Denied</h1>';
-      } else {
-        localStorage.setItem(activationKey, 'true');
-        localStorage.setItem(activationCodeKey, activationCode);
-        initializePlayer();
-      }
-    }
-
-    const streams = [
+            const streams = [
       {
         name: 'TV5',
         logo: 'https://i.imgur.com/Ddyfzrn.png',
@@ -185,11 +154,10 @@
         clearKey: { 'f703e4c8ec9041eeb5028ab4248fa094': 'c22f2162e176eee6273a5d0b68d19530' }
       },
        {
-        name: 'Kapamilya Channel',
-        logo: 'https://i.imgur.com/fRETRXx.png',
-        type: 'mpegdash',
-        manifestUri: 'https://cdn-ue1-prod.tsv2.amagi.tv/linear/amg01006-abs-cbn-kapcha-dash-abscbnono/index.mpd',
-        clearKey: { 'bd17afb5dc9648a39be79ee3634dd4b8': '3ecf305d54a7729299b93a3d69c02ea5' }
+        name: 'Kapamilya Online Live',
+        logo: 'https://i.imgur.com/8YT2rMz.png',
+        type: 'youtube',
+        embedUrl: 'https://www.youtube.com/embed/vC5Wu78HcFQ?autoplay=1&mute=0'
       },
        {
         name: 'GMA Kapuso Stream',
@@ -793,7 +761,8 @@
     let player;
     const videoElement = document.getElementById('video');
     const youtubeElement = document.getElementById('youtube-video');
-    const channelButtonsContainer = document.getElementById('channel-buttons');
+    const channelSlider = document.getElementById('channel-slider');
+    const searchBar = document.getElementById('search-bar');
 
     function initializePlayer() {
       if (!shaka.Player.isBrowserSupported()) {
@@ -802,107 +771,65 @@
       }
       player = new shaka.Player(videoElement);
       createChannelButtons();
-      changeChannel(0);
+      loadStream(0); // Autoplay the first channel
     }
 
-    async function stopCurrentStream() {
+    async function loadStream(index) {
+      const stream = streams[index];
+      stopCurrentStream();
+
+      if (stream.type === 'mpegdash') {
+        player.configure({ drm: { clearKeys: stream.clearKey } });
+        await player.load(stream.manifestUri);
+        videoElement.style.display = 'block';
+      } else if (stream.type === 'hls') {
+        await player.load(stream.manifestUri);
+        videoElement.style.display = 'block';
+      } else if (stream.type === 'youtube') {
+        youtubeElement.src = stream.embedUrl;
+        youtubeElement.style.display = 'block';
+      }
+    }
+
+    function stopCurrentStream() {
       videoElement.pause();
       videoElement.style.display = 'none';
-      youtubeElement.src = '';
       youtubeElement.style.display = 'none';
-    }
-
-    async function loadMPEGDash(index) {
-      const { manifestUri, clearKey } = streams[index];
-      player.configure({
-        drm: {
-          clearKeys: clearKey
-        }
-      });
-      try {
-        await player.load(manifestUri);
-        videoElement.style.display = 'block';
-      } catch (error) {
-        alert(`Failed to load channel: ${streams[index].name}`);
-      }
-    }
-
-    async function loadHLS(index) {
-      const { manifestUri } = streams[index];
-      try {
-        await player.load(manifestUri);
-        videoElement.style.display = 'block';
-      } catch (error) {
-        alert(`Failed to load channel: ${streams[index].name}`);
-      }
-    }
-
-    function loadYouTube(embedUrl) {
-      youtubeElement.src = embedUrl;
-      youtubeElement.style.display = 'block';
-    }
-
-    async function changeChannel(index) {
-      await stopCurrentStream();
-      const stream = streams[index];
-      if (stream.type === 'mpegdash') {
-        await loadMPEGDash(index);
-      } else if (stream.type === 'hls') {
-        await loadHLS(index);
-      } else if (stream.type === 'youtube') {
-        loadYouTube(stream.embedUrl);
-      }
-      toggleMenu();
-    }
-
-    function toggleMenu() {
-      const menu = document.getElementById('channel-menu');
-      menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
-    }
-
-    function toggleFullscreen() {
-      const container = document.getElementById('video-container');
-      if (!document.fullscreenElement) {
-        container.requestFullscreen();
-      } else {
-        document.exitFullscreen();
-      }
+      youtubeElement.src = '';
     }
 
     function createChannelButtons() {
       streams.forEach((stream, index) => {
-        const button = document.createElement('button');
-        const logo = document.createElement('img');
-        logo.src = stream.logo;
-        logo.classList.add('channel-logo');
-        button.appendChild(logo);
-        button.appendChild(document.createTextNode(stream.name));
-        button.onclick = () => changeChannel(index);
-        button.setAttribute('tabindex', '0');
-        channelButtonsContainer.appendChild(button);
+        const card = document.createElement('div');
+        card.classList.add('channel-card');
+        card.setAttribute('tabindex', '0');
+        card.onclick = () => loadStream(index);
+        card.onkeydown = (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            loadStream(index);
+          }
+        };
+
+        card.innerHTML = `
+          <img src="${stream.logo}" class="channel-logo" alt="${stream.name}">
+          <div class="channel-name">${stream.name}</div>
+        `;
+        
+        channelSlider.appendChild(card);
       });
     }
 
     function filterChannels() {
-      const searchTerm = document.getElementById('search-bar').value.toLowerCase();
-      const buttons = document.querySelectorAll('#channel-buttons button');
-      let anyVisible = false;
+      const searchTerm = searchBar.value.toLowerCase();
+      const cards = document.querySelectorAll('.channel-card');
 
-      buttons.forEach(button => {
-        const channelName = button.textContent.toLowerCase();
-        if (channelName.includes(searchTerm)) {
-          button.style.display = 'flex';
-          anyVisible = true;
-        } else {
-          button.style.display = 'none';
-        }
+      cards.forEach(card => {
+        const channelName = card.querySelector('.channel-name').textContent.toLowerCase();
+        card.style.display = channelName.includes(searchTerm) ? 'flex' : 'none';
       });
-
-      const noChannelMessage = document.getElementById('no-channel-message');
-      noChannelMessage.style.display = anyVisible ? 'none' : 'block';
     }
 
-    document.addEventListener('DOMContentLoaded', checkActivation);
+    document.addEventListener('DOMContentLoaded', initializePlayer);
   </script>
 </body>
 </html>
