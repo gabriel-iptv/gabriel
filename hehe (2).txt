@@ -1,7 +1,6 @@
 #EXTM3U
 
 
-
 #KODIPROP:inputstream.adaptive.license_type=com.widevine.alpha
 #KODIPROP:inputstream.adaptive.license_key=http://143.44.136.74:9443/widevine/?deviceId=02:00:00:00:00:00
 #EXTINF:-1 tvg-id="kapcha1" tvg-name="KAPAMILYA HD (CON)" tvg-logo="https://i.imgur.com/fRETRXx.png" group-title="GABRIEL : FREE LOCAL PLAYLIST", Kapamilya Channel
