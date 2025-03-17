@@ -7,12 +7,12 @@
 #EXTINF:-1 tvg-id="kapcha1" tvg-name="KAPAMILYA HD (CON)" tvg-logo="https://i.imgur.com/fRETRXx.png" group-title="GABRIEL : FREE LOCAL PLAYLIST", Kapamilya Channel
 http://143.44.136.110:6910/001/2/ch00000090990000001286/manifest.mpd?virtualDomain=001.live_hls.zte.com
 
-#KODIPROP:inputstream.adaptive.license_type=com.widevine.alpha
-#KODIPROP:inputstream.adaptive.license_key=http://143.44.136.74:9443/widevine/?deviceId=02:00:00:00:00:00
-#EXTINF:-1 tvg-id="gma7ph1" tvg-name="GMA 7 (CON01)" tvg-logo="https://i.imgur.com/nMSt2j0.png" group-title="GABRIEL : FREE LOCAL PLAYLIST",GMA
+#KODIPROP:inputstream.adaptive.license_type=org.w3.clearkey
+#KODIPROP:inputstream.adaptive.license_key=31363231383438333031323033393138:38694e34324d543478316b7455753437
+#EXTINF:-1 tvg-id="" tvg-name="ONE PH (CIG)" tvg-logo="https://i.imgur.com/nMSt2j0.png" group-title="GABRIEL : FREE LOCAL PLAYLIST",GMA
 http://143.44.136.110:6910/001/2/ch00000090990000001093/manifest.mpd?virtualDomain=001.live_hls.zte.com
-#KODIPROP:inputstream.adaptive.license_type=com.widevine.alpha
-#KODIPROP:inputstream.adaptive.license_key=http://143.44.136.74:9443/widevine/?deviceId=02:00:00:00:00:00
+
+
 #EXTINF:-1 tvg-id="gtvph1" tvg-name="GTV (CON01)" tvg-logo="https://i.imgur.com/txozMGM.png" group-title="GABRIEL : FREE LOCAL PLAYLIST",GTV
 http://143.44.136.110:6910/001/2/ch00000090990000001143/manifest.mpd?virtualDomain=001.live_hls.zte.com
 #KODIPROP:inputstream.adaptive.license_type=com.widevine.alpha
