@@ -14,6 +14,14 @@ const channels = {
 		type: 'mpd'
     },
 
+	kapamilya: {
+        name: 'kapamilya',
+        url: 'https://wag.ika.lat/1286/manifest.mpd',
+        keyId: '31363331363737343637333533323837',
+        key: '71347339457958556439543650426e74',
+		type: 'mpd'
+    },
+
 	WarnerTV: {
         name: 'WarnerTV',
         url: 'https://qp-pldt-live-grp-11-prod.akamaized.net/out/u/dr_warnertvhd.mpd',
