@@ -64,6 +64,11 @@ https://linearjitp-playback.astro.com.my/dash-wv/linear/2511/default_ott.mpd
 #EXTINF:-1 tvg-id="aniplus" tvg-name="PBA RUSH HD" tvg-logo="https://divign0fdw3sv.cloudfront.net/Images/ChannelLogo/contenthub/392_144.png" group-title="GABRIEL : FREE LOCAL PLAYLIST", Nick Jr
 https://linearjitp-playback.astro.com.my/dash-wv/linear/9982/default_ott.mpd
 
+#EXTINF:-1 group-logo="" group-title="GABRIEL : FREE LOCAL PLAYLIST" tvg-logo="https://i.imgur.com/XhTY6wi.png",NickToons
+#KODIPROP:inputstream.adaptive.license_type=org.w3.clearkey
+#KODIPROP:inputstream.adaptive.license_key=3161c6c45076419fbbc333c277a22f65:18827aad7e2e79e526f529fd5027cb47
+https://tr.live.cdn.cgates.lt/live/dash/561208/index.mpd
+
 #EXTINF:-1 group-title="GABRIEL : FREE LOCAL PLAYLIST" ch-number="472" tvg-id="Animax.ph" tvg-chno="472" tvg-logo="https://www.animax-asia.com/sites/animax-asia.com/files/logos/animax-logo_0.png",Animax
 #KODIPROP:inputstreamaddon=inputstream.adaptive
 #KODIPROP:inputstream.adaptive.manifest_type=dash
