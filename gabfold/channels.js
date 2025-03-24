@@ -16,9 +16,17 @@ const channels = {
 
 	kapamilya: {
         name: 'kapamilya',
-        url: 'https://wag.ika.lat/1286/manifest.mpd',
+        url: 'http://143.44.136.110:6910/001/2/ch00000090990000001286/manifest.mpd?virtualDomain=001.live_hls.zte.com',
         keyId: '31363331363737343637333533323837',
         key: '71347339457958556439543650426e74',
+		type: 'mpd'
+    },
+
+	disney: {
+        name: 'disney',
+        url: 'https://a77aivottepl-a.akamaihd.net/pdx-nitro/live/clients/dash/enc/zuf794yutz/out/v1/ca3534bfe4f148298b36719204d108e0/cenc.mpd',
+        keyId: 'be9caaa813c5305e761c66ac63645901',
+        key: '3d40f2990ec5362ca5be3a3c9bb8f8b4',
 		type: 'mpd'
     },
 
