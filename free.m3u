@@ -406,6 +406,12 @@ https://d1facupi3cod3q.cloudfront.net/out/v1/e3633f8591e248b0af1af15a474bfa4a/in
 #KODIPROP:inputstream.adaptive.license_key=47c093e0c9fd4f80839a0337da3dd876:50547394045b3d047dc7d92f57b5fb33
 https://cdn-ue1-prod.tsv2.amagi.tv/linear/amg01006-abs-cbn-teleradyo-dash-abscbnono/index.mpd
 
+#EXTINF:-1 tvg-id="kapcha1" tvg-name="PBB CE LIVE (TFC)" tvg-logo="https://i.imgur.com/Niy6Xka.jpg" group-title="GABRIEL : FREE LOCAL PLAYLIST",PBB All Access
+#EXTVLCOPT:http-referrer=https://www.iwanttfc.com/
+#KODIPROP:inputstream.adaptive.license_type=org.w3.clearkey
+#KODIPROP:inputstream.adaptive.license_key=8438e8495659425585a09749cd6bc39a:9d92b12db092fe6bdf2207ef7a2a9e65
+https://abslive.akamaized.net/dash/live/2112806/pbbmain/manifest.mpd
+
 #KODIPROP:inputstream.adaptive.license_type=org.w3.clearkey
 #KODIPROP:inputstream.adaptive.license_key=95588338ee37423e99358a6d431324b9:6e0f50a12f36599a55073868f814e81e
 #EXTINF:-1 tvg-id="uaapvarsity" tvg-name="UAAP VARSITY" tvg-logo="https://i.imgur.com/rifinVV.png" group-title="GABRIEL : FREE LOCAL PLAYLIST",UAAP VARSITY
