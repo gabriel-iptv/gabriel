@@ -577,6 +577,26 @@ https://qp-pldt-live-grp-03-prod.akamaized.net/out/u/cg_premiersports_hd1.mpd
 #EXTINF:-1 tvg-id="premiersports-2" tvg-name="PREMIER SPORTS 2 (CIG)" tvg-logo="https://i.imgur.com/xX9NPje.png" group-title="GABRIEL : FREE LOCAL PLAYLIST",PREMIER SPORTS 2
 https://qp-pldt-live-grp-13-prod.akamaized.net/out/u/dr_premiertennishd.mpd
 
+#EXTINF:-1 group-logo="https://i.imgur.com/6BllfWM.jpeg" group-title="GABRIEL : FREE LOCAL PLAYLIST" tvg-logo="https://i.imgur.com/HWPfum0.png",TNT Sports 1
+#KODIPROP:inputstream.adaptive.license_type=org.w3.clearkey
+#KODIPROP:inputstream.adaptive.license_key=ae26845bd33038a9c0774a0981007294:63ac662dde310cfb4cc6f9b43b34196d
+https://ottb.live.cf.ww.aiv-cdn.net/lhr-nitro/live/clients/dash/enc/wf8usag51e/out/v1/bd3b0c314fff4bb1ab4693358f3cd2d3/cenc.mpd
+
+#EXTINF:-1 group-logo="https://i.imgur.com/6BllfWM.jpeg" group-title="GABRIEL : FREE LOCAL PLAYLIST" tvg-logo="https://i.imgur.com/6OONRXw.png",TNT Sports 2
+#KODIPROP:inputstream.adaptive.license_type=org.w3.clearkey
+#KODIPROP:inputstream.adaptive.license_key=6d1708b185c6c4d7b37600520c7cc93c:1aace05f58d8edef9697fd52cb09f441
+https://ottb.live.cf.ww.aiv-cdn.net/lhr-nitro/live/clients/dash/enc/wf8usag51e/out/v1/f8fa17f087564f51aa4d5c700be43ec4/cenc.mpd
+
+#EXTINF:-1 group-logo="https://i.imgur.com/6BllfWM.jpeg" group-title="GABRIEL : FREE LOCAL PLAYLIST" tvg-logo="https://i.imgur.com/faYlXNz.png",TNT Sports 3
+#KODIPROP:inputstream.adaptive.license_type=org.w3.clearkey
+#KODIPROP:inputstream.adaptive.license_key=4e993aa8c1f295f8b94e8e9e6f6d0bfe:86a1ed6e96caab8eb1009fe530d2cf4f
+https://ottb.live.cf.ww.aiv-cdn.net/lhr-nitro/live/clients/dash/enc/lsdasbvglv/out/v1/bb548a3626cd4708afbb94a58d71dce9/cenc.mpd
+
+#EXTINF:-1 group-logo="https://i.imgur.com/6BllfWM.jpeg" group-title="GABRIEL : FREE LOCAL PLAYLIST" tvg-logo="https://i.imgur.com/BvJNK9f.png",TNT Sports 4
+#KODIPROP:inputstream.adaptive.license_type=org.w3.clearkey
+#KODIPROP:inputstream.adaptive.license_key=e31a5a81caff5d07ea2411a571fc2e59:96c5ef69479732ae734f962748c19729
+https://ottb.live.cf.ww.aiv-cdn.net/lhr-nitro/live/clients/dash/enc/i2pcjr4pe5/out/v1/912e9db56d75403b8a9ac0a719110f36/cenc.mpd
+
 #KODIPROP:inputstream.adaptive.license_type=org.w3.clearkey
 #KODIPROP:inputstream.adaptive.license_key=60dc692e64ea443a8fb5ac186c865a9b:01bdbe22d59b2a4504b53adc2f606cc1
 #EXTINF:-1 tvg-id="lotusmacauph2" tvg-name="LOTUS MACAU (CIG)" tvg-logo="https://i.imgur.com/sKfzEuf.png" group-title="GABRIEL : FREE LOCAL PLAYLIST",LOTUS MACAU
