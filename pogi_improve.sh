@@ -17,14 +17,27 @@ echo " Developer: Gabriel"
 echo "====================================="
 sleep 2
 
-# Auto-detect Device Name (Fixed Version)
+# Auto-detect Device Name
 DEVICE_NAME=$(getprop ro.product.model)
 if [ -z "$DEVICE_NAME" ]; then
     DEVICE_NAME="Unknown Device"
 fi
 echo "🔹 Device Detected: $DEVICE_NAME"
+
+# Auto-detect Terminal Emulator
+TERMINAL_EMULATOR=$(ps -o comm= -p $$)
+echo "🖥️ Terminal Used: $TERMINAL_EMULATOR"
 echo ""
-sleep 2
+
+# Module Purpose
+echo "📌 Module Purpose:"
+echo "✅ Improve overall device performance"
+echo "✅ Clean RAM to free up memory"
+echo "✅ Optimize storage for better I/O speed"
+echo "✅ Enhance system stability for gaming"
+echo "✅ Simulate FPS and GPU optimization"
+echo ""
+sleep 3
 
 # Simulated Optimization Process
 echo "🚀 Initializing Optimization..."
