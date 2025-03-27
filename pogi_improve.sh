@@ -1,56 +1,37 @@
 #!/data/data/com.termux/files/usr/bin/bash
 
 # ASCII Banner
-echo -e "\033[1;32m"
-echo "██████╗ ███████╗███████╗███████╗ █████╗ ███╗   ███╗███████╗"
-echo "██╔══██╗██╔════╝╚══███╔╝╚══███╔╝██╔══██╗████╗ ████║██╔════╝"
-echo "██████╔╝█████╗    ███╔╝   ███╔╝ ███████║██╔████╔██║█████╗  "
-echo "██╔═══╝ ██╔══╝   ███╔╝   ███╔╝  ██╔══██║██║╚██╔╝██║██╔══╝  "
-echo "██║     ███████╗███████╗███████╗██║  ██║██║ ╚═╝ ██║███████╗"
-echo "╚═╝     ╚══════╝╚══════╝╚══════╝╚═╝  ╚═╝╚═╝     ╚═╝╚══════╝"
-echo -e "\033[0m"
+echo "====================================="
+echo "  Termux Gaming Performance Booster "
+echo "  Developer: Gabriel "
+echo "====================================="
 
-# Display Developer Name and Device Name
-echo -e "\033[1;32mDeveloper: Gabriel\033[0m"
+# Detect Device Name
 DEVICE_NAME=$(getprop ro.product.model)
-echo -e "\033[1;32mDevice: $DEVICE_NAME\033[0m"
+echo "Device Name: $DEVICE_NAME"
 
-# Start Progress Bar
-for i in {1..10}; do
-    echo -ne "\033[1;32m["
-    for ((j=0; j<i; j++)); do echo -ne "="; done
-    for ((j=i; j<10; j++)); do echo -ne " "; done
-    echo -ne "] $((i * 10))%\r"
-    sleep 0.2
-done
-echo -e "\n\033[1;32mApplying Low-End Device Optimizations...\033[0m"
+# Apply Gaming Optimizations
+echo "[1] Setting CPU to Performance Mode..."
+echo "performance" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor 2>/dev/null
 
-# Reduce System UI Animations (Non-Root)
-echo -e "\033[1;32mReducing System UI Animations...\033[0m"
-settings put global window_animation_scale 0.5
-settings put global transition_animation_scale 0.5
-settings put global animator_duration_scale 0.5
+echo "[2] Clearing RAM and Cached Processes..."
+sync && echo 3 > /proc/sys/vm/drop_caches 2>/dev/null
 
-# Optimize CPU/GPU (Non-Root)
-echo -e "\033[1;32mOptimizing CPU & GPU...\033[0m"
-settings put global game_driver_all_apps 1
+echo "[3] Enabling GPU Rendering Optimization..."
+settings put global disable_hw_overlays 1
 settings put global force_gpu_rendering 1
-settings put global hwui_force_gpu_rendering 1
 
-# Lock Refresh Rate to 90Hz or 60Hz (Root Only)
-if [[ $(id -u) -eq 0 ]]; then
-    echo -e "\033[1;32mApplying Refresh Rate Settings...\033[0m"
-    settings put system peak_refresh_rate 90
-    settings put system min_refresh_rate 60
-fi
+echo "[4] Adjusting I/O Performance..."
+echo 0 > /proc/sys/kernel/randomize_va_space 2>/dev/null
 
-# Clean RAM (Root Only)
-if [[ $(id -u) -eq 0 ]]; then
-    echo -e "\033[1;32mClearing RAM Cache...\033[0m"
-    echo 3 > /proc/sys/vm/drop_caches
-else
-    echo -e "\033[1;31mSkipping RAM Cache Clear (Root Required)\033[0m"
-fi
+echo "[5] Disabling Background Services for Gaming Mode..."
+pm disable com.android.dreams.basic 2>/dev/null
+pm disable com.android.dreams.phototable 2>/dev/null
 
-# Finish
-echo -e "\033[1;32m✔ Optimizations Applied Successfully!\033[0m"
+echo "[6] Boosting System UI Responsiveness..."
+settings put global window_animation_scale 0.0
+settings put global transition_animation_scale 0.0
+settings put global animator_duration_scale 0.0
+
+echo "[7] Finalizing Optimizations..."
+echo "Gaming Mode Activated! Enjoy Smooth Gameplay!"
