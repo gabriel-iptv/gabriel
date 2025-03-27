@@ -72,44 +72,51 @@ progress_bar() {
     echo ""
 }
 
-# Start Optimization
-echo "🚀 Initializing Optimization..."
-progress_bar 5
+# **🚀 Counter-Based Optimization Steps**
+step=1
+total_steps=5
 
-# Free Up Disk Space (Cache Cleanup)
-echo "🔄 Cleaning up cache..."
-sleep 2
+# 1️⃣ Free Up Disk Space (Cache Cleanup)
+echo "🚀 [$step/$total_steps] Cleaning up cache..."
+progress_bar 4
 rm -rf ~/../usr/tmp/*
 rm -rf ~/../usr/var/tmp/*
-echo "✅ Cache cleaned!"
-sleep 3
-
-# Boost I/O Performance (Storage Optimization)
-echo "⚡ Optimizing storage performance..."
+echo "✅ [$step/$total_steps] Cache cleaned!"
+((step++))
 sleep 2
-sync && echo "3" > ~/sync_cache.txt
-echo "✅ Disk read/write performance improved!"
-sleep 3
 
-# Simulating CPU Optimization (Without Root)
-echo "🔥 Boosting system performance..."
-progress_bar 5
-echo "✅ Performance boost completed!"
-sleep 3
-
-# Memory Usage Information
-echo "📊 Checking RAM usage..."
-sleep 2
-free -h
-echo ""
-
-# Show Running Processes (Instead of Killing Them)
-echo "🔍 Analyzing background processes..."
+# 2️⃣ Boost I/O Performance (Storage Optimization)
+echo "⚡ [$step/$total_steps] Optimizing storage performance..."
 progress_bar 4
-ps -A -o comm | head -20
-echo ""
+sync && echo "3" > ~/sync_cache.txt
+echo "✅ [$step/$total_steps] Disk read/write performance improved!"
+((step++))
+sleep 2
 
-# Fake FPS Boosting (Just for Show)
+# 3️⃣ Simulating CPU Optimization (Without Root)
+echo "🔥 [$step/$total_steps] Boosting system performance..."
+progress_bar 4
+echo "✅ [$step/$total_steps] Performance boost completed!"
+((step++))
+sleep 2
+
+# 4️⃣ Memory Usage Information
+echo "📊 [$step/$total_steps] Checking RAM usage..."
+progress_bar 3
+free -h
+echo "✅ [$step/$total_steps] RAM analysis complete!"
+((step++))
+sleep 2
+
+# 5️⃣ Show Running Processes (Instead of Killing Them)
+echo "🔍 [$step/$total_steps] Analyzing background processes..."
+progress_bar 3
+ps -A -o comm | head -20
+echo "✅ [$step/$total_steps] Process analysis complete!"
+((step++))
+sleep 2
+
+# 🎮 Fake FPS Boosting (Just for Show)
 echo "🎮 Enhancing gaming experience..."
 progress_bar 4
 echo "🔄 Adjusting rendering settings..."
@@ -117,7 +124,7 @@ sleep 3
 echo "✅ FPS optimization complete!"
 sleep 2
 
-# Inform the User That The Script Finished
+# **🎉 Script Completion**
 echo ""
 echo "🎉 POGI IMPROVE Optimizations Applied!"
 echo "💯 Enjoy your smooth gaming experience!"
