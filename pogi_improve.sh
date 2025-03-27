@@ -18,26 +18,30 @@ echo "====================================="
 sleep 2
 
 # Auto-detect Device Name
-DEVICE_NAME=$(getprop ro.product.model)
+DEVICE_NAME=$(getprop ro.product.model 2>/dev/null)
 if [ -z "$DEVICE_NAME" ]; then
     DEVICE_NAME="Unknown Device"
 fi
 echo "🔹 Device Detected: $DEVICE_NAME"
 
-# Properly Detect Terminal Emulator
+# **Fix Terminal Emulator Detection**
 if [ -n "$TERMUX_VERSION" ]; then
+    TERMINAL_EMULATOR="Termux"
+elif [ -d "/data/data/com.termux/" ]; then
     TERMINAL_EMULATOR="Termux"
 elif [ "$(which brevent 2>/dev/null)" ]; then
     TERMINAL_EMULATOR="Brevent"
-elif [ -n "$SHELL" ]; then
-    TERMINAL_EMULATOR=$(basename "$SHELL")
+elif [[ "$PREFIX" == "/data/data/com.termux/files/usr" ]]; then
+    TERMINAL_EMULATOR="Termux"
 else
-    TERMINAL_EMULATOR="Unknown Terminal"
+    TERMINAL_EMULATOR=$(ps -o comm= -p $$ 2>/dev/null)
+    [ -z "$TERMINAL_EMULATOR" ] && TERMINAL_EMULATOR="Unknown Terminal"
 fi
+
 echo "🖥️ Terminal Used: $TERMINAL_EMULATOR"
 echo ""
 
-# Module Purpose (Slow Display)
+# **📌 Module Purpose (Slow Display)**
 echo "📌 Module Purpose:"
 sleep 1
 echo "✅ Improve overall device performance"; sleep 1
@@ -47,7 +51,7 @@ echo "✅ Enhance system stability for gaming"; sleep 1
 echo "✅ Simulate FPS and GPU optimization"; sleep 1
 echo ""
 
-# Simulated Progress Bar Function
+# **🔄 Simulated Progress Bar**
 progress_bar() {
     echo -ne "[                    ] 0%\r"
     sleep 1
