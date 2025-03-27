@@ -15,29 +15,39 @@ for i in {1..10}; do
     echo -ne "] $((i * 10))%\r"
     sleep 0.2
 done
-echo -e "\n\033[1;32mApplying Low-End Device Optimizations...\033[0m"
+echo -e "\n\033[1;32mApplying Optimizations...\033[0m"
 
-# Lock Refresh Rate to 60Hz or 90Hz (whichever is supported)
-cmd settings put system peak_refresh_rate 90
-cmd settings put system min_refresh_rate 60
+# Lock Refresh Rate to 60Hz or 90Hz (Root Required)
+if [[ $(id -u) -eq 0 ]]; then
+    echo -e "\033[1;32mApplying Refresh Rate Settings...\033[0m"
+    settings put system peak_refresh_rate 90
+    settings put system min_refresh_rate 60
+fi
 
-# Reduce System UI Animations for Faster Performance
-cmd settings put global window_animation_scale 0.25
-cmd settings put global transition_animation_scale 0.25
-cmd settings put global animator_duration_scale 0.25
+# Reduce System UI Animations (Works on Non-Root)
+echo -e "\033[1;32mReducing System UI Animations...\033[0m"
+settings put global window_animation_scale 0.25
+settings put global transition_animation_scale 0.25
+settings put global animator_duration_scale 0.25
 
-# Clean RAM by Killing Unused Apps
+# Clear Background Apps (Fixed)
 echo -e "\033[1;32mClearing Background Apps...\033[0m"
-cmd activity recents clear
-am kill-all
+am force-stop com.android.systemui
+am force-stop com.google.android.gms
 
-# Optimize CPU Usage for Low-End Devices
-cmd settings put global game_driver_all_apps 1
-cmd settings put global force_gpu_rendering 1
-cmd settings put global hwui_force_gpu_rendering 1
+# Optimize CPU/GPU (Works on Non-Root)
+echo -e "\033[1;32mOptimizing CPU & GPU...\033[0m"
+settings put global game_driver_all_apps 1
+settings put global force_gpu_rendering 1
+settings put global hwui_force_gpu_rendering 1
 
-# Apply Memory Management Tweaks (Temporary)
-echo 3 > /proc/sys/vm/drop_caches
+# Clear RAM Cache (Root Only)
+if [[ $(id -u) -eq 0 ]]; then
+    echo -e "\033[1;32mClearing RAM Cache...\033[0m"
+    echo 3 > /proc/sys/vm/drop_caches
+else
+    echo -e "\033[1;31mSkipping RAM Cache Clear (Root Required)\033[0m"
+fi
 
 # Finish
-echo -e "\033[1;32m✔ Low-End Device Boost Applied Successfully!\033[0m"
+echo -e "\033[1;32m✔ Optimizations Applied Successfully!\033[0m"
