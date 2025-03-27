@@ -24,24 +24,46 @@ if [ -z "$DEVICE_NAME" ]; then
 fi
 echo "🔹 Device Detected: $DEVICE_NAME"
 
-# Auto-detect Terminal Emulator
-TERMINAL_EMULATOR=$(ps -o comm= -p $$)
+# Properly Detect Terminal Emulator
+if [ -n "$TERMUX_VERSION" ]; then
+    TERMINAL_EMULATOR="Termux"
+elif [ "$(which brevent 2>/dev/null)" ]; then
+    TERMINAL_EMULATOR="Brevent"
+elif [ -n "$SHELL" ]; then
+    TERMINAL_EMULATOR=$(basename "$SHELL")
+else
+    TERMINAL_EMULATOR="Unknown Terminal"
+fi
 echo "🖥️ Terminal Used: $TERMINAL_EMULATOR"
 echo ""
 
-# Module Purpose
+# Module Purpose (Slow Display)
 echo "📌 Module Purpose:"
-echo "✅ Improve overall device performance"
-echo "✅ Clean RAM to free up memory"
-echo "✅ Optimize storage for better I/O speed"
-echo "✅ Enhance system stability for gaming"
-echo "✅ Simulate FPS and GPU optimization"
+sleep 1
+echo "✅ Improve overall device performance"; sleep 1
+echo "✅ Clean RAM to free up memory"; sleep 1
+echo "✅ Optimize storage for better I/O speed"; sleep 1
+echo "✅ Enhance system stability for gaming"; sleep 1
+echo "✅ Simulate FPS and GPU optimization"; sleep 1
 echo ""
-sleep 3
 
-# Simulated Optimization Process
+# Simulated Progress Bar Function
+progress_bar() {
+    echo -ne "[                    ] 0%\r"
+    sleep 1
+    echo -ne "[#####               ] 25%\r"
+    sleep 1
+    echo -ne "[##########          ] 50%\r"
+    sleep 1
+    echo -ne "[###############     ] 75%\r"
+    sleep 1
+    echo -ne "[####################] 100%\r"
+    echo ""
+}
+
+# Start Optimization
 echo "🚀 Initializing Optimization..."
-sleep 3
+progress_bar
 
 # Free Up Disk Space (Cache Cleanup)
 echo "🔄 Cleaning up cache..."
