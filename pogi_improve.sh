@@ -51,23 +51,30 @@ echo "✅ Enhance system stability for gaming"; sleep 1
 echo "✅ Simulate FPS and GPU optimization"; sleep 1
 echo ""
 
-# **🔄 Simulated Progress Bar**
+# **🔄 Simulated Progress Bar (Fix for Termux)**
 progress_bar() {
-    echo -ne "[                    ] 0%\r"
-    sleep 1
-    echo -ne "[#####               ] 25%\r"
-    sleep 1
-    echo -ne "[##########          ] 50%\r"
-    sleep 1
-    echo -ne "[###############     ] 75%\r"
-    sleep 1
-    echo -ne "[####################] 100%\r"
+    local duration=$1
+    local bar_length=30
+    local filled=0
+
+    echo -ne "["
+    for ((i=0; i<$bar_length; i++)); do echo -ne " "; done
+    echo -ne "] 0%\r"
+
+    for ((i=0; i<=$bar_length; i++)); do
+        sleep $((duration / bar_length))
+        filled=$((i * 100 / bar_length))
+        echo -ne "["
+        for ((j=0; j<i; j++)); do echo -ne "#"; done
+        for ((j=i; j<bar_length; j++)); do echo -ne " "; done
+        echo -ne "] ${filled}%\r"
+    done
     echo ""
 }
 
 # Start Optimization
 echo "🚀 Initializing Optimization..."
-progress_bar
+progress_bar 5
 
 # Free Up Disk Space (Cache Cleanup)
 echo "🔄 Cleaning up cache..."
@@ -86,10 +93,7 @@ sleep 3
 
 # Simulating CPU Optimization (Without Root)
 echo "🔥 Boosting system performance..."
-for i in {1..5}; do
-    echo -ne "🔧 Applying tweaks [$i/5]...\r"
-    sleep 1
-done
+progress_bar 5
 echo "✅ Performance boost completed!"
 sleep 3
 
@@ -101,13 +105,13 @@ echo ""
 
 # Show Running Processes (Instead of Killing Them)
 echo "🔍 Analyzing background processes..."
-sleep 3
+progress_bar 4
 ps -A -o comm | head -20
 echo ""
 
 # Fake FPS Boosting (Just for Show)
 echo "🎮 Enhancing gaming experience..."
-sleep 2
+progress_bar 4
 echo "🔄 Adjusting rendering settings..."
 sleep 3
 echo "✅ FPS optimization complete!"
