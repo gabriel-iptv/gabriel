@@ -1,110 +1,43 @@
-#!/bin/bash
+#!/data/data/com.termux/files/usr/bin/bash
 
-# Clear screen
-clear
+# Display Developer Name
+echo -e "\033[1;32mDeveloper: Gabriel\033[0m"
 
-# ASCII Art
-echo "====================================="
-echo " ██████╗  ██████╗  ██████╗ ██╗"
-echo " ██╔══██╗██╔═══██╗██╔═══██╗██║"
-echo " ██████╔╝██║   ██║██║   ██║██║"
-echo " ██╔═══╝ ██║   ██║██║   ██║██║"
-echo " ██║     ╚██████╔╝╚██████╔╝███████╗"
-echo " ╚═╝      ╚═════╝  ╚═════╝ ╚══════╝"
-echo "====================================="
-echo " POGI IMPROVE - Game Booster for Termux"
-echo " Developer: Gabriel"
-echo "====================================="
-sleep 2
-
-# Detect Device Name
+# Get Device Name
 DEVICE_NAME=$(getprop ro.product.model)
-if [ -z "$DEVICE_NAME" ]; then
-    DEVICE_NAME="Unknown Device"
-fi
+echo -e "\033[1;32mDevice: $DEVICE_NAME\033[0m"
 
-# Detect Terminal Used
-TERMINAL_NAME=$(ps -o comm= -p $$)
-if [ -z "$TERMINAL_NAME" ]; then
-    TERMINAL_NAME="Unknown Terminal"
-fi
-
-echo "🔹 Device Detected: $DEVICE_NAME"
-echo "🖥️ Terminal Used: $TERMINAL_NAME"
-echo ""
-sleep 2
-
-# Module Purpose
-echo "📌 Module Purpose:"
-sleep 1
-echo "  ✅ Improve overall device performance"
-sleep 1
-echo "  ✅ Clean RAM to free up memory"
-sleep 1
-echo "  ✅ Optimize storage for better I/O speed"
-sleep 1
-echo "  ✅ Enhance system stability for gaming"
-sleep 1
-echo "  ✅ Boost FPS and GPU performance"
-echo ""
-sleep 2
-
-# Simulated Optimization Process
-echo "🚀 Starting Optimization Process..."
-sleep 2
-
-# Step 1: Cleaning Cache
-for i in {1..5}; do
-    echo "🧹 Cleaning cache... [$i/5]"
-    sleep 1
+# Start Progress Bar
+for i in {1..10}; do
+    echo -ne "\033[1;32m["
+    for ((j=0; j<i; j++)); do echo -ne "="; done
+    for ((j=i; j<10; j++)); do echo -ne " "; done
+    echo -ne "] $((i * 10))%\r"
+    sleep 0.2
 done
-rm -rf ~/../usr/tmp/*
-rm -rf ~/../usr/var/tmp/*
-echo "✅ Cache cleaned!"
-sleep 2
+echo -e "\n\033[1;32mApplying Low-End Device Optimizations...\033[0m"
 
-# Step 2: Freeing Up RAM
-for i in {1..5}; do
-    echo "🧠 Freeing up RAM... [$i/5]"
-    sleep 1
-done
-echo 3 > /proc/sys/vm/drop_caches 2>/dev/null || echo "🔸 RAM cleanup is limited without root!"
-echo "✅ RAM freed!"
-sleep 2
+# Lock Refresh Rate to 60Hz or 90Hz (whichever is supported)
+cmd settings put system peak_refresh_rate 90
+cmd settings put system min_refresh_rate 60
 
-# Step 3: Optimizing Storage Performance
-for i in {1..5}; do
-    echo "💾 Optimizing storage... [$i/5]"
-    sleep 1
-done
-sync && echo "3" > ~/sync_cache.txt
-echo "✅ Disk read/write performance improved!"
-sleep 2
+# Reduce System UI Animations for Faster Performance
+cmd settings put global window_animation_scale 0.25
+cmd settings put global transition_animation_scale 0.25
+cmd settings put global animator_duration_scale 0.25
 
-# Step 4: System Performance Optimization
-for i in {1..5}; do
-    echo "⚙️ Boosting system performance... [$i/5]"
-    sleep 1
-done
-echo "✅ Performance boost completed!"
-sleep 2
+# Clean RAM by Killing Unused Apps
+echo -e "\033[1;32mClearing Background Apps...\033[0m"
+cmd activity recents clear
+am kill-all
 
-# Step 5: Enhancing Gaming Experience
-for i in {1..5}; do
-    echo "🎮 Enhancing gaming performance... [$i/5]"
-    sleep 1
-done
-echo "✅ FPS optimization complete!"
-sleep 2
+# Optimize CPU Usage for Low-End Devices
+cmd settings put global game_driver_all_apps 1
+cmd settings put global force_gpu_rendering 1
+cmd settings put global hwui_force_gpu_rendering 1
 
-# Display RAM Usage
-echo "📊 Checking RAM usage..."
-sleep 2
-free -h
-echo ""
+# Apply Memory Management Tweaks (Temporary)
+echo 3 > /proc/sys/vm/drop_caches
 
-# Inform the User That The Script Finished
-echo ""
-echo "🎉 POGI IMPROVE Optimizations Applied!"
-echo "💯 Enjoy your smooth gaming experience!"
-sleep 2
+# Finish
+echo -e "\033[1;32m✔ Low-End Device Boost Applied Successfully!\033[0m"
