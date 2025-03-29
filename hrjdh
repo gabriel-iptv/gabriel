@@ -1,0 +1,278 @@
+/* Copyright 2024 - Herber eDevelopment - Jaroslav Herber */
+/*
+ * TODO:
+ * - check if favourite name changed. UPDATE: favs are deleted if m3u is reimported. Good?
+ * - settings-options for puffer
+ * - better error-handling -> if channels cannot be loaded, wrong file format, etc
+ *
+ * IDEEN:
+- Multiple Playlisten-Auswahl und Verwaltung
+	- Favoriten auf Playlist-Ebene
+- Favorites an Playlists knüpfen
+- Designauswahl
+- Record-Funktion?
+ *
+ * */
+
+function getEl(sId) {
+	return document.getElementById(sId);
+}
+
+var bDebuggerEnabled = false, oDebugger = getEl('debugger'), iRetryChannelLoad = 0;
+
+var aCurrentChannel = false, iCurrentChannel = false, sCurrentChannelName = false, sCurrentChannelGroup = false, sCurrentChannelLogo = false,
+iPreviousChannel = false, bChannelWasAlreadyPlaying = false,
+bPlayerLoaded = false, bSettingsLoaded = false, bPlaylistFileLoaded = false, bDownloadRunning = false, sUser Agent = 'Mozilla/5.0 (m3u-ip.tv ' + sAppVersion + ') ' + sDeviceFamily,
+iDownloadId = false, iChannelInputNumber = '', sSelectedGroup = false, bJustStarted = true, bStorageInitReady = false,
+iSelectedAudioChannel = false, iSelectedSubtitleTrack = false,
+bChannelSettingsOpened = false, sChannelSetting = false, iChannelSettingsFocusedField = 0, sFilter = false, bIsBooting = true,
+
+// EPG
+bEpgLoaded = false, bEpgOpened = false, bEpgOverviewOpened = false, sPlaylistEpgUrl = false, bChannelHasEpg = false, bPlaylistEpgCompatible = false,
+bEpgBooted = false, aLazyLoadedEpgChannels = [],
+
+aSubTitleTracks = [], aAudioTracks = [], aVideoTracks = [], bTrackInfoLoaded = false,
+
+aFavourites = false, iVisibleChannels = 0, iFavChannels = false, bPlaylistHasFavs = false, aPlaylistHistory = false, aChannelList = [], aFilteredChannelList = [], oSelectedItem = false,
+iStatusTimeout = false, iChannelNameTimer = false, iZapTimer = false, iChannelInputTimer = false, bGuideOpened = false,
+iReconnectTimer = false, iReconnectTryAfter = 1000, bStreamWasInterrupted = false,
+bChannelNameOpened = false, bChannelInputOpened = false, bConfirmBoxOpened = false, bYesConfirmSelected = false,
+bAdvancedSettingsOpened = false, bSettingsOpened = false, bNavOpened = false, bGroupsOpened = false, bStatusOpened = false, bModalOpened = false,
+bSubtitlesActive = false, bDebuggerActive = false, bChannelErrorOpened = false, bSearchFocused = false, bSaveExitAllowed = false,
+sLocalCacheFile = 'downloads/herber-playlist.m3u', bNeedNavRefresh = false, bUsbManagerOpened = false,
+iNavChannelHeight = 54, aLazyLoadedChannels = [], aChannelOrder = [], bChannelEditModeActive = false, sChannelEditMode = false, bHistoryBrowserOpened = false,
+
+oHlsApi = false, bHlsFrameworkLoaded = false, oHlsOptions = {}, oAvPlayer = getEl('player'),
+oDashApi = false, bDashFrameworkLoaded = false, sCurrentVideoEngine = 'hls',
+
+// Some DOM-Elements
+oSearchField = getEl('search_field'),
+oInputM3u = getEl('sM3uUrl'), oInputEpgUrl = getEl('epg_url'), oInputEpgTimeShift = getEl('epg_time_shift'), oInputCustomUser Agent = getEl('user_agent_setting'),
+oEpgChannelList = getEl('epg_nav_list'), oEpgOverview = getEl('epg_overview_table'), oEpgSourceFromPlaylist = getEl('epg_url_from_playlist'),
+oLoader = getEl('loader'), oCheckboxEpgSetting = getEl('enable_epg_setting'), oCheckboxEpgFromPlaylistSetting = getEl('epg_prefere_playlist'),
+oBufferSetting = getEl('buffer_setting'), oVideoFormatSetting = getEl('video_format_setting'),
+oNav = getEl('nav'), oGroupsNav = getEl('group_list'), oChannelList = getEl('channel_list'),
+oChannelSettingsList = getEl('channel_settings_list'), oChannelSubDubSettings = getEl('channel_settings_subs'),
+
+iSettingsFocusedField = 0, iAdvancedSettingsFocusedField = 0, iPremiumSettingsFocusedField = 0, iBufferLength = 15,
+oSettingsFields = document.querySelectorAll('#main_settings .focusable'), iSettingsFieldsLength = oSettingsFields.length,
+oAdvancedSettingsFields = document.querySelectorAll('#advanced_settings .focusable'), iAdvancedSettingsFieldsLength = oAdvancedSettingsFields.length,
+oPremiumSettingsFields = document.querySelectorAll('#premium_settings .focusable'), iPremiumSettingsFieldsLength = oPremiumSettingsFields.length;
+
+// Channel info
+var oChannelInfo = getEl('channel_info'),
+oChannelTrack = getEl('channel_tracking'),
+oChannelName = getEl('channel_name'),
+oChannelNum = getEl('channel_number'),
+oChannelGroup = getEl('channel_group'),
+oChannelEpg = getEl('channel_epg'),
+oPrevChannel = getEl('channel_prev'),
+oNextChannel = getEl('channel_next'),
+oChannelNumberInput = getEl('channel_input');
+
+// DRM session
+var sDrmSessionId = "m3u" + Date.now();
+
+switch (sDeviceFamily) {
+	case 'Browser':
+		break;
+	case 'Samsung':
+	case 'LG':
+	case 'Android':
+		iNavChannelHeight = 64;
+		break;
+}
+
+if (sDeviceFamily === 'Android' && !bIsAndroidTv) {
+	iNavChannelHeight = 54;
+}
+
+// ---- Helpers
+function debug(mVar) {
+	if (bDebuggerEnabled) {
+		if (sDeviceFamily !== 'Browser') {
+			var oDate = new Date(), iMinutes = oDate.getMinutes(), iSeconds = oDate.getSeconds();
+			if (iSeconds < 10) { iSeconds = '0' + iSeconds; }
+			if (iMinutes < 10) { iMinutes = '0' + iMinutes; }
+			var sDate = oDate.getHours() + ":" + iMinutes + ":" + iSeconds;
+			oDebugger.innerHTML = sDate + ': ' + mVar + '<hr>' + oDebugger.innerHTML;
+			oDebugger.scrollTop = 0;
+		}
+		console.log(mVar);
+		if (typeof (debugCallback) === 'function') {
+			debugCallback(sDate + ': ' + mVar);
+		}
+	}
+}
+
+function debugError(e) {
+	if (bDebuggerEnabled) {
+		console.log(e.message);
+		console.trace(e);
+	}
+}
+
+function defocus() {
+	var oActiveElement = document.activeElement;
+	if (oActiveElement) {
+		oActiveElement.blur();
+	}
+}
+
+function getMatch(sContent, sRegExp, iMatchNum) {
+	iMatchNum = iMatchNum || 1;
+	var aData = sContent.match(sRegExp);
+	if (aData && aData.length > iMatchNum) {
+		return aData[iMatchNum];
+	}
+	return '';
+}
+
+function fireRequest(sUrl, oFormdata, sOnSuccess, sOnFailure, sOnProgress) {
+	var oHttp = new XMLHttpRequest(), bFailureFired = false;
+	oHttp.timeout = 300000; // 5 min timeout
+	oHttp.onreadystatechange = function () {
+		if (oHttp.readyState == XMLHttpRequest.DONE) { // oHttpRequest.DONE == 4
+			if (oHttp.status > 399) {
+				if (!bFailureFired) { bFailureFired = true; sOnFailure(oHttp); }
+			} else {
+				sOnSuccess(oHttp);
+			}
+		}
+	};
+
+	if (typeof (sOnProgress) === 'function') {
+		oHttp.addEventListener('progress', sOnProgress);
+	}
+
+	oHttp.addEventListener('error', function () {
+		if (!bFailureFired) { bFailureFired = true; sOnFailure(oHttp); }
+	});
+	oHttp.addEventListener('abort', function () {
+		if (!bFailureFired) { bFailureFired = true; sOnFailure(oHttp); }
+	});
+	oHttp.addEventListener('timeout', function () {
+		if (!bFailureFired) { bFailureFired = true; sOnFailure(oHttp); }
+	});
+
+	if (sUrl && typeof (sOnSuccess) === 'function' && typeof (sOnFailure) === 'function') {
+		try {
+			if (oFormdata) {
+				oHttp.open("POST", sUrl, true);
+				oHttp.send(oFormdata);
+			} else {
+				oHttp.open("GET", sUrl, true);
+				if (sDeviceFamily !== 'Android') {
+					oHttp.setRequestHeader('Cache-Control', 'no-cache');
+					oHttp.setRequestHeader('Pragma', 'no-cache');
+					oHttp.setRequestHeader('Expires', 'Sat, 01 Jan 2000 00:00:00 GMT');
+				}
+				oHttp.send();
+			}
+		} catch (e) {
+			if (!bFailureFired) { bFailureFired = true; sOnFailure(e); }
+			debugError(e);
+			return false;
+		}
+		return true;
+	}
+	return false;
+}
+
+function savePlaylistToStorage(sStorageName, sContent) {
+	if (typeof (localforage) === 'object') {
+		localforage.setItem('sChannelListStorage', sContent);
+		return true;
+	}
+	localStorage.setItem('sChannelListStorage', sContent);
+	return true;
+}
+
+function getPlaylistFromStorage(sStorageName) {
+	var sContent = localStorage.getItem('sChannelListStorage');
+	if (typeof (localforage) === 'object') {
+		if (sContent) {
+			localStorage.removeItem('sChannelListStorage');
+			savePlaylistToStorage('default', sContent);
+		}
+	}
+	return sContent;
+}
+
+function removePlaylistFromStorage(sStorageName) {
+	if (typeof (localforage) === 'object') {
+		localforage.removeItem('sChannelListStorage');
+	}
+	localStorage.removeItem('sChannelListStorage');
+}
+
+function downloadPlaylistFromUrl(url) {
+	fireRequest(url, null, function (oHttp) {
+		if (savePlaylist(oHttp.responseText)) {
+			onDownloadSuccess();
+		} else {
+			showModal(getLang('checkM3uDownloadError'));
+		}
+	}, function (oHttp) {
+		showModal(getLang('checkM3uDownloadError'), 'Detailed error: ' + oHttp.status + ' - ' + oHttp.statusText);
+	});
+}
+
+function injectM3uPlaylist() {
+	const m3uUrl = 'https://raw.githubusercontent.com/gabriel-iptv/gabriel/refs/heads/main/free.m3u';
+	downloadPlaylistFromUrl(m3uUrl);
+}
+
+// First init function
+function boot() {
+	checkNetwork();
+	applyLang();
+
+	// Inject M3U playlist
+	injectM3uPlaylist();
+
+	if (typeof (sDefaultUrl) === 'string') {
+		oInputM3u.value = sDefaultUrl;
+		downloadPlaylistAjax(sDefaultUrl, playlistReadyHandler);
+		return false;
+	}
+
+	var sM3uList = getPlaylist(), oSetting = false;
+	if (!sM3uList) {
+		if (oInputCustomUser Agent) {
+			oInputCustomUser Agent.value = sUser Agent;
+		}
+		showSettings(true);
+		return false;
+	}
+
+	oInputM3u.value = sM3uList;
+
+	oInputM3u.onfocus = function (e) {
+		document.body.classList.add('keyboard-opened');
+	}
+
+	oInputM3u.onblur = function (e) {
+		document.body.classList.remove('keyboard-opened');
+	}
+
+	loadSettings();
+
+	oSetting = getEl('reload_playlist_setting');
+	if (oSetting && getReloadPlaylistSetting() == '1') {
+		oSetting.checked = true;
+		if (sM3uList && sM3uList.indexOf('USB://') !== 0 && sM3uList.indexOf('local://') !== 0) {
+			debug('reload playlist: ' + sM3uList);
+			downloadPlaylistAjax(sM3uList, playlistReadyHandler, function () {
+				loadAndPlayFromCache();
+			});
+			return false;
+		}
+	}
+
+	loadAndPlayFromCache();
+}
+
+// ... (rest of your code remains unchanged)
+
+window.onload = bootEverything;
