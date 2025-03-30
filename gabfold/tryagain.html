@@ -73,35 +73,11 @@
         .menu ul li:hover {
             background: rgba(255, 255, 255, 0.2);
         }
-        .channel-nav {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 10px;
-        }
-        .channel-nav button {
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            border: none;
-            padding: 10px;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-        .channel-nav button:hover {
-            background: rgba(255, 255, 255, 0.4);
-        }
-        .scroll-buttons {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 10px;
-        }
     </style><script src="https://ssl.p.jwpcdn.com/player/v/8.36.4/jwplayer.js"></script>
 <script src="channels.js"></script>
 <script>
     jwplayer.key = 'ITWMv7t88JGzI0xPwW8I0+LveiXX9SWbfdmt0ArUSyc=';
-    
-    let currentChannelIndex = 0;
 
-    
     function loadStream(channelKey) {
         const channel = channels[channelKey];
         jwplayer("player").setup({
@@ -128,29 +104,12 @@
     }
 
     function selectChannel(channelKey) {
-        currentChannelIndex = channelList.indexOf(channelKey);
         loadStream(channelKey);
         toggleMenu();
     }
 
-    function nextChannel() {
-        currentChannelIndex = (currentChannelIndex + 1) % channelList.length;
-        loadStream(channelList[currentChannelIndex]);
-    }
-
-    function prevChannel() {
-        currentChannelIndex = (currentChannelIndex - 1 + channelList.length) % channelList.length;
-        loadStream(channelList[currentChannelIndex]);
-    }
-
-    function scrollMenu(direction) {
-        const menu = document.getElementById('menu');
-        menu.scrollTop += direction * 50;
-    }
-
     window.onload = function() {
         screen.orientation.lock("landscape").catch(() => {});
-        loadStream(channelList[currentChannelIndex]);
     };
 </script>
 
@@ -159,10 +118,6 @@
     <span class="burger-menu" onclick="toggleMenu()">☰</span>
     <span class="fullscreen-button" onclick="toggleFullscreen()">⛶</span><div id="menu" class="menu">
     <h2>Channel List</h2>
-    <div class="scroll-buttons">
-        <button onclick="scrollMenu(-1)">▲ Scroll Up</button>
-        <button onclick="scrollMenu(1)">▼ Scroll Down</button>
-    </div>
     <ul>
         <li onclick="selectChannel('tv5')">TV5</li>
 <li onclick="selectChannel('kapamilya')">Kapamilya</li>
@@ -240,10 +195,6 @@
 <li onclick="selectChannel('fashiontv_hd')">Fashion TV HD</li>
 <li onclick="selectChannel('bloomberg')">Bloomberg</li>
     </ul>
-    <div class="channel-nav">
-        <button onclick="prevChannel()">◀ Previous</button>
-        <button onclick="nextChannel()">Next ▶</button>
-    </div>
 </div>
 
 <div id="player"></div>
