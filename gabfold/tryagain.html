@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -44,8 +43,7 @@
             left: 50%;
             top: 50%;
             transform: translate(-50%, -50%);
-            width: 50vw;
-            height: 60vh;
+            width: 300px;
             background: rgba(0, 0, 0, 0.9);
             color: white;
             box-shadow: 2px 0 10px rgba(255, 255, 255, 0.2);
@@ -54,16 +52,17 @@
             z-index: 999;
             border-radius: 10px;
             display: none;
-            text-align: center;
         }
         .menu h2 {
             margin: 0 0 10px;
             font-size: 18px;
+            text-align: center;
         }
         .menu ul {
             list-style: none;
             padding: 0;
             margin: 0;
+            text-align: center;
         }
         .menu ul li {
             padding: 10px;
@@ -73,61 +72,83 @@
         .menu ul li:hover {
             background: rgba(255, 255, 255, 0.2);
         }
-    </style>
-    
-    <script src="https://ssl.p.jwpcdn.com/player/v/8.36.4/jwplayer.js"></script>
-    <script src="channels.js"></script>
-    <script>
-        jwplayer.key = 'ITWMv7t88JGzI0xPwW8I0+LveiXX9SWbfdmt0ArUSyc=';
+    </style><script src="https://ssl.p.jwpcdn.com/player/v/8.36.4/jwplayer.js"></script>
+<script src="channels.js"></script>
+<script>
+    jwplayer.key = 'ITWMv7t88JGzI0xPwW8I0+LveiXX9SWbfdmt0ArUSyc=';
 
-        function loadStream(channelKey) {
-            const channel = channels[channelKey];
-            jwplayer("player").setup({
-                file: channel.url,
-                type: channel.type,
-                width: "100%",
-                height: "100vh",
-                autostart: true
-            });
-        }
+    function loadStream(channelKey) {
+        const channel = channels[channelKey];
+        jwplayer("player").setup({
+            file: channel.url,
+            type: channel.type,
+            drm: channel.type === 'mpd' ? {
+                clearkey: {
+                    keyId: channel.keyId,
+                    key: channel.key
+                }
+            } : undefined,
+            width: "100%",
+            height: "100vh",
+            autostart: true
+        });
+    }
 
-        function toggleFullscreen() {
-            const playerContainer = document.documentElement;
-            if (!document.fullscreenElement) {
-                playerContainer.requestFullscreen().catch(() => {});
-            } else {
+    function toggleFullscreen() {
+        const playerContainer = document.documentElement;
+        if (!document.fullscreenElement) {
+            if (playerContainer.requestFullscreen) {
+                playerContainer.requestFullscreen();
+            } else if (playerContainer.mozRequestFullScreen) {
+                playerContainer.mozRequestFullScreen();
+            } else if (playerContainer.webkitRequestFullscreen) {
+                playerContainer.webkitRequestFullscreen();
+            } else if (playerContainer.msRequestFullscreen) {
+                playerContainer.msRequestFullscreen();
+            }
+        } else {
+            if (document.exitFullscreen) {
                 document.exitFullscreen();
+            } else if (document.mozCancelFullScreen) {
+                document.mozCancelFullScreen();
+            } else if (document.webkitExitFullscreen) {
+                document.webkitExitFullscreen();
+            } else if (document.msExitFullscreen) {
+                document.msExitFullscreen();
             }
         }
+    }
 
-        function toggleMenu() {
-            const menu = document.getElementById('menu');
-            menu.style.display = (menu.style.display === "none" || menu.style.display === "") ? "block" : "none";
-        }
+    function toggleMenu() {
+        const menu = document.getElementById('menu');
+        menu.style.display = (menu.style.display === "none" || menu.style.display === "") ? "block" : "none";
+    }
 
-        function selectChannel(channelKey) {
-            loadStream(channelKey);
-            toggleMenu();
-        }
+    function selectChannel(channelKey) {
+        loadStream(channelKey);
+        toggleMenu();
+    }
 
-        window.onload = function() {
-            screen.orientation.lock("landscape").catch(() => {});
-        };
-    </script>
+    window.onload = function() {
+        screen.orientation.lock("landscape").catch(() => {});
+        loadStream("tv5");
+    };
+</script>
+
 </head>
 <body>
     <span class="burger-menu" onclick="toggleMenu()">☰</span>
-    <span class="fullscreen-button" onclick="toggleFullscreen()">⛶</span>
-    
-    <div id="menu" class="menu">
-        <h2>Channel List</h2>
-        <ul>
-            <li onclick="selectChannel('tv5')">TV5</li>
-            <li onclick="selectChannel('kapamilya')">Kapamilya</li>
-            <li onclick="selectChannel('disney')">Disney</li>
-        </ul>
-    </div>
-    
-    <div id="player"></div>
+    <span class="fullscreen-button" onclick="toggleFullscreen()">⛶</span><div id="menu" class="menu">
+    <h2>Channel List</h2>
+    <ul>
+        <li onclick="selectChannel('tv5')">TV5</li>
+        <li onclick="selectChannel('kapamilya')">Kapamilya</li>
+        <li onclick="selectChannel('disney')">Disney</li>
+        <li onclick="selectChannel('anc')">ANC</li>
+    </ul>
+</div>
+
+<div id="player"></div>
+
 </body>
 </html>
