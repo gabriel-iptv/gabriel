@@ -10,6 +10,7 @@
             padding: 0;
             background-color: #000;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
             height: 100vh;
@@ -17,79 +18,159 @@
         #player-container {
             position: relative;
             width: 100%;
-            max-width: 800px;
-            height: 450px;
+            max-width: 1000px;
+            height: 60vh;
+            background: black;
         }
         #player {
             width: 100%;
             height: 100%;
         }
-        #channelSelectContainer {
-            display: none;
+        .controls {
             position: absolute;
             bottom: 10px;
             left: 50%;
             transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+        }
+        button, select {
+            padding: 10px;
+            font-size: 16px;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        #fullscreenBtn, #channelBtn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
             background: rgba(0, 0, 0, 0.8);
             padding: 10px;
             border-radius: 5px;
         }
-        #channelSelect {
-            padding: 5px;
+        #channelMenu {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            max-width: 400px;
+            background: rgba(0, 0, 0, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            color: white;
+            text-align: center;
+        }
+        #channelMenu input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: none;
+            border-radius: 5px;
             font-size: 16px;
         }
-    </style><script src="https://cdn.jwplayer.com/libraries/your-license-key.js"></script>
-<script src="channels.js"></script>
-
-</head>
-<body>
-    <div id="player-container">
-        <div id="player"></div>
-        <div id="channelSelectContainer">
-            <select id="channelSelect">
-                <option value="tv5">TV5</option>
-                <option value="kapamilya">Kapamilya</option>
-                <option value="disney">Disney</option>
-                <!-- Add more channels here -->
-            </select>
-        </div>
-    </div><script>
-    jwplayer.key = 'ITWMv7t88JGzI0xPwW8I0+LveiXX9SWbfdmt0ArUSyc=';
-
-    function loadStream(channelKey) {
+        .channel-list {
+            list-style: none;
+            padding: 0;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        .channel-list li {
+            padding: 10px;
+            cursor: pointer;
+            border-bottom: 1px solid #555;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .channel-list img {
+            width: 30px;
+            height: 30px;
+            border-radius: 5px;
+        }
+    </style>
+    <script src="https://cdn.jwplayer.com/libraries/your-jwplayer-key.js"></script>
+    <script src="channels.js"></script>
+    <script>
+        jwplayer.key = 'ITWMv7t88JGzI0xPwW8I0+LveiXX9SWbfdmt0ArUSyc=';function loadStream(channelKey) {
         const channel = channels[channelKey];
         jwplayer("player").setup({
             file: channel.url,
             type: channel.type,
             width: "100%",
             height: "100%",
-            autostart: true
+            autostart: true,
         });
     }
 
-    const playerContainer = document.getElementById("player-container");
-    const playerElement = document.getElementById("player");
-    const channelSelectContainer = document.getElementById("channelSelectContainer");
-    const channelSelect = document.getElementById("channelSelect");
+    document.addEventListener("DOMContentLoaded", function() {
+        const playerContainer = document.getElementById("player-container");
+        const fullscreenBtn = document.getElementById("fullscreenBtn");
+        const channelBtn = document.getElementById("channelBtn");
+        const channelMenu = document.getElementById("channelMenu");
+        const channelSearch = document.getElementById("channelSearch");
+        const channelList = document.getElementById("channelList");
+        
+        fullscreenBtn.addEventListener("click", function() {
+            if (!document.fullscreenElement) {
+                playerContainer.requestFullscreen().then(() => {
+                    screen.orientation.lock("landscape");
+                });
+            } else {
+                document.exitFullscreen();
+                screen.orientation.unlock();
+            }
+        });
 
-    channelSelect.addEventListener("change", function() {
-        loadStream(this.value);
+        channelBtn.addEventListener("click", function() {
+            channelMenu.style.display = "block";
+        });
+
+        channelMenu.addEventListener("click", function(event) {
+            if (event.target === channelMenu) {
+                channelMenu.style.display = "none";
+            }
+        });
+
+        channelSearch.addEventListener("input", function() {
+            const filter = channelSearch.value.toLowerCase();
+            const items = channelList.getElementsByTagName("li");
+            for (let item of items) {
+                const text = item.textContent.toLowerCase();
+                item.style.display = text.includes(filter) ? "flex" : "none";
+            }
+        });
+
+        document.querySelectorAll(".channel-list li").forEach(item => {
+            item.addEventListener("click", function() {
+                loadStream(this.dataset.channel);
+                channelMenu.style.display = "none";
+            });
+        });
     });
-
-    playerContainer.addEventListener("click", function() {
-        if (!document.fullscreenElement) {
-            playerContainer.requestFullscreen();
-            channelSelectContainer.style.display = "block";
-        } else {
-            document.exitFullscreen();
-            channelSelectContainer.style.display = "none";
-        }
-    });
-
-    window.onload = function() {
-        loadStream(channelSelect.value);
-    };
 </script>
+
+</head>
+<body>
+    <div id="player-container">
+        <div id="player"></div>
+        <button id="fullscreenBtn">⛶</button>
+        <button id="channelBtn">☰</button>
+    </div><div id="channelMenu">
+    <h2>Channel List</h2>
+    <input type="text" id="channelSearch" placeholder="Search channel...">
+    <ul class="channel-list" id="channelList">
+        <li data-channel="tv5"><img src="tv5_logo.png"> TV5</li>
+        <li data-channel="kapamilya"><img src="kapamilya_logo.png"> Kapamilya</li>
+        <li data-channel="disney"><img src="disney_logo.png"> Disney</li>
+        <li data-channel="anc"><img src="anc_logo.png"> ANC</li>
+        <li data-channel="Animax"><img src="animax_logo.png"> Animax</li>
+        <li data-channel="cartoon_net_hd"><img src="cartoon_net_logo.png"> Cartoon Network HD</li>
+    </ul>
+</div>
 
 </body>
 </html>
