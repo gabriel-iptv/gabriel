@@ -1,0 +1,174 @@
+<!DOCTYPE html><html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>freeiptv07</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            flex-direction: column;
+        }
+        #player {
+            width: 100%;
+            height: 100vh;
+        }
+        .fullscreen-button, .burger-menu {
+            position: absolute;
+            top: 10px;
+            font-size: 24px;
+            cursor: pointer;
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            z-index: 1000;
+        }
+        .fullscreen-button {
+            right: 10px;
+        }
+        .burger-menu {
+            left: 10px;
+        }
+        .menu {
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            box-shadow: 2px 0 10px rgba(255, 255, 255, 0.2);
+            overflow: hidden;
+            padding: 10px;
+            z-index: 999;
+            border-radius: 10px;
+            display: none;
+            text-align: center;
+        }
+        .scroll-button {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            cursor: pointer;
+            padding: 5px;
+            margin: 5px 0;
+            width: 100%;
+            font-size: 18px;
+        }
+        .scroll-button:hover {
+            background: rgba(255, 255, 255, 0.4);
+        }
+        .channel-list {
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 5px;
+        }
+        .menu ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .menu ul li {
+            padding: 10px;
+            cursor: pointer;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .menu ul li:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+    </style>
+    <script src="https://ssl.p.jwpcdn.com/player/v/8.36.4/jwplayer.js"></script>
+    <script src="channels.js"></script>
+    <script>
+        jwplayer.key = 'ITWMv7t88JGzI0xPwW8I0+LveiXX9SWbfdmt0ArUSyc=';function loadStream(channelKey) {
+        const channel = channels[channelKey];
+        jwplayer("player").setup({
+            file: channel.url,
+            type: channel.type,
+            drm: channel.type === 'mpd' ? {
+                clearkey: {
+                    keyId: channel.keyId,
+                    key: channel.key
+                }
+            } : undefined,
+            width: "100%",
+            height: "100vh",
+            autostart: true
+        });
+    }
+
+    function toggleFullscreen() {
+        const playerContainer = document.documentElement;
+        if (!document.fullscreenElement) {
+            if (playerContainer.requestFullscreen) {
+                playerContainer.requestFullscreen();
+            } else if (playerContainer.mozRequestFullScreen) {
+                playerContainer.mozRequestFullScreen();
+            } else if (playerContainer.webkitRequestFullscreen) {
+                playerContainer.webkitRequestFullscreen();
+            } else if (playerContainer.msRequestFullscreen) {
+                playerContainer.msRequestFullscreen();
+            }
+        } else {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            } else if (document.mozCancelFullScreen) {
+                document.mozCancelFullScreen();
+            } else if (document.webkitExitFullscreen) {
+                document.webkitExitFullscreen();
+            } else if (document.msExitFullscreen) {
+                document.msExitFullscreen();
+            }
+        }
+    }
+
+    function toggleMenu() {
+        const menu = document.getElementById('menu');
+        menu.style.display = (menu.style.display === "none" || menu.style.display === "") ? "block" : "none";
+    }
+
+    function selectChannel(channelKey) {
+        loadStream(channelKey);
+        toggleMenu();
+    }
+
+    function scrollMenu(amount) {
+        document.getElementById('channelList').scrollBy({ top: amount, behavior: 'smooth' });
+    }
+
+    window.onload = function() {
+        screen.orientation.lock("landscape").catch(() => {});
+        loadStream("tv5");
+    };
+</script>
+
+</head>
+<body>
+    <span class="burger-menu" onclick="toggleMenu()">☰</span>
+    <span class="fullscreen-button" onclick="toggleFullscreen()">⛶</span>
+    <div id="menu" class="menu">
+        <h2>Channel List</h2>
+        <button class="scroll-button" onclick="scrollMenu(-50)">▲</button>
+        <div class="channel-list" id="channelList">
+            <ul>
+                <li onclick="selectChannel('tv5')">TV5</li>
+                <li onclick="selectChannel('kapamilya')">Kapamilya</li>
+                <li onclick="selectChannel('disney')">Disney</li>
+                <li onclick="selectChannel('anc')">ANC</li>
+            </ul>
+        </div>
+        <button class="scroll-button" onclick="scrollMenu(50)">▼</button>
+    </div>
+    <div id="player"></div>
+</body>
+</html>
