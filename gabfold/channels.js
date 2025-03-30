@@ -16,9 +16,9 @@ const channels = {
 
 	kapamilya: {
         name: 'kapamilya',
-        url: 'https://linearjitp-playback.astro.com.my/dash-wv/linear/506/default_ott.mpd',
-        keyId: 'c5c1ba26907291afec11a9a78d513410',
-        key: '361197805d0149c29801946cf2dde67c',
+        url: 'https://cnvg.katir.workers.dev/1178/manifest.mpd',
+        keyId: '31363233323238323938303333343430',
+        key: '536a4774797143315773693133654b73',
 		type: 'mpd'
     },
 
