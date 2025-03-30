@@ -16,9 +16,9 @@ const channels = {
 
 	kapamilya: {
         name: 'kapamilya',
-        url: 'http://143.44.136.110:6910/001/2/ch00000090990000001286/manifest.mpd?virtualDomain=001.live_hls.zte.com',
-        keyId: '31363331363737343637333533323837',
-        key: '71347339457958556439543650426e74',
+        url: 'https://linearjitp-playback.astro.com.my/dash-wv/linear/506/default_ott.mpd',
+        keyId: 'c5c1ba26907291afec11a9a78d513410',
+        key: '361197805d0149c29801946cf2dde67c',
 		type: 'mpd'
     },
 
