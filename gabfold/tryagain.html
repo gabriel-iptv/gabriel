@@ -8,7 +8,7 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4;
+            background-color: #000;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -20,37 +20,41 @@
             width: 100%;
             max-width: 800px;
             height: 450px;
+            background: black;
         }
         #player {
             width: 100%;
             height: 100%;
         }
-        #channelButton {
+        #channel-list {
             position: absolute;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            padding: 10px 20px;
-            font-size: 16px;
-            background-color: rgba(0, 0, 0, 0.7);
+            top: 10px;
+            left: 10px;
+            width: 300px;
+            height: 80%;
+            background: rgba(0, 0, 0, 0.8);
             color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
             display: none;
-        }
-        #channelSelect {
-            position: absolute;
-            bottom: 60px;
-            left: 50%;
-            transform: translateX(-50%);
+            flex-direction: column;
             padding: 10px;
-            font-size: 16px;
-            background-color: rgba(0, 0, 0, 0.7);
-            color: white;
-            border: none;
             border-radius: 5px;
-            display: none;
+            overflow-y: auto;
+        }
+        #channel-list input {
+            width: 100%;
+            padding: 5px;
+            margin-bottom: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: none;
+        }
+        .channel-item {
+            padding: 10px;
+            cursor: pointer;
+            border-bottom: 1px solid #444;
+        }
+        .channel-item:hover {
+            background: #444;
         }
     </style>
     <script src="https://ssl.p.jwpcdn.com/player/v/8.36.4/jwplayer.js"></script>
@@ -61,12 +65,6 @@
         jwplayer("player").setup({
             file: channel.url,
             type: channel.type,
-            drm: channel.type === 'mpd' ? {
-                clearkey: {
-                    keyId: channel.keyId,
-                    key: channel.key
-                }
-            } : undefined,
             width: "100%",
             height: "100%",
             autostart: true,
@@ -75,32 +73,28 @@
 
     document.addEventListener("DOMContentLoaded", function() {
         const playerContainer = document.getElementById("player-container");
-        const channelSelect = document.getElementById("channelSelect");
-        const channelButton = document.getElementById("channelButton");
-
+        const channelList = document.getElementById("channel-list");
+        const searchBox = document.getElementById("searchChannel");
+        const channelItems = document.querySelectorAll(".channel-item");
+        
         playerContainer.addEventListener("dblclick", function() {
             if (!document.fullscreenElement) {
                 playerContainer.requestFullscreen().then(() => {
                     screen.orientation.lock("landscape");
-                    channelButton.style.display = "block";
+                    channelList.style.display = "flex";
                 });
             } else {
                 document.exitFullscreen();
-                channelButton.style.display = "none";
-                channelSelect.style.display = "none";
+                channelList.style.display = "none";
             }
         });
 
-        channelButton.addEventListener("click", function() {
-            channelSelect.style.display = channelSelect.style.display === "block" ? "none" : "block";
+        searchBox.addEventListener("input", function() {
+            const filter = searchBox.value.toLowerCase();
+            channelItems.forEach(item => {
+                item.style.display = item.textContent.toLowerCase().includes(filter) ? "block" : "none";
+            });
         });
-
-        channelSelect.addEventListener('change', function() {
-            loadStream(this.value);
-            channelSelect.style.display = "none";
-        });
-
-        loadStream(channelSelect.value);
     });
 </script>
 
@@ -108,15 +102,15 @@
 <body>
     <div id="player-container">
         <div id="player"></div>
-        <button id="channelButton">Select Channel</button>
-        <select id="channelSelect">
-            <option value="tv5">TV5</option>
-            <option value="kapamilya">Kapamilya</option>
-            <option value="disney">Disney</option>
-            <option value="anc">ANC</option>
-            <option value="Animax">Animax</option>
-            <option value="cartoon_net_hd">Cartoon Network HD</option>
-        </select>
+        <div id="channel-list">
+            <input type="text" id="searchChannel" placeholder="Search">
+            <div class="channel-item" onclick="loadStream('tv5')">TV5</div>
+            <div class="channel-item" onclick="loadStream('kapamilya')">Kapamilya</div>
+            <div class="channel-item" onclick="loadStream('disney')">Disney</div>
+            <div class="channel-item" onclick="loadStream('anc')">ANC</div>
+            <div class="channel-item" onclick="loadStream('Animax')">Animax</div>
+            <div class="channel-item" onclick="loadStream('cartoon_net_hd')">Cartoon Network HD</div>
+        </div>
     </div>
 </body>
 </html>
