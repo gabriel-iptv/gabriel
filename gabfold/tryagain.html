@@ -26,13 +26,23 @@
             width: 100%;
             height: 100%;
         }
+        #channel-button {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
         #channel-list {
             position: absolute;
             top: 10px;
-            left: 10px;
+            left: 50%;
+            transform: translateX(-50%);
             width: 300px;
-            height: 80%;
-            background: rgba(0, 0, 0, 0.8);
+            max-height: 80%;
+            background: rgba(0, 0, 0, 0.9);
             color: white;
             display: none;
             flex-direction: column;
@@ -52,6 +62,7 @@
             padding: 10px;
             cursor: pointer;
             border-bottom: 1px solid #444;
+            text-align: center;
         }
         .channel-item:hover {
             background: #444;
@@ -60,11 +71,13 @@
     <script src="https://ssl.p.jwpcdn.com/player/v/8.36.4/jwplayer.js"></script>
     <script src="channels.js"></script>
     <script>
-        jwplayer.key = 'ITWMv7t88JGzI0xPwW8I0+LveiXX9SWbfdmt0ArUSyc=';function loadStream(channelKey) {
-        const channel = channels[channelKey];
-        jwplayer("player").setup({
+        jwplayer.key = 'XSuP4qMl+9tK17QNb+4+th2Pm9AWgMO/cYH8CI0HGGr7bdjo';
+        let player;
+        function loadStream(channelKey) {
+            const channel = channels[channelKey];
+            if (!channel) return;player = jwplayer("player").setup({
             file: channel.url,
-            type: channel.type,
+            type: channel.type || "hls",
             width: "100%",
             height: "100%",
             autostart: true,
@@ -74,6 +87,7 @@
     document.addEventListener("DOMContentLoaded", function() {
         const playerContainer = document.getElementById("player-container");
         const channelList = document.getElementById("channel-list");
+        const channelButton = document.getElementById("channel-button");
         const searchBox = document.getElementById("searchChannel");
         const channelItems = document.querySelectorAll(".channel-item");
         
@@ -81,12 +95,14 @@
             if (!document.fullscreenElement) {
                 playerContainer.requestFullscreen().then(() => {
                     screen.orientation.lock("landscape");
-                    channelList.style.display = "flex";
                 });
             } else {
                 document.exitFullscreen();
-                channelList.style.display = "none";
             }
+        });
+
+        channelButton.addEventListener("click", function() {
+            channelList.style.display = channelList.style.display === "flex" ? "none" : "flex";
         });
 
         searchBox.addEventListener("input", function() {
@@ -102,6 +118,7 @@
 <body>
     <div id="player-container">
         <div id="player"></div>
+        <div id="channel-button">Channels</div>
         <div id="channel-list">
             <input type="text" id="searchChannel" placeholder="Search">
             <div class="channel-item" onclick="loadStream('tv5')">TV5</div>
