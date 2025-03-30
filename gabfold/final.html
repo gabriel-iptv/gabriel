@@ -31,6 +31,7 @@
             padding: 10px;
             border-radius: 5px;
             z-index: 1000;
+            transition: opacity 0.5s;
         }
         .fullscreen-button {
             right: 10px;
@@ -38,76 +39,31 @@
         .burger-menu {
             left: 10px;
         }
-        .menu {
-            position: fixed;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            width: 300px;
-            background: rgba(0, 0, 0, 0.9);
-            color: white;
-            box-shadow: 2px 0 10px rgba(255, 255, 255, 0.2);
-            overflow: hidden;
-            padding: 10px;
-            z-index: 999;
-            border-radius: 10px;
-            display: none;
-            text-align: center;
-        }
-        .scroll-button {
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            border: none;
-            cursor: pointer;
-            padding: 5px;
-            margin: 5px 0;
-            width: 100%;
-            font-size: 18px;
-        }
-        .scroll-button:hover {
-            background: rgba(255, 255, 255, 0.4);
-        }
-        .channel-list {
-            max-height: 200px;
-            overflow-y: auto;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            padding: 5px;
-        }
-        .menu ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-        .menu ul li {
-            padding: 10px;
-            cursor: pointer;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-        }
-        .menu ul li:hover {
-            background: rgba(255, 255, 255, 0.2);
+        .hidden {
+            opacity: 0;
+            pointer-events: none;
         }
     </style>
     <script src="https://ssl.p.jwpcdn.com/player/v/8.36.4/jwplayer.js"></script>
     <script src="channels.js"></script>
     <script>
-        jwplayer.key = 'ITWMv7t88JGzI0xPwW8I0+LveiXX9SWbfdmt0ArUSyc=';function loadStream(channelKey) {
-        const channel = channels[channelKey];
-        jwplayer("player").setup({
-            file: channel.url,
-            type: channel.type,
-            drm: channel.type === 'mpd' ? {
-                clearkey: {
-                    keyId: channel.keyId,
-                    key: channel.key
-                }
-            } : undefined,
-            width: "100%",
-            height: "100vh",
-            autostart: true
-        });
-    }
-
-    function toggleFullscreen() {
+        jwplayer.key = 'ITWMv7t88JGzI0xPwW8I0+LveiXX9SWbfdmt0ArUSyc=';
+        function loadStream(channelKey) {
+            const channel = channels[channelKey];
+            jwplayer("player").setup({
+                file: channel.url,
+                type: channel.type,
+                drm: channel.type === 'mpd' ? {
+                    clearkey: {
+                        keyId: channel.keyId,
+                        key: channel.key
+                    }
+                } : undefined,
+                width: "100%",
+                height: "100vh",
+                autostart: true
+            });
+        }function toggleFullscreen() {
         const playerContainer = document.documentElement;
         if (!document.fullscreenElement) {
             if (playerContainer.requestFullscreen) {
@@ -130,23 +86,6 @@
                 document.msExitFullscreen();
             }
         }
-
-        let timeout;
-        function resetTimer() {
-            document.querySelector('.burger-menu').classList.remove('hidden');
-            document.querySelector('.fullscreen-button').classList.remove('hidden');
-            clearTimeout(timeout);
-            timeout = setTimeout(() => {
-                document.querySelector('.burger-menu').classList.add('hidden');
-                document.querySelector('.fullscreen-button').classList.add('hidden');
-            }, 3000);
-        }
-        
-        document.addEventListener("mousemove", resetTimer);
-        document.addEventListener("touchstart", resetTimer);
-        document.addEventListener("click", resetTimer);
-
-        window.onload = resetTimer;
     }
 
     function toggleMenu() {
@@ -163,9 +102,25 @@
         document.getElementById('channelList').scrollBy({ top: amount, behavior: 'smooth' });
     }
 
+    let timeout;
+    function resetTimer() {
+        document.querySelector('.burger-menu').classList.remove('hidden');
+        document.querySelector('.fullscreen-button').classList.remove('hidden');
+        clearTimeout(timeout);
+        timeout = setTimeout(() => {
+            document.querySelector('.burger-menu').classList.add('hidden');
+            document.querySelector('.fullscreen-button').classList.add('hidden');
+        }, 3000);
+    }
+
+    document.addEventListener("mousemove", resetTimer);
+    document.addEventListener("touchstart", resetTimer);
+    document.addEventListener("click", resetTimer);
+
     window.onload = function() {
         screen.orientation.lock("landscape").catch(() => {});
         loadStream("tv5");
+        resetTimer();
     };
 </script>
 
@@ -179,80 +134,15 @@
         <div class="channel-list" id="channelList">
             <ul>
                 <li onclick="selectChannel('tv5')">TV5</li>
-<li onclick="selectChannel('kapamilya')">Kapamilya</li>
-<li onclick="selectChannel('disney')">Disney</li>
-<li onclick="selectChannel('anc')">ANC</li>
-<li onclick="selectChannel('Animax')">Animax</li>
-<li onclick="selectChannel('cartoon_net_hd')">Cartoon Network HD</li>
-<li onclick="selectChannel('nickjr')">Nickjr</li>
-<li onclick="selectChannel('nickelodeon')">Nickelodeon</li>
-<li onclick="selectChannel('hbohd')">HBO HD</li>
-<li onclick="selectChannel('teleradyo')">Teleradyo</li>
-<li onclick="selectChannel('sarisari')">SARISARI</li>
-<li onclick="selectChannel('ibc13')">IBC13</li>
-<li onclick="selectChannel('buko')">BUKO</li>
-<li onclick="selectChannel('knowledge_channel')">Knowledge Channel</li>
-<li onclick="selectChannel('bilyonaryoch')">Bilyonaryo</li>
-<li onclick="selectChannel('RPTV')">RPTV</li>
-<li onclick="selectChannel('truefmtv')">True FM TV</li>
-<li onclick="selectChannel('hits_now')">Hits Now</li>
-<li onclick="selectChannel('cinemaone')">CinemaOne</li>
-<li onclick="selectChannel('cinemo')">CineMo!</li>
-<li onclick="selectChannel('hbo_family')">HBO Family</li>
-<li onclick="selectChannel('cinemax')">Cinemax</li>
-<li onclick="selectChannel('blueant_extreme')">Rock Action</li>
-<li onclick="selectChannel('rock_entertainment')">Rock Entertainment</li>
-<li onclick="selectChannel('hbo_signature')">HBO Signature</li>
-<li onclick="selectChannel('hbo_hits')">HBO Hits</li>
-<li onclick="selectChannel('tvn_movies')">TVN Movies</li>
-<li onclick="selectChannel('dreamworks_tag')">Dreamworks Tagalog</li>
-<li onclick="selectChannel('tvn_plus')">TVN</li>
-<li onclick="selectChannel('popup_ppv_hd')">Popup PPV HD</li>
-<li onclick="selectChannel('mp_tv')">MPTV</li>
-<li onclick="selectChannel('a2z')">A2Z</li>
-<li onclick="selectChannel('dreamworks_hd')">Dreamworks HD</li>
-<li onclick="selectChannel('ptv4')">PTV4</li>
-<li onclick="selectChannel('taptv')">TAP TV</li>
-<li onclick="selectChannel('tap_edge')">TAP Edge</li>
-<li onclick="selectChannel('tap_sports')">TAP Sports</li>
-<li onclick="selectChannel('one_sports_plus_hd')">One Sports Plus HD</li>
-<li onclick="selectChannel('cctv4')">CCTV4</li>
-<li onclick="selectChannel('pba_rush_hd')">PBA Rush HD</li>
-<li onclick="selectChannel('arirang')">Arirang</li>
-<li onclick="selectChannel('bbcearth_hd')">BBC Earth</li>
-<li onclick="selectChannel('discovery')">Discovery</li>
-<li onclick="selectChannel('kbs_world')">KBS World</li>
-<li onclick="selectChannel('onenews_hd')">One News HD</li>
-<li onclick="selectChannel('kix_hd')">Kix HD</li>
-<li onclick="selectChannel('lifetime')">Lifetime</li>
-<li onclick="selectChannel('hgtv_hd')">HGTV HD</li>
-<li onclick="selectChannel('asianfoodnetwork')">Asian Food Network</li>
-<li onclick="selectChannel('travel_channel')">Travel Channel</li>
-<li onclick="selectChannel('uaap_varsity')">UAAP Varsity</li>
-<li onclick="selectChannel('hits_hd')">Hits HD</li>
-<li onclick="selectChannel('crime_investigation')">Crime Investigation</li>
-<li onclick="selectChannel('tech_storm')">Tech Storm</li>
-<li onclick="selectChannel('aljazeera')">Al Jazeera</li>
-<li onclick="selectChannel('bbcworld_news')">BBC World News</li>
-<li onclick="selectChannel('channelnews_asia')">Channel News Asia</li>
-<li onclick="selectChannel('abc_australia')">ABC Australia</li>
-<li onclick="selectChannel('oneph')">One PH</li>
-<li onclick="selectChannel('onesports')">One Sports</li>
-<li onclick="selectChannel('SPOTV_HD')">SPOTV</li>
-<li onclick="selectChannel('SPOTV_HD2')">SPOTV2</li>
-<li onclick="selectChannel('premiersports_hd')">Premier Sports</li>
-<li onclick="selectChannel('premier_tennishd')">Premier Tennis</li>
-<li onclick="selectChannel('pbo')">PBO</li>
-<li onclick="selectChannel('cg_tagalogmovie')">TMC</li>
-<li onclick="selectChannel('viva')">VIVA</li>
-<li onclick="selectChannel('tapactionflix_hd')">Tap Action Flix</li>
-<li onclick="selectChannel('thrill')">Thrill</li>
-<li onclick="selectChannel('foodnetwork_hd')">Food Network HD</li>
-<li onclick="selectChannel('depedchannel')">DepEd Channel</li>
-<li onclick="selectChannel('history_hd')">History HD</li>
-<li onclick="selectChannel('animal_planet')">Animal Planet</li>
-<li onclick="selectChannel('fashiontv_hd')">Fashion TV HD</li>
-<li onclick="selectChannel('bloomberg')">Bloomberg</li>
+                <li onclick="selectChannel('kapamilya')">Kapamilya</li>
+                <li onclick="selectChannel('disney')">Disney</li>
+                <li onclick="selectChannel('anc')">ANC</li>
+                <li onclick="selectChannel('Animax')">Animax</li>
+                <li onclick="selectChannel('cartoon_net_hd')">Cartoon Network HD</li>
+                <li onclick="selectChannel('nickjr')">Nickjr</li>
+                <li onclick="selectChannel('nickelodeon')">Nickelodeon</li>
+                <li onclick="selectChannel('hbohd')">HBO HD</li>
+                <li onclick="selectChannel('teleradyo')">Teleradyo</li>
             </ul>
         </div>
         <button class="scroll-button" onclick="scrollMenu(50)">▼</button>
