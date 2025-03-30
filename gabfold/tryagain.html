@@ -39,24 +39,39 @@
             left: 10px;
         }
         .menu {
-            display: none;
-            position: absolute;
-            top: 50px;
-            left: 10px;
-            background: white;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-            border-radius: 5px;
-            padding: 10px;
-            width: 200px;
-            z-index: 10;
+            position: fixed;
+            left: -250px;
+            top: 0;
+            width: 250px;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            box-shadow: 2px 0 10px rgba(255, 255, 255, 0.2);
+            overflow-y: auto;
+            transition: left 0.3s ease-in-out;
+            padding: 20px;
+            z-index: 20;
         }
-        .menu select {
-            width: 100%;
+        .menu.show {
+            left: 0;
+        }
+        .menu h2 {
+            margin: 0 0 10px;
+            font-size: 18px;
+            text-align: center;
+        }
+        .menu ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .menu ul li {
             padding: 10px;
-            font-size: 16px;
-            border: none;
-            background: #f4f4f4;
-            border-radius: 5px;
+            cursor: pointer;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .menu ul li:hover {
+            background: rgba(255, 255, 255, 0.2);
         }
     </style><script src="https://ssl.p.jwpcdn.com/player/v/8.36.4/jwplayer.js"></script>
 <script src="channels.js"></script>
@@ -107,31 +122,34 @@
 
     function toggleMenu() {
         const menu = document.getElementById('menu');
-        menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+        menu.classList.toggle('show');
+    }
+
+    function selectChannel(channelKey) {
+        loadStream(channelKey);
+        toggleMenu();
     }
 
     window.onload = function() {
         screen.orientation.lock("landscape").catch(() => {});
-        const channelSelect = document.getElementById('channelSelect');
-        channelSelect.addEventListener('change', function() {
-            loadStream(this.value);
-        });
-        loadStream(channelSelect.value);
+        loadStream("tv5");
     };
 </script>
 
 </head>
 <body>
     <span class="burger-menu" onclick="toggleMenu()">☰</span>
-    <span class="fullscreen-button" onclick="toggleFullscreen()">⛶</span>
-    <div id="menu" class="menu">
-        <select id="channelSelect">
-            <option value="tv5">TV5</option>
-            <option value="kapamilya">Kapamilya</option>
-            <option value="disney">Disney</option>
-            <option value="anc">ANC</option>
-        </select>
-    </div>
-    <div id="player"></div>
+    <span class="fullscreen-button" onclick="toggleFullscreen()">⛶</span><div id="menu" class="menu">
+    <h2>Channel List</h2>
+    <ul>
+        <li onclick="selectChannel('tv5')">TV5</li>
+        <li onclick="selectChannel('kapamilya')">Kapamilya</li>
+        <li onclick="selectChannel('disney')">Disney</li>
+        <li onclick="selectChannel('anc')">ANC</li>
+    </ul>
+</div>
+
+<div id="player"></div>
+
 </body>
 </html>
