@@ -21,9 +21,6 @@
             width: 100%;
             height: 100vh;
         }
-
-         
-        
         .fullscreen-button, .burger-menu {
             position: absolute;
             top: 10px;
@@ -140,7 +137,6 @@
         const menu = document.getElementById('menu');
         menu.style.display = (menu.style.display === "none" || menu.style.display === "") ? "block" : "none";
     }
-        
 
     function selectChannel(channelKey) {
         loadStream(channelKey);
@@ -175,13 +171,11 @@
 
 </head>
 <body>
-    
     <span class="burger-menu" onclick="toggleMenu()">☰</span>
     <span class="fullscreen-button" onclick="toggleFullscreen()">⛶</span>
     <div id="menu" class="menu">
         <h2>Channel List</h2>
         <button class="scroll-button" onclick="scrollMenu(-50)">▲</button>
-        <button class="scroll-button" onclick="scrollMenu(50)">▼</button>
         <div class="channel-list" id="channelList">
             <ul>
                 <li onclick="selectChannel('tv5')">TV5</li>
@@ -276,7 +270,9 @@
 <li onclick="selectChannel('fashiontv_hd')">Fashion TV HD</li>
 <li onclick="selectChannel('bloomberg')">Bloomberg</li>
             </ul>
-        
+        </div>
+        <button class="scroll-button" onclick="scrollMenu(50)">▼</button>
+    </div>
     <div id="player"></div>
 </body>
 </html>
