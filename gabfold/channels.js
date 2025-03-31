@@ -89,7 +89,7 @@ const channels = {
     },
 
 	nickelodeon: {
-        name: 'Nickelodeon',
+        name: 'nickelodeon',
         url: 'https://linearjitp-playback.astro.com.my/dash-wv/linear/2511/default_primary.mpd',
         keyId: 'bd17afb5dc9648a39be79ee3634dd4b8',
         key: '3ecf305d54a7729299b93a3d69c02ea5',
@@ -304,6 +304,23 @@ const channels = {
         key: '3471b2464b5c7b033a03bb8307d9fa35',
 		type: 'mpd'
     },
+
+	tvn_movieshd: {
+    name: 'TVN Movies hd',
+        url: 'https://linearjitp-playback.astro.com.my/dash-wv/linear/2406/default_ott.mpd',
+        keyId: '8e269c8aa32ad77eb83068312343d610',
+        key: 'd12ccebafbba2a535d88a3087f884252',
+		type: 'mpd'
+    },
+
+	celestialpinoy: {
+    name: 'celestial movies pinoy',
+        url: 'https://qp-pldt-live-grp-01-prod.akamaized.net/out/u/celmovie_pinoy_sd.mpd',
+        keyId: '0f8537d8412b11edb8780242ac120002',
+        key: '2ffd7230416150fd5196fd7ea71c36f3',
+		type: 'mpd'
+    },
+	
 	dreamworks_tag: {
     name: 'Dreamworks Tagalog',
         url: 'https://qp-pldt-live-grp-07-prod.akamaized.net/out/u/cg_dreamworktag.mpd',
@@ -580,18 +597,12 @@ const channels = {
     },
 	nickjr: {
     name: 'Nickjr',
-        url: 'https://qp-pldt-live-grp-12-prod.akamaized.net/out/u/dr_nickjr.mpd',
-        keyId: 'bab5c11178b646749fbae87962bf5113',
-        key: '0ac679aad3b9d619ac39ad634ec76bc8',
+        url: 'https://linearjitp-playback.astro.com.my/dash-wv/linear/9982/default_ott.mpd',
+        keyId: 'fa65220c9f76e424173899df533a6d10',
+        key: 'b4abbee95b69b3e80a0d141272c870db',
 		type: 'mpd'
     },
-	nickelodeon: {
-    name: 'Nickelodeon',
-        url: 'https://qp-pldt-live-grp-11-prod.akamaized.net/out/u/dr_nickelodeon.mpd',
-        keyId: '9ce58f37576b416381b6514a809bfd8b',
-        key: 'f0fbb758cdeeaddfa3eae538856b4d72',
-		type: 'mpd'
-    },
+	
 	blueant_extreme: {
     name: 'Rock Action',
         url: 'https://qp-pldt-live-grp-13-prod.akamaized.net/out/u/dr_rockextreme.mpd',
