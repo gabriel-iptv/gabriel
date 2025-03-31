@@ -16,7 +16,7 @@ const channels = {
 
 	kapamilya: {
         name: 'kapamilya',
-        url: '-ue1-prod.tsv2.amagi.tv/linear/amg01006-abs-cbn-kapcha-dash-abscbnono/c1d18480-b845-4414-a1bb-771327c4a685/index.mpd',
+        url: 'https://cdn-ue1-prod.tsv2.amagi.tv/linear/amg01006-abs-cbn-kapcha-dash-abscbnono/c1d18480-b845-4414-a1bb-771327c4a685/index.mpd',
         keyId: 'bd17afb5dc9648a39be79ee3634dd4b8',
         key: '3ecf305d54a7729299b93a3d69c02ea5',
 		type: 'mpd'
