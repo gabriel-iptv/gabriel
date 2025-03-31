@@ -14,14 +14,7 @@ const channels = {
 		type: 'mpd'
     },
 
-	Aniplus: {
-        name: 'Aniplus',
-        url: 'https://cdn08jtedge.indihometv.com/dassdvr/107/aniplus/manifest.mpd',
-        keyId: 'f2c313fce55344e5a52389741d1f53f8',
-        key: 'bae1e47db562b66895beb8fccdf2ad8a',
-		type: 'mpd'
-
-	},
+	
 
 	kapamilya: {
         name: 'kapamilya',
@@ -315,7 +308,7 @@ const channels = {
         key: 'b712c4ec307300043333a6899a402c10',
 		type: 'mpd'
     },
-	TapMovies: {
+	popup_ppv_hd: {
     name: 'Popup PPV HD',
         url: 'https://qp-pldt-live-grp-13-prod.akamaized.net/out/u/dr_popupppvhd.mpd',
         keyId: '286e1c2d622c4c73b5c3d72e4a848abd',
@@ -591,16 +584,16 @@ const channels = {
     },
 	blueant_extreme: {
     name: 'Rock Action',
-        url: 'https://tglmp04.akamaized.net/out/v1/421a3cd3bdcd492f8f4b5efb2363ed2c/manifest.mpd',
-        keyId: '2341c2ecd3cf4865881bb0fa1287de8f',
-        key: 'ad45202e64f66ef36b3f60fac93cc47f',
+        url: 'https://qp-pldt-live-grp-13-prod.akamaized.net/out/u/dr_rockextreme.mpd',
+        keyId: '0f852fb8412b11edb8780242ac120002',
+        key: '4cbc004d8c444f9f996db42059ce8178',
 		type: 'mpd'
     },
 	rock_entertainment: {
     name: 'Rock Entertainment',
-        url: 'https://tglmp02.akamaized.net/out/v1/621a7089e63144e4be7891cd9bfb10e2/manifest.mpd',
-        keyId: '9229814c629b406f8de98d2f23c968a0',
-        key: '40b9f250455b43b3b2ea6845ab81abca',
+        url: 'https://qp-pldt-live-grp-13-prod.akamaized.net/out/u/dr_rockentertainment.mpd',
+        keyId: 'e4ee0cf8ca9746f99af402ca6eed8dc7',
+        key: 'be2a096403346bc1d0bb0f812822bb62',
 		type: 'mpd'
     },
 	discovery: {
