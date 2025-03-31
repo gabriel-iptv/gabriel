@@ -163,7 +163,7 @@
 
         window.onload = function() {
             screen.orientation.lock("landscape").catch(() => {});
-            loadStream("tv5");
+            loadStream("intro");
             resetTimer();
         };
 </script>
@@ -177,6 +177,7 @@
         <button class="scroll-button" onclick="scrollMenu(-50)">▲</button>
         <div class="channel-list" id="channelList">
             <ul>
+                <li onclick="selectChannel('intro')">GABRIEL IPTV</li>
                 <li onclick="selectChannel('tv5')">TV5</li>
 <li onclick="selectChannel('kapamilya')">Kapamilya Channel</li>
 <li onclick="selectChannel('a2z')">A2Z</li>
