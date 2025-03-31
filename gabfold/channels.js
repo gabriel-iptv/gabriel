@@ -650,16 +650,18 @@ const channels = {
 		 },
     cinemaone: {
     name: 'cinemaone',
-        url: 'https://d9rpesrrg1bdi.cloudfront.net/out/v1/93b9db7b231d45f28f64f29b86dc6c65/index.mpd',
+        url: 'https://cdn-ue1-prod.tsv2.amagi.tv/linear/amg01006-abs-cbn-cinemaone-dash-abscbnono/29da114e-c288-4967-bf81-f206d4b63468/index.mpd',
         keyId: '58d0e56991194043b8fb82feb4db7276',
         key: 'd68f41b59649676788889e19fb10d22c',
 		type: 'mpd'
 		 },
 	MYX: {
-        name: 'MYX',
-        url: 'https://myxnola-abscbn-ono.amagi.tv/index.m3u8',
-        type: 'hls'
-         },	
+    name: 'MYX',
+        url: 'https://cdn-ue1-prod.tsv2.amagi.tv/linear/amg01006-abs-cbn-myxnola-dash-abscbnono/5a620d8c-5467-4f5f-b1c4-3cc08f9051bb/index.mpd',
+        keyId: 'f40a52a3ac9b4702bdd5b735d910fd2f',
+        key: '5ce1bc7f06b494c276252b4d13c90e51',
+		type: 'mpd'
+		 },
 	
 	pbs: {
         name: 'pbs',
