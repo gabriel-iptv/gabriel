@@ -123,10 +123,7 @@
             controls: false
         });
 
-            playerInstance.on('play', function() {
-                document.getElementById('no-signal-video').style.display = 'none';
-            });
-    }
+            
 
     function toggleFullscreen() {
         const playerContainer = document.documentElement;
@@ -182,7 +179,11 @@
         document.addEventListener("touchstart", resetTimer);
         document.addEventListener("click", resetTimer);
 
-        window.onload = function() {
+       playerInstance.on('play', function() {
+                document.getElementById('no-signal-video').style.display = 'none';
+            });
+        }
+            window.onload = function() {
             screen.orientation.lock("landscape").catch(() => {});
             loadStream("intro");
             resetTimer();
