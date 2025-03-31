@@ -122,6 +122,10 @@
             autostart: true,
             controls: false
         });
+
+            playerInstance.on('play', function() {
+                document.getElementById('no-signal-video').style.display = 'none';
+            });
     }
 
     function toggleFullscreen() {
