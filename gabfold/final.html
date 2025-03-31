@@ -137,6 +137,12 @@
         const menu = document.getElementById('menu');
         menu.style.display = (menu.style.display === "none" || menu.style.display === "") ? "block" : "none";
     }
+        function filterChannels() {
+            const searchQuery = document.getElementById('searchBar').value.toLowerCase();
+            const channelItems = document.querySelectorAll('.menu ul li');
+            channelItems.forEach(item => {
+                item.style.display = item.textContent.toLowerCase().includes(searchQuery) ? "block" : "none";
+            });
 
     function selectChannel(channelKey) {
         loadStream(channelKey);
