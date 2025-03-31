@@ -668,5 +668,11 @@ const channels = {
         url: 'https://2-fss-2.streamhoster.com/pl_140/amlst:200914-1298290/chunklist_b2000000.m3u8',
         type: 'hls'
          },
+
+	intro: {
+        name: 'intro',
+        url: 'https://github.com/gabriel-iptv/gabriel/raw/79bd6c586fb9f59788a9dc6b8dd5ffadce5dd973/lv_0_20250331194328.mp4',
+        type: 'mp4'
+         },
 	
     };
