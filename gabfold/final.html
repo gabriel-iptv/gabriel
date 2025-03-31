@@ -21,6 +21,24 @@
             width: 100%;
             height: 100vh;
         }
+
+         #player, #no-signal {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        #no-signal {
+            background: black;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            z-index: 10;
+        }
+        
         .fullscreen-button, .burger-menu {
             position: absolute;
             top: 10px;
@@ -273,6 +291,8 @@
         </div>
         <button class="scroll-button" onclick="scrollMenu(50)">▼</button>
     </div>
+    
+        <div id="no-signal">No Signal...</div>
     <div id="player"></div>
 </body>
 </html>
