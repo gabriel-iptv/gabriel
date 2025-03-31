@@ -108,25 +108,26 @@
     <script src="channels.js"></script>
     <script>
         jwplayer.key = 'ITWMv7t88JGzI0xPwW8I0+LveiXX9SWbfdmt0ArUSyc=';function loadStream(channelKey) {
-        const channel = channels[channelKey];
-        const noSignalVideo = document.getElementById('no-signal-video');
+        function loadStream(channelKey) {
+            const channel = channels[channelKey];
+            const noSignalVideo = document.getElementById('no-signal-video');
             noSignalVideo.style.display = 'block';
             noSignalVideo.play();
-        jwplayer("player").setup({
-            file: channel.url,
-            type: channel.type,
-            drm: channel.type === 'mpd' ? {
-                clearkey: {
-                    keyId: channel.keyId,
-                    key: channel.key
-                }
-            } : undefined,
-            width: "100%",
-            height: "100vh",
-            autostart: true,
-            controls: false
-        });
-
+            
+            const playerInstance = jwplayer("player").setup({
+                file: channel.url,
+                type: channel.type,
+                drm: channel.type === 'mpd' ? {
+                    clearkey: {
+                        keyId: channel.keyId,
+                        key: channel.key
+                    }
+                } : undefined,
+                width: "100%",
+                height: "100%",
+                autostart: true,
+                controls: false
+            });
             
 
     function toggleFullscreen() {
