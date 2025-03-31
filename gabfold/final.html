@@ -189,6 +189,11 @@
 
 </head>
 <body>
+    <div id="loading-video">
+        <video autoplay loop muted>
+            <source src="https://github.com/gabriel-iptv/gabriel/blob/13ef3aee274d5b1acff25d8d84bc003cc943b398/lv_0_20250331230517.mp4" type="video/mp4">
+        </video>
+    </div>
     <span class="burger-menu" onclick="toggleMenu()">☰</span>
     <span class="fullscreen-button" onclick="toggleFullscreen()">⛶</span>
     <div id="menu" class="menu">
@@ -289,11 +294,7 @@
 <li onclick="selectChannel('fashiontv_hd')">Fashion TV HD</li>
 <li onclick="selectChannel('bloomberg')">Bloomberg</li>
             </ul>
-        <div id="loading-video">
-        <video autoplay loop muted>
-            <source src="loading.mp4" type="video/mp4">
-        </video>
-        </div>
+        
     <div id="player"></div>
 </body>
 </html>
