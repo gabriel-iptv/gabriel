@@ -641,26 +641,26 @@ const channels = {
         key: '50547394045b3d047dc7d92f57b5fb33',
 		type: 'mpd'
 		 },
-	cinemaone: {
-        name: 'CinemaOne',
-        url: 'https://cinemaone-abscbn-ono.amagi.tv/index.m3u8',
-        type: 'hls'
-         },	 
-    cinemo: {
-        name: 'CineMo!',
-        url: 'https://cinemo-abscbn-ono.amagi.tv/playlist.m3u8',
-        type: 'hls'
-         },	 
+	cinemo: {
+    name: 'cinemo',
+        url: 'https://cdn-ue1-prod.tsv2.amagi.tv/linear/amg01006-abs-cbn-cinemo-dash-abscbnono/01354a2a-166b-46d3-8aea-0280ce242b27/index.mpd',
+        keyId: 'aa8aebe35ccc4541b7ce6292efcb1bfb',
+        key: 'aab1df109d22fc5d7e3ec121ddf24e5f',
+		type: 'mpd'
+		 },
+    cinemaone: {
+    name: 'cinemaone',
+        url: 'https://d9rpesrrg1bdi.cloudfront.net/out/v1/93b9db7b231d45f28f64f29b86dc6c65/index.mpd',
+        keyId: '58d0e56991194043b8fb82feb4db7276',
+        key: 'd68f41b59649676788889e19fb10d22c',
+		type: 'mpd'
+		 },
 	MYX: {
         name: 'MYX',
         url: 'https://myxnola-abscbn-ono.amagi.tv/index.m3u8',
         type: 'hls'
          },	
-	Disney: {
-        name: 'Disney',
-        url: 'https://disney-channel.13l.link/live/Disney/index.m3u8',
-        type: 'hls'
-         },
+	
 	pbs: {
         name: 'pbs',
         url: 'https://2-fss-2.streamhoster.com/pl_140/amlst:200914-1298290/chunklist_b2000000.m3u8',
