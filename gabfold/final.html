@@ -21,6 +21,12 @@
             width: 100%;
             height: 100vh;
         }
+
+        #player-container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+        }
         #player, #no-signal-video {
             position: absolute;
             top: 0;
@@ -283,6 +289,7 @@
         </div>
         <button class="scroll-button" onclick="scrollMenu(50)">▼</button>
     </div>
+    <div id="player-container">
     <video id="no-signal-video" autoplay loop muted>
             <source src="https://cdn.pixabay.com/video/2019/10/04/27519-364430915_small.mp4" type="video/mp4">
     </video>
