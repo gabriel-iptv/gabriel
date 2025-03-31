@@ -650,7 +650,7 @@ const channels = {
 		 },
     cinemaone: {
     name: 'cinemaone',
-        url: 'https://cdn-ue1-prod.tsv2.amagi.tv/linear/amg01006-abs-cbn-cinemaone-dash-abscbnono/29da114e-c288-4967-bf81-f206d4b63468/index.mpd',
+        url: 'https://d9rpesrrg1bdi.cloudfront.net/out/v1/93b9db7b231d45f28f64f29b86dc6c65/index.mpd',
         keyId: '58d0e56991194043b8fb82feb4db7276',
         key: 'd68f41b59649676788889e19fb10d22c',
 		type: 'mpd'
