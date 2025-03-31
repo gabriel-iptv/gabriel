@@ -72,9 +72,7 @@ const channels = {
 
 	Cartoonito: {
         name: 'Cartoonito',
-        url: 'https://atemecdnbalancer-voe.sysln.id/live/eds/CartoonitoHD/mpd/CartoonitoHD.mpd',
-        keyId: '955574ee2b674f0fbbad818fb384c233',
-        key: '51d2893619bdd062fb4c0cdaafefbf27',
+        url: 'https://streaming.indihometv.com/atm/DASH//boomerang/manifest.mpd',
 		type: 'mpd'
     },
 
