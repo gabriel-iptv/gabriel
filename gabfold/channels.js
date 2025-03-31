@@ -88,13 +88,6 @@ const channels = {
 		type: 'mpd'
     },
 
-	nickelodeon: {
-        name: 'nickelodeon',
-        url: 'https://linearjitp-playback.astro.com.my/dash-wv/linear/2511/default_primary.mpd',
-        keyId: 'bd17afb5dc9648a39be79ee3634dd4b8',
-        key: '3ecf305d54a7729299b93a3d69c02ea5',
-		type: 'mpd'
-    },
 
 	moonbug: {
         name: 'moonbug',
@@ -595,6 +588,15 @@ const channels = {
         key: 'cdd48fa884dc0c3a3f85aeebca13d444',
 		type: 'mpd'
     },
+
+       nickelodeon: {
+        name: 'nickelodeon',
+        url: 'https://linearjitp-playback.astro.com.my/dash-wv/linear/2511/default_primary.mpd',
+        keyId: 'd8520e96a1283ab6e5be538474bfa810',
+        key: 'bda5f7bbc1e44096f779a0619fe9881f',
+		type: 'mpd'
+    },
+	
 	nickjr: {
     name: 'Nickjr',
         url: 'https://linearjitp-playback.astro.com.my/dash-wv/linear/9982/default_ott.mpd',
