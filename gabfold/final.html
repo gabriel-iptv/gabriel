@@ -21,6 +21,16 @@
             width: 100%;
             height: 100vh;
         }
+        #player, #no-signal-video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        #no-signal-video {
+            z-index: 10;
+        }
         .fullscreen-button, .burger-menu {
             position: absolute;
             top: 10px;
@@ -273,6 +283,9 @@
         </div>
         <button class="scroll-button" onclick="scrollMenu(50)">▼</button>
     </div>
+    <video id="no-signal-video" autoplay loop muted>
+            <source src="https://github.com/gabriel-iptv/gabriel/blob/65432c2caa457881fc8141c6b2621ed3ac77e05a/Old%20TV%20static%28720P_HD%29.mp4" type="video/mp4">
+    </video>
     <div id="player"></div>
 </body>
 </html>
