@@ -32,6 +32,22 @@ const channels = {
 		type: 'mpd'
     },
 
+	disneyjr: {
+        name: 'disneyjr',
+        url: 'https://a181aivottepl-a.akamaihd.net/pdx-nitro/live/clients/dash/enc/0qvo3uakfd/out/v1/d62a555c1e5945f3bae88ae4018321d4/cenc.mpd',
+        keyId: '221e176f3dfabb84ff506d65dd93b09f',
+        key: '6a97b8d4beed4d4b1697c1488706c6ca',
+		type: 'mpd'
+    },
+
+	disneyxd: {
+        name: 'disneyxd',
+        url: 'https://a53aivottepl-a.akamaihd.net/pdx-nitro/live/clients/dash/enc/jts4tzzv1k/out/v1/8a5b29f7068c415aa371ea95743382e6/cenc.mpd',
+        keyId: '39cebece8b36640f9ba3f248ecfdf86a',
+        key: 'fad936249e036830aa5bef41bec05326',
+		type: 'mpd'
+    },
+
 	WarnerTV: {
         name: 'WarnerTV',
         url: 'https://qp-pldt-live-grp-11-prod.akamaized.net/out/u/dr_warnertvhd.mpd',
@@ -48,13 +64,7 @@ const channels = {
 		type: 'mpd'
     },
 
-	EUROSPORTS: {
-        name: 'EUROSPORTS',
-        url: 'https://atemeshield1-voe.sysln.id/live/eds/EUROSPORTHD/mpd/EUROSPORTHD.mpd',
-        keyId: '47c03f29f04747d2a298c0ad63f3b2c1',
-        key: '8b48b2cb2743b91d5f20cf2622067f3a',
-		type: 'mpd'
-    },
+	
 
 	tvmaria: {
         name: 'tvmaria',
