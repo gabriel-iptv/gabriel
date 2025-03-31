@@ -36,6 +36,7 @@
         }
         #no-signal-video {
             z-index: 10;
+            display: block;
         }
         .fullscreen-button, .burger-menu {
             position: absolute;
@@ -108,6 +109,9 @@
     <script>
         jwplayer.key = 'ITWMv7t88JGzI0xPwW8I0+LveiXX9SWbfdmt0ArUSyc=';function loadStream(channelKey) {
         const channel = channels[channelKey];
+        const noSignalVideo = document.getElementById('no-signal-video');
+            noSignalVideo.style.display = 'block';
+            noSignalVideo.play();
         jwplayer("player").setup({
             file: channel.url,
             type: channel.type,
@@ -180,7 +184,9 @@
         document.addEventListener("click", resetTimer);
 
        playerInstance.on('play', function() {
-                document.getElementById('no-signal-video').style.display = 'none';
+                noSignalVideo.style.display = 'none';
+                noSignalVideo.pause();
+                noSignalVideo.currentTime = 0;
             });
         }
             window.onload = function() {
