@@ -130,8 +130,8 @@ const channels = {
 
     },
 
-	TFC: {
-        name: 'TFC',
+	tfc: {
+        name: 'tfc',
         url: 'https://cdn-ue1-prod.tsv2.amagi.tv/linear/amg01006-abs-cbn-tfcasia-dash-abscbnono/7045bc3c-9492-42d4-974e-a3b217776e57/index.mpd',
         keyId: '9568cc84e1d944f38eac304517eab6fd',
         key: 'f12142af8f39b3bab79d3679d3665ebe',
@@ -214,7 +214,7 @@ const channels = {
 		type: 'mpd'
     },
     uaap_varsity: {
-        name: 'UAAP Varsity',
+        name: 'uaap_varsity',
         url: 'https://qp-pldt-live-grp-04-prod.akamaized.net/out/u/cg_uaap_cplay_sd.mpd',
         keyId: '95588338ee37423e99358a6d431324b9',
         key: '6e0f50a12f36599a55073868f814e81e',
@@ -325,8 +325,8 @@ const channels = {
         key: 'b7fad67599c1ce3c2fbc9d02b901be05',
 		type: 'mpd'
     },
-	MPTV: {
-    name: 'MPTV',
+	mp_tv: {
+    name: 'mp_tv',
         url: 'https://qp-pldt-live-grp-09-prod.akamaized.net/out/u/cg_mptv.mpd',
         keyId: '6aab8f40536f4ea98e7c97b8f3aa7d4e',
         key: '139aa5a55ade471faaddacc4f4de8807',
@@ -459,7 +459,7 @@ const channels = {
         key: '7932354c3a84f7fc1b80efa6bcea0615',
 		type: 'mpd'
     },
-	KnowledgeChannel: {
+	knowledge_channel: {
     name: 'knowledge_channel',
         url: 'https://qp-pldt-live-grp-13-prod.akamaized.net/out/u/dr_knowledgechannel.mpd',
         keyId: '0f856fa0412b11edb8780242ac120002',
