@@ -14,8 +14,8 @@ const channels = {
 		type: 'mpd'
     },
 
-	aniplus: {
-        name: 'aniplus',
+	Aniplus: {
+        name: 'Aniplus',
         url: 'https://cdn08jtedge.indihometv.com/dassdvr/107/aniplus/manifest.mpd',
         keyId: 'f2c313fce55344e5a52389741d1f53f8',
         key: 'bae1e47db562b66895beb8fccdf2ad8a',
@@ -144,20 +144,8 @@ const channels = {
 
 	
     },
-	KapamilyaChannel: {
-        name: 'Kapamilya',
-        url: 'https://www.youtube.com/embed/EWHEyfzZtE0?autoplay=1&mute=0',
-        type: 'youtube'
 
-	},
-
-
-	GMA: {
-        name: 'gma',
-        url: 'https://www.youtube.com/embed/Ds9QldvRuMg?autoplay=1&mute=0',
-        type: 'youtube'
-
-	},
+        
 	
     HBO: {
         name: 'HBO HD',
