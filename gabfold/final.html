@@ -107,6 +107,13 @@
             controls: false,
             image: "https://www.arvancloud.ir/blog/wp-content//uploads/2022/11/What-is-MPEG-Cover-1440x720.jpg"
 });
+        
+
+        jwplayer("player").on('ready', function () {
+        setTimeout(() => {
+            jwplayer("player").play(); // Start playback after delay
+        }, 3000); // 3-second delay to ensure poster is visible
+    });
         }
     
 
