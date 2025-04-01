@@ -90,29 +90,47 @@
     <script src="https://ssl.p.jwpcdn.com/player/v/8.36.4/jwplayer.js"></script>
     <script src="channels.js"></script>
     <script>
-        jwplayer.key = 'ITWMv7t88JGzI0xPwW8I0+LveiXX9SWbfdmt0ArUSyc=';function loadStream(channelKey) {
-        const channel = channels[channelKey];
-        jwplayer("player").setup({
-            file: channel.url,
-            type: channel.type,
-            drm: channel.type === 'mpd' ? {
-                clearkey: {
-                    keyId: channel.keyId,
-                    key: channel.key
-                }
-            } : undefined,
-            width: "100%",
-            height: "100vh",
-            autostart: false,
-            controls: false,
-            image: "https://www.arvancloud.ir/blog/wp-content//uploads/2022/11/What-is-MPEG-Cover-1440x720.jpg"
-});
-        
+        jwplayer.key = 'ITWMv7t88JGzI0xPwW8I0+LveiXX9SWbfdmt0ArUSyc=';
+        function loadStream(channelKey) {
+        function loadStream(channelKey) {
+    const channel = channels[channelKey];
 
-        jwplayer("player").on('ready', function () {
-        setTimeout(() => {
-            jwplayer("player").play(); // Start playback after delay
-        }, 5000); // 3-second delay to ensure poster is visible
+    // Get player container
+    const playerContainer = document.getElementById('player');
+    
+    // Add a poster image overlay
+    const poster = document.createElement('img');
+    poster.src = "https://www.arvancloud.ir/blog/wp-content//uploads/2022/11/What-is-MPEG-Cover-1440x720.jpg";
+    poster.id = "poster-overlay";
+    poster.style.position = "absolute";
+    poster.style.top = "0";
+    poster.style.left = "0";
+    poster.style.width = "100%";
+    poster.style.height = "100%";
+    poster.style.objectFit = "cover";
+    poster.style.zIndex = "10"; // Keep it above the player
+    playerContainer.appendChild(poster);
+
+    jwplayer("player").setup({
+        file: channel.url,
+        type: channel.type,
+        drm: channel.type === 'mpd' ? {
+            clearkey: {
+                keyId: channel.keyId,
+                key: channel.key
+            }
+        } : undefined,
+        width: "100%",
+        height: "100vh",
+        autostart: true,
+        controls: false
+    });
+
+    // Remove poster only when the first frame of video is displayed
+    jwplayer("player").on('firstFrame', function () {
+        if (poster) {
+            poster.style.display = "none";
+        }
     });
         }
     
