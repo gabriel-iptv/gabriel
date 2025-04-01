@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MPEG-DASH Livestream</title>
+  <link rel="icon" href="https://img.freepik.com/premium-psd/play-icon-button-black-background_609989-2403.jpg">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/shaka-player@latest/dist/controls.css">
+  <script src="https://cdn.jsdelivr.net/npm/shaka-player@latest/dist/shaka-player.ui.debug.js"></script>
+  <script disable-devtool-auto src='https://cdn.jsdelivr.net/npm/disable-devtool@latest'></script>
+  <style>
+  @import url('https://fonts.googleapis.com/css?family=Poppins');
+    * {
+      font-family: 'Poppins'; font-size: 15px;
+    }
+    body {
+      margin: 0;
+      padding: 0;
+      color: #fff;
+      font-weight: 300;
+      background: rgba(25,32,64,255);
+    }
+    #wrapper {
+      height: 90vh;
+    }
+    #banner {
+      width: 100%
+    }
+    #banner h1 {
+      margin: 0;
+      padding: 30px;
+    }
+    .clear {
+      clear: both;
+    }
+    .content {
+      margin-bottom: 10em;
+    }
+    h1, h2, h3, p {
+      font-weight: 300;
+      text-align: center;
+      margin: 40px;
+    }
+    #video {
+      height: auto;
+      width: 100%;
+      -webkit-box-shadow: 0px 0px 56px 0px rgba(25,32,64,255);
+      -moz-box-shadow: 0px 0px 56px 0px rgba(25,32,64,255);
+      box-shadow: 0px 0px 56px 0px rgba(25,32,64,255);
+    }
+    a {
+      color: #97d9ef;
+      font-weight: 400;
+      text-decoration: none;
+    }
+    a:hover {
+      color: #fff;
+    }
+    .radio-input {
+      color: white;
+      padding: 10px 20px;
+      cursor: none;
+      border-radius: 5px;
+      margin: 5px;
+    }
+    .radio-input input[type="radio"] {
+      display: none;
+    }
+    .radio-input label {
+      display: flex;
+      align-items: center;
+      padding: 10px;
+      border: 1px solid #ccc;
+      background-color: #660512;
+      border-radius: 5px;
+      margin-right: 3px;
+      cursor: pointer;
+      position: relative;
+      transition: all 0.3s ease-in-out;
+    }
+    .radio-input label:before {
+      content: "";
+      display: block;
+      position: absolute;
+      top: 50%;
+      left: 0;
+      transform: translate(-50%, -50%);
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background-color: #fff;
+      border: 2px solid #ccc;
+      transition: all 0.3s ease-in-out;
+    }
+    .radio-input input[type="radio"]:checked + label:before {
+      background-color: green;
+      top: 0;
+    }
+    .radio-input input[type="radio"]:checked + label {
+      background-color: royalblue;
+      color: #fff;
+      border-color: rgb(129, 235, 129);
+      animation: radio-translate 0.5s ease-in-out;
+    }
+    @keyframes radio-translate {
+      0% {
+        transform: translateX(0);
+      }
+      50% {
+        transform: translateY(-10px);
+      }
+      100% {
+        transform: translateX(0);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="wrapper">
+    <div class="container">
+      <h1>HTML5 Adaptive Livestream for MPEG-DASH</h1>
+      <h2>The livestream play everywhere with low startup delay, no buffering and in highest quality.</h2>
+      <div class="content">
+        <div>
+          <video data-shaka-player id="video" poster="https://www.arvancloud.ir/blog/wp-content//uploads/2022/11/What-is-MPEG-Cover-1440x720.jpg"></video>
+          <div class="radio-input">
+            <input value="value-1" name="value-radio" id="value-1" type="radio" onclick="loadVideo(0)" checked>
+            <label for="value-1">HBO</label>
+            <input value="value-2" name="value-radio" id="value-2" type="radio" onclick="loadVideo(1)">
+            <label for="value-2">HBO HITS</label>
+            <input value="value-3" name="value-radio" id="value-3" type="radio" onclick="loadVideo(2)">
+            <label for="value-3">HBO FAMILY</label>
+            <input value="value-4" name="value-radio" id="value-4" type="radio" onclick="loadVideo(3)">
+            <label for="value-4">HBO SIGNATURE</label>
+            <input value="value-5" name="value-radio" id="value-5" type="radio" onclick="loadVideo(4)">
+            <label for="value-5">CINEMAX</label>
+            <input value="value-6" name="value-radio" id="value-6" type="radio" onclick="loadVideo(5)">
+            <label for="value-6">DREAMWORKS</label>
+            <input value="value-7" name="value-radio" id="value-7" type="radio" onclick="loadVideo(6)">
+            <label for="value-7">WARNER</label>
+            <h1>For more information about this livestream, Please contact and leave a message for this
+              <a href="https://facebook.com/angelodave.gonzales" target="_blank">developer.</a>
+            </h1>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const videos = [
+      {
+        manifestUri: 'https://linearjitp-playback.astro.com.my/dash-wv/linear/2304/default.mpd',
+        clearKey: {
+          'a098896d2b11c5f3906a993c3ba5c610' : 'f3f842c54cc96cbbd0bcb96a4cb8a813'
+        }
+      },
+      {
+        manifestUri: 'https://linearjitp-playback.astro.com.my/dash-wv/linear/5055/default.mpd',
+        clearKey: {
+          '5d600eb70944d681c26c1f48fbe61f10' : '796139ba05a2ab425f978c7fd98b4372'
+        }
+      },
+      {
+        manifestUri: 'https://tglmp03.akamaized.net/out/v1/d15476c2807d4380b0cc375a7d861752/manifest.mpd',
+        clearKey: {
+          '363b551913124d6b80074ca295b25129' : 'a6c6efcab0076d572e5732fb6451d19c'
+        }
+      },
+      {
+        manifestUri: 'https://tglmp02.akamaized.net/out/v1/b37a81eb3585471cb9c639c78edcdefa/manifest.mpd',
+        clearKey: {
+          '90480f571f5d410891d7add7103c1e84' : 'b64f887d2480bcaea992c2f0826449a9'
+        }
+      },
+      {
+        manifestUri: 'https://linearjitp-playback.astro.com.my/dash-wv/linear/603/default.mpd',
+        clearKey: {
+          'efdb2a8d39151cc39f4b51d762cf9c10' : '13cc535ad4a73201147863cac386cdd3'
+        }
+      },
+      {
+        manifestUri: 'https://linearjitp-playback.astro.com.my/dash-wv/linear/5095/default.mpd',
+        clearKey: {
+          'b5bfe3554df2abcd37afe130a7e1d310' : 'dccbdf043ac43d18be0b3eb43a582876'
+        }
+      },
+      {
+        manifestUri: 'https://linearjitp-playback.astro.com.my/dash-wv/linear/2605/default.mpd',
+        clearKey: {
+          '6093e12639b24cd651ee6b3c13446d10' : 'f8326f668c7bee309e5302b513e5bdf7'
+        }
+      },
+    ];
+
+    async function loadVideo(index) {
+      const player = window.player;
+      const { manifestUri, clearKey } = videos[index];
+      console.log('Loading video:', manifestUri);
+
+      player.configure({
+        drm: {
+          clearKeys: clearKey
+        }
+      });
+
+      try {
+        await player.load(manifestUri);
+        console.log('Video loaded successfully!');
+      } catch (error) {
+        console.error('Error loading video:', error);
+      }
+    }
+
+    function initApp() {
+      shaka.polyfill.installAll();
+      if (shaka.Player.isBrowserSupported()) {
+        init();
+      } else {
+        console.error('Browser not supported!');
+      }
+    }
+
+    async function init() {
+      const video = document.getElementById('video');
+      const ui = video['ui'];
+      const controls = ui.getControls();
+      const player = controls.getPlayer();
+      const config = {
+        'seekBarColors': {
+          base: 'rgba(255, 255, 255, 0.3)',
+          buffered: 'rgba(255, 255, 255, 0.54)',
+          played: 'rgb(255, 255, 255)'
+        }
+      };
+
+      player.configure({
+        drm: {
+          clearKeys: videos[0].clearKey
+        }
+      });
+
+      ui.configure(config);
+      window.player = player;
+      window.ui = ui;
+      window.controls = controls;
+      player.addEventListener("error", onPlayerErrorEvent);
+      controls.addEventListener("error", onUIErrorEvent);
+
+      try {
+        await player.load(videos[0].manifestUri);
+        console.log('The video has now been loaded!');
+      } catch (error) {
+        console.error('Error loading video:', error);
+      }
+    }
+
+    function onPlayerErrorEvent(errorEvent) {
+      console.error('Player error:', errorEvent.detail);
+    }
+
+    function onUIErrorEvent(errorEvent) {
+      console.error('UI error:', errorEvent.detail);
+    }
+
+    document.addEventListener('shaka-ui-loaded', init);
+    document.addEventListener('shaka-ui-load-failed', initFailed);
+    document.addEventListener('DOMContentLoaded', initApp);
+
+    function initFailed() {
+      console.error('Shaka UI failed to load');
+    }
+
+    Object.defineProperty(navigator, 'userAgent', {
+      get: function () {
+        return 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.4044.138 Safari/537.36';
+      }
+    });
+  </script>
+</body>
+</html>
+
