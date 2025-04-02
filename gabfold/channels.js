@@ -84,8 +84,8 @@ const channels = {
 
 	Cartoonito: {
         name: 'Cartoonito',
-        url: 'https://streaming.indihometv.com/atm/DASH//boomerang/manifest.mpd',
-		type: 'mpd'
+        url: 'https://cdn4.skygo.mn/live/disk1/Boomerang/HLS-FTA/Boomerang.m3u8',
+		type: 'hls'
     },
 
 
