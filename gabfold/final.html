@@ -92,35 +92,22 @@
     <script>
         jwplayer.key = 'ITWMv7t88JGzI0xPwW8I0+LveiXX9SWbfdmt0ArUSyc=';function loadStream(channelKey) {
     const channel = channels[channelKey];
+
+    // Get player container
     const playerContainer = document.getElementById('player');
-
-    // Remove any previous countdown
-    const oldLoading = document.getElementById('number-loading');
-    if (oldLoading) oldLoading.remove();
-
-    // Create number loading screen
-    const numberLoader = document.createElement('div');
-    numberLoader.id = 'number-loading';
-    numberLoader.style.position = "absolute";
-    numberLoader.style.top = "50%";
-    numberLoader.style.left = "50%";
-    numberLoader.style.transform = "translate(-50%, -50%)";
-    numberLoader.style.color = "white";
-    numberLoader.style.fontSize = "48px";
-    numberLoader.style.fontFamily = "Arial, sans-serif";
-    numberLoader.style.zIndex = "1000";
-    playerContainer.appendChild(numberLoader);
-
-    let countdown = 3;
-    const countdownInterval = setInterval(() => {
-        if (countdown === 0) {
-            numberLoader.innerText = 'Loading...';
-            clearInterval(countdownInterval);
-        } else {
-            numberLoader.innerText = countdown;
-            countdown--;
-        }
-    }, 1000);
+    
+    // Add a poster image overlay
+    const poster = document.createElement('img');
+    poster.src = "https://www.arvancloud.ir/blog/wp-content//uploads/2022/11/What-is-MPEG-Cover-1440x720.jpg";
+    poster.id = "poster-overlay";
+    poster.style.position = "absolute";
+    poster.style.top = "0";
+    poster.style.left = "0";
+    poster.style.width = "100%";
+    poster.style.height = "100%";
+    poster.style.objectFit = "cover";
+    poster.style.zIndex = "10"; // Keep it above the player
+    playerContainer.appendChild(poster);
 
     jwplayer("player").setup({
         file: channel.url,
@@ -136,12 +123,6 @@
         autostart: true,
         controls: true
     });
-
-    jwplayer("player").on('firstFrame', function () {
-        const loadingEl = document.getElementById('number-loading');
-        if (loadingEl) loadingEl.remove();
-    });
-        }
 
     // Remove poster only when the first frame of video is displayed
     jwplayer("player").on('firstFrame', function () {
