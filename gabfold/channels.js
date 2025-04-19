@@ -683,7 +683,7 @@ const channels = {
          },
 
 	intro: {
-        name: 'intro',
+        name: 'BURNIKS TV',
         url: 'https://github.com/gabriel-iptv/gabriel/raw/79bd6c586fb9f59788a9dc6b8dd5ffadce5dd973/lv_0_20250331194328.mp4',
         type: 'mp4'
          },
