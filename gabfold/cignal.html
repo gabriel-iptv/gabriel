@@ -16,7 +16,7 @@
     #sidebar {
         width: 250px;
         height: 100vh;
-        background: rgba(255, 255, 255, 0.1);
+        background: rgba(255, 255, 255, 0.5);
         overflow-y: auto;
         position: absolute;
         left: 0;
@@ -33,7 +33,7 @@
         font-size: 20px;
         border-bottom: 1px solid #ccc;
         padding-bottom: 10px;
-        color: white;
+        color: black;
     }
     #sidebar ul {
         list-style: none;
@@ -44,10 +44,10 @@
         padding: 10px;
         border-bottom: 1px solid rgba(0, 0, 0, 0.1);
         cursor: pointer;
-        color: white;
+        color: black;
     }
     #sidebar li:hover {
-        background: rgba(255, 255, 255, 0.3);
+        background: rgba(0, 0, 0, 0.1);
     }
     #player-container {
         height: 100vh;
@@ -62,7 +62,7 @@
         position: absolute;
         width: 100%;
         height: 100vh;
-        background-color: black;
+        background-color: rgba(0, 0, 0, 0.85);
         color: white;
         font-size: 24px;
         display: flex;
@@ -71,9 +71,27 @@
         z-index: 9999;
         flex-direction: column;
     }
-    #loading-text {
-        font-size: 36px;
-        margin-bottom: 10px;
+    #loading-box {
+        width: 80%;
+        max-width: 400px;
+        background: #222;
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+    }
+    #progress-bar {
+        width: 100%;
+        height: 20px;
+        background: #444;
+        border-radius: 10px;
+        overflow: hidden;
+        margin-top: 10px;
+    }
+    #progress-fill {
+        width: 0%;
+        height: 100%;
+        background: limegreen;
     }
     #toggle-menu {
         position: absolute;
@@ -104,8 +122,7 @@
     jwplayer.key = 'ITWMv7t88JGzI0xPwW8I0+LveiXX9SWbfdmt0ArUSyc=';function loadStream(channelKey) {
     const channel = channels[channelKey];
     const loadingOverlay = document.getElementById('loading-overlay');
-    const loadingText = document.getElementById('loading-text');
-    const loadingPercent = document.getElementById('loading-percent');
+    const progressFill = document.getElementById('progress-fill');
     const channelNameDisplay = document.getElementById('channel-name');
 
     try {
@@ -113,8 +130,14 @@
     } catch (e) {}
 
     loadingOverlay.style.display = 'flex';
-    loadingText.textContent = 'Loading';
-    loadingPercent.textContent = '0%';
+    progressFill.style.width = '0%';
+
+    // Show selected channel immediately
+    channelNameDisplay.textContent = channel.name || channelKey;
+    channelNameDisplay.style.display = 'block';
+    setTimeout(() => {
+        channelNameDisplay.style.display = 'none';
+    }, 3000);
 
     let progress = 0;
     const interval = setInterval(() => {
@@ -147,15 +170,9 @@
                 loadingOverlay.style.display = 'none';
                 alert("This channel is currently unavailable.");
             }
-
-            channelNameDisplay.textContent = channel.name || channelKey;
-            channelNameDisplay.style.display = 'block';
-            setTimeout(() => {
-                channelNameDisplay.style.display = 'none';
-            }, 3000);
         }
-        loadingPercent.textContent = progress + '%';
-    }, 30);
+        progressFill.style.width = progress + '%';
+    }, 25);
 }
 
 function toggleSidebar() {
@@ -197,8 +214,12 @@ window.onload = function () {
 <div id="player-container">
     <div id="player"></div>
     <div id="loading-overlay">
-        <div id="loading-text">Loading</div>
-        <div id="loading-percent">0%</div>
+        <div id="loading-box">
+            <div>Loading...</div>
+            <div id="progress-bar">
+                <div id="progress-fill"></div>
+            </div>
+        </div>
     </div>
     <div id="channel-name"></div>
 </div>
