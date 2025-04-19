@@ -10,17 +10,28 @@
         background-color: #000;
         height: 100vh;
         width: 100vw;
-        display: flex;
         overflow: hidden;
-        color: white;
         font-family: Arial, sans-serif;
     }
     #sidebar {
         width: 250px;
-        background: rgba(0, 0, 0, 0.9);
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.7);
         overflow-y: auto;
+        position: absolute;
+        left: 0;
+        top: 0;
         padding: 10px;
         border-right: 1px solid #444;
+        z-index: 1000;
+        display: none;
+    }
+    #sidebar h2 {
+        margin-top: 0;
+        text-align: center;
+        font-size: 20px;
+        border-bottom: 1px solid #555;
+        padding-bottom: 10px;
     }
     #sidebar ul {
         list-style: none;
@@ -36,7 +47,8 @@
         background: rgba(255, 255, 255, 0.2);
     }
     #player-container {
-        flex-grow: 1;
+        height: 100vh;
+        width: 100vw;
         position: relative;
     }
     #player {
@@ -60,6 +72,32 @@
         font-size: 36px;
         margin-bottom: 10px;
     }
+    #toggle-menu {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        z-index: 1001;
+        background: rgba(0, 0, 0, 0.5);
+        color: white;
+        padding: 8px 12px;
+        border: none;
+        font-size: 18px;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+    #channel-name {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: rgba(0, 0, 0, 0.6);
+        color: white;
+        padding: 15px 30px;
+        border-radius: 8px;
+        font-size: 24px;
+        z-index: 1002;
+        display: none;
+    }
 </style>
 <script src="https://ssl.p.jwpcdn.com/player/v/8.36.4/jwplayer.js"></script>
 <script src="channels.js"></script>
@@ -70,6 +108,7 @@
     const loadingOverlay = document.getElementById('loading-overlay');
     const loadingText = document.getElementById('loading-text');
     const loadingPercent = document.getElementById('loading-percent');
+    const channelNameDisplay = document.getElementById('channel-name');
 
     jwplayer("player").remove();
     loadingOverlay.style.display = 'flex';
@@ -110,10 +149,18 @@
         loadingOverlay.style.display = 'none';
         clearInterval(interval);
     }, 15000);
+
+    // Show current channel name
+    channelNameDisplay.textContent = channel.name || channelKey;
+    channelNameDisplay.style.display = 'block';
+    setTimeout(() => {
+        channelNameDisplay.style.display = 'none';
+    }, 3000);
 }
 
-function selectChannel(key) {
-    loadStream(key);
+function toggleSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    sidebar.style.display = sidebar.style.display === 'block' ? 'none' : 'block';
 }
 
 function enterFullscreen() {
@@ -125,7 +172,10 @@ function enterFullscreen() {
     }
 }
 
-document.addEventListener("click", enterFullscreen);
+document.addEventListener("click", function () {
+    enterFullscreen();
+});
+
 window.onload = function () {
     screen.orientation.lock("landscape").catch(() => {});
     loadStream("intro");
@@ -134,12 +184,14 @@ window.onload = function () {
 </script>
 </head>
 <body>
+<button id="toggle-menu" onclick="toggleSidebar()">☰</button>
 <div id="sidebar">
+    <h2>BURNIKS TV</h2>
     <ul>
-        <li onclick="selectChannel('tv5')">TV5</li>
-        <li onclick="selectChannel('kapamilya')">Kapamilya Channel</li>
-        <li onclick="selectChannel('a2z')">A2Z</li>
-        <!-- Add more channels as needed -->
+        <li onclick="loadStream('tv5')">TV5</li>
+        <li onclick="loadStream('kapamilya')">Kapamilya Channel</li>
+        <li onclick="loadStream('a2z')">A2Z</li>
+        <!-- Add more channels here -->
     </ul>
 </div>
 <div id="player-container">
@@ -148,6 +200,7 @@ window.onload = function () {
         <div id="loading-text">Loading</div>
         <div id="loading-percent">0%</div>
     </div>
+    <div id="channel-name"></div>
 </div>
 </body>
 </html>
