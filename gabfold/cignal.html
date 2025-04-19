@@ -16,16 +16,19 @@
     #sidebar {
         width: 250px;
         height: 100vh;
-        background: rgba(255, 255, 255, 0.5);
+        background: rgba(0, 0, 255, 0.5);
         overflow-y: auto;
         position: absolute;
-        left: 0;
+        left: -250px;
         top: 0;
         padding: 10px;
         border-right: 1px solid #444;
         z-index: 1000;
-        display: none;
-        color: black;
+        color: white;
+        transition: left 0.3s ease;
+    }
+    #sidebar.active {
+        left: 0;
     }
     #sidebar h2 {
         margin-top: 0;
@@ -33,7 +36,6 @@
         font-size: 20px;
         border-bottom: 1px solid #ccc;
         padding-bottom: 10px;
-        color: black;
     }
     #sidebar ul {
         list-style: none;
@@ -42,12 +44,12 @@
     }
     #sidebar li {
         padding: 10px;
-        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
         cursor: pointer;
-        color: black;
+        color: white;
     }
     #sidebar li:hover {
-        background: rgba(0, 0, 0, 0.1);
+        background: rgba(255, 255, 255, 0.2);
     }
     #player-container {
         height: 100vh;
@@ -62,7 +64,7 @@
         position: absolute;
         width: 100%;
         height: 100vh;
-        background-color: rgba(0, 0, 0, 0.85);
+        background-color: rgba(0, 0, 0, 0.7);
         color: white;
         font-size: 24px;
         display: flex;
@@ -71,27 +73,12 @@
         z-index: 9999;
         flex-direction: column;
     }
-    #loading-box {
-        width: 80%;
-        max-width: 400px;
-        background: #222;
-        padding: 20px;
-        border-radius: 10px;
+    #loading-info {
+        font-size: 22px;
         text-align: center;
-        box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
-    }
-    #progress-bar {
-        width: 100%;
-        height: 20px;
-        background: #444;
+        background: rgba(0, 0, 0, 0.5);
+        padding: 10px 20px;
         border-radius: 10px;
-        overflow: hidden;
-        margin-top: 10px;
-    }
-    #progress-fill {
-        width: 0%;
-        height: 100%;
-        background: limegreen;
     }
     #toggle-menu {
         position: absolute;
@@ -105,13 +92,19 @@
         font-size: 18px;
         cursor: pointer;
         border-radius: 5px;
+        transition: opacity 0.3s;
+    }
+    #toggle-menu.hidden {
+        opacity: 0;
+        pointer-events: none;
     }
     #channel-name {
         position: absolute;
-        top: 10px;
-        right: 10px;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
         color: white;
-        font-size: 20px;
+        font-size: 22px;
         z-index: 1002;
         display: none;
     }
@@ -119,25 +112,26 @@
 <script src="https://ssl.p.jwpcdn.com/player/v/8.36.4/jwplayer.js"></script>
 <script src="channels.js"></script>
 <script>
-    jwplayer.key = 'ITWMv7t88JGzI0xPwW8I0+LveiXX9SWbfdmt0ArUSyc=';function loadStream(channelKey) {
+    jwplayer.key = 'ITWMv7t88JGzI0xPwW8I0+LveiXX9SWbfdmt0ArUSyc=';let sidebarTimeout;
+
+function loadStream(channelKey) {
     const channel = channels[channelKey];
     const loadingOverlay = document.getElementById('loading-overlay');
-    const progressFill = document.getElementById('progress-fill');
+    const loadingInfo = document.getElementById('loading-info');
     const channelNameDisplay = document.getElementById('channel-name');
 
     try {
         jwplayer("player").remove();
     } catch (e) {}
 
-    loadingOverlay.style.display = 'flex';
-    progressFill.style.width = '0%';
+    clearTimeout(sidebarTimeout);
+    document.getElementById('sidebar').classList.remove('active');
+    document.getElementById('toggle-menu').classList.remove('hidden');
 
-    // Show selected channel immediately
-    channelNameDisplay.textContent = channel.name || channelKey;
+    loadingOverlay.style.display = 'flex';
+
+    channelNameDisplay.textContent = `${channel.name || channelKey} 0%`;
     channelNameDisplay.style.display = 'block';
-    setTimeout(() => {
-        channelNameDisplay.style.display = 'none';
-    }, 3000);
 
     let progress = 0;
     const interval = setInterval(() => {
@@ -170,14 +164,27 @@
                 loadingOverlay.style.display = 'none';
                 alert("This channel is currently unavailable.");
             }
+
+            setTimeout(() => {
+                channelNameDisplay.style.display = 'none';
+            }, 3000);
         }
-        progressFill.style.width = progress + '%';
+        channelNameDisplay.textContent = `${channel.name || channelKey} ${progress}%`;
     }, 25);
 }
 
 function toggleSidebar() {
     const sidebar = document.getElementById('sidebar');
-    sidebar.style.display = sidebar.style.display === 'block' ? 'none' : 'block';
+    const toggle = document.getElementById('toggle-menu');
+
+    sidebar.classList.add('active');
+    toggle.classList.add('hidden');
+
+    clearTimeout(sidebarTimeout);
+    sidebarTimeout = setTimeout(() => {
+        sidebar.classList.remove('active');
+        toggle.classList.remove('hidden');
+    }, 2000);
 }
 
 function enterFullscreen() {
@@ -214,12 +221,7 @@ window.onload = function () {
 <div id="player-container">
     <div id="player"></div>
     <div id="loading-overlay">
-        <div id="loading-box">
-            <div>Loading...</div>
-            <div id="progress-bar">
-                <div id="progress-fill"></div>
-            </div>
-        </div>
+        <div id="loading-info">Loading...</div>
     </div>
     <div id="channel-name"></div>
 </div>
