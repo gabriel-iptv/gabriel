@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,43 +15,57 @@
         font-family: Arial, sans-serif;
     }
     #sidebar {
-    width: 250px;
-    height: 100vh;
-    background: rgba(0, 0, 255, 0.5);
-    overflow-y: auto;
-    position: absolute;
-    left: 0;
-    top: 0;
-    padding: 10px;
-    border-right: 1px solid #444;
-    z-index: 1000;
-    color: white;
-    transform: translateX(-100%);
-    transition: transform 0.3s ease;
-}
-#sidebar.active {
-    transform: translateX(0);
-}
+        width: 250px;
+        height: 100vh;
+        background: rgba(0, 0, 255, 0.5);
+        overflow: hidden;
+        position: absolute;
+        left: 0;
+        top: 0;
+        padding: 0;
+        border-right: 1px solid #444;
+        z-index: 1000;
+        color: white;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+        display: flex;
+        flex-direction: column;
+    }
+    #sidebar.active {
+        transform: translateX(0);
     }
     #sidebar h2 {
-        margin-top: 0;
+        margin: 10px 0;
         text-align: center;
         font-size: 20px;
         border-bottom: 1px solid #ccc;
         padding-bottom: 10px;
     }
-    #sidebar ul {
+    #search-bar {
+        width: 90%;
+        margin: 0 auto 10px auto;
+        padding: 8px;
+        border-radius: 5px;
+        border: none;
+        font-size: 14px;
+    }
+    #channel-list {
+        overflow-y: auto;
+        flex: 1;
+        padding: 10px;
+    }
+    #channel-list ul {
         list-style: none;
         padding: 0;
         margin: 0;
     }
-    #sidebar li {
+    #channel-list li {
         padding: 10px;
         border-bottom: 1px solid rgba(255, 255, 255, 0.2);
         cursor: pointer;
         color: white;
     }
-    #sidebar li:hover {
+    #channel-list li:hover {
         background: rgba(255, 255, 255, 0.2);
     }
     #player-container {
@@ -116,196 +131,134 @@
 <script>
     jwplayer.key = 'ITWMv7t88JGzI0xPwW8I0+LveiXX9SWbfdmt0ArUSyc=';let sidebarTimeout;
 
-function loadStream(channelKey) {
-    const channel = channels[channelKey];
-    const loadingOverlay = document.getElementById('loading-overlay');
-    const loadingInfo = document.getElementById('loading-info');
-    const channelNameDisplay = document.getElementById('channel-name');
+    function loadStream(channelKey) {
+        const channel = channels[channelKey];
+        const loadingOverlay = document.getElementById('loading-overlay');
+        const loadingInfo = document.getElementById('loading-info');
+        const channelNameDisplay = document.getElementById('channel-name');
 
-    try {
-        jwplayer("player").remove();
-    } catch (e) {}
+        try {
+            jwplayer("player").remove();
+        } catch (e) {}
 
-    clearTimeout(sidebarTimeout);
-    document.getElementById('sidebar').classList.remove('active');
-    document.getElementById('toggle-menu').classList.remove('hidden');
+        clearTimeout(sidebarTimeout);
+        document.getElementById('sidebar').classList.remove('active');
+        document.getElementById('toggle-menu').classList.remove('hidden');
 
-    loadingOverlay.style.display = 'flex';
+        loadingOverlay.style.display = 'flex';
 
-    channelNameDisplay.textContent = `${channel.name || channelKey} 0%`;
-    channelNameDisplay.style.display = 'block';
+        channelNameDisplay.textContent = `${channel.name || channelKey} 0%`;
+        channelNameDisplay.style.display = 'block';
 
-    let progress = 0;
-    const interval = setInterval(() => {
-        progress++;
-        if (progress >= 100) {
-            progress = 100;
-            clearInterval(interval);
+        let progress = 0;
+        const interval = setInterval(() => {
+            progress++;
+            if (progress >= 100) {
+                progress = 100;
+                clearInterval(interval);
 
-            try {
-                jwplayer("player").setup({
-                    file: channel.url,
-                    type: channel.type,
-                    drm: channel.type === 'mpd' ? {
-                        clearkey: {
-                            keyId: channel.keyId,
-                            key: channel.key
-                        }
-                    } : undefined,
-                    width: "100%",
-                    height: "100vh",
-                    autostart: true,
-                    controls: false
-                }).on('error', () => {
+                try {
+                    jwplayer("player").setup({
+                        file: channel.url,
+                        type: channel.type,
+                        drm: channel.type === 'mpd' ? {
+                            clearkey: {
+                                keyId: channel.keyId,
+                                key: channel.key
+                            }
+                        } : undefined,
+                        width: "100%",
+                        height: "100vh",
+                        autostart: true,
+                        controls: false
+                    }).on('error', () => {
+                        loadingOverlay.style.display = 'none';
+                        alert("This channel is currently unavailable.");
+                    }).on('firstFrame', function () {
+                        loadingOverlay.style.display = 'none';
+                    });
+                } catch (error) {
                     loadingOverlay.style.display = 'none';
                     alert("This channel is currently unavailable.");
-                }).on('firstFrame', function () {
-                    loadingOverlay.style.display = 'none';
-                });
-            } catch (error) {
-                loadingOverlay.style.display = 'none';
-                alert("This channel is currently unavailable.");
+                }
+
+                setTimeout(() => {
+                    channelNameDisplay.style.display = 'none';
+                }, 3000);
             }
+            channelNameDisplay.textContent = `${channel.name || channelKey} ${progress}%`;
+        }, 25);
+    }
 
-            setTimeout(() => {
-                channelNameDisplay.style.display = 'none';
-            }, 3000);
-        }
-        channelNameDisplay.textContent = `${channel.name || channelKey} ${progress}%`;
-    }, 25);
-}
+    function toggleSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        const toggle = document.getElementById('toggle-menu');
 
-function toggleSidebar() {
-    const sidebar = document.getElementById('sidebar');
-    const toggle = document.getElementById('toggle-menu');
+        sidebar.classList.add('active');
+        toggle.classList.add('hidden');
 
-    sidebar.classList.add('active');
-    toggle.classList.add('hidden');
+        clearTimeout(sidebarTimeout);
+        sidebarTimeout = setTimeout(() => {
+            sidebar.classList.remove('active');
+            toggle.classList.remove('hidden');
+        }, 2000);
+    }
 
-    clearTimeout(sidebarTimeout);
-    sidebarTimeout = setTimeout(() => {
-        sidebar.classList.remove('active');
-        toggle.classList.remove('hidden');
-    }, 2000);
-}
-
-function enterFullscreen() {
-    const playerContainer = document.documentElement;
-    if (!document.fullscreenElement) {
-        if (playerContainer.requestFullscreen) {
-            playerContainer.requestFullscreen();
+    function enterFullscreen() {
+        const playerContainer = document.documentElement;
+        if (!document.fullscreenElement) {
+            if (playerContainer.requestFullscreen) {
+                playerContainer.requestFullscreen();
+            }
         }
     }
-}
 
-document.addEventListener("click", function () {
-    enterFullscreen();
-});
+    document.addEventListener("click", function () {
+        enterFullscreen();
+    });
 
-window.onload = function () {
-    screen.orientation.lock("landscape").catch(() => {});
-    loadStream("intro");
-};
+    window.onload = function () {
+        screen.orientation.lock("landscape").catch(() => {});
+        loadStream("intro");
+    };
 
+    // Search Filter
+    document.addEventListener("DOMContentLoaded", function () {
+        const searchInput = document.getElementById('search-bar');
+        searchInput.addEventListener('input', function () {
+            const filter = this.value.toLowerCase();
+            const listItems = document.querySelectorAll('#channel-list li');
+
+            listItems.forEach(item => {
+                const text = item.textContent.toLowerCase();
+                item.style.display = text.includes(filter) ? '' : 'none';
+            });
+        });
+    });
 </script>
 </head>
 <body>
 <button id="toggle-menu" onclick="toggleSidebar()">☰</button>
 <div id="sidebar">
-    <h2>BURNIKS TV</h2>
-    <ul>
-        <li onclick="loadStream('tv5')">TV5</li>
-        <li onclick="loadStream('kapamilya')">Kapamilya Channel</li>
-        <li onclick="loadStream('a2z')">A2Z</li>
-        <li onclick="selectChannel('anc')">ANC</li>
-<li onclick="loadStream('GmaPinoyTV')">GMA Pinoy TV</li>
-<li onclick="loadStream('Animax')">Animax</li>
-<li onclick="loadStream('cartoon_net_hd')">Cartoon Network HD</li>
-<li onclick="loadStream('Cartoonito')">Cartoonito</li>
-<li onclick="loadStream('moonbug')">Moonbug Kids</li>
-<li onclick="loadStream('pbs')">PBS Kids</li>
-<li onclick="loadStream('disney')">Disney Channel</li>
-<li onclick="loadStream('disneyjr')">Disney Jr</li>
-<li onclick="loadStream('disneyxd')">Disney XD</li>
-<li onclick="loadStream('nickjr')">Nickjr</li>
-<li onclick="loadStream('nickelodeon')">Nickelodeon</li>
-<li onclick="loadStream('dreamworks_tag')">Dreamworks Tagalog</li>
-<li onclick="loadStream('dreamworks_hd')">Dreamworks</li>
-<li onclick="loadStream('teleradyo')">Teleradyo</li>
-<li onclick="loadStream('tfc')">TFC</li>
-<li onclick="loadStream('sarisari')">SARISARI</li>
-<li onclick="loadStream('buko')">BUKO</li>
-<li onclick="loadStream('knowledge_channel')">Knowledge Channel</li>
-<li onclick="loadStream('bilyonaryoch')">Bilyonaryo</li>
-<li onclick="loadStream('TVUP')">TVUP</li>
-<li onclick="loadStream('RPTV')">RPTV</li>
-<li onclick="loadStream('truefmtv')">True FM TV</li>
-<li onclick="loadStream('cinemaone')">CinemaOne</li>
-<li onclick="loadStream('cinemo')">CineMo!</li>
-<li onclick="loadStream('cinemax')">Cinemax</li>
-<li onclick="loadStream('pbo')">PBO</li>
-<li onclick="loadStream('cg_tagalogmovie')">TMC</li>
-<li onclick="loadStream('viva')">Viva Cinema</li>
-<li onclick="loadStream('celestialpinoy')">Celestial Movies Pinoy</li>
-<li onclick="loadStream('AXN')">AXN</li>
-<li onclick="loadStream('blueant_extreme')">Rock Action</li>
-<li onclick="loadStream('rock_entertainment')">Rock Entertainment</li>
-<li onclick="loadStream('lotus')">Lotus Macau</li>
-<li onclick="loadStream('HBO')">HBO</li>
-<li onclick="loadStream('hbo_signature')">HBO Signature</li>
-<li onclick="loadStream('hbo_hits')">HBO Hits</li>
-<li onclick="loadStream('hbo_family')">HBO Family</li>
-<li onclick="loadStream('WarnerTV')">Warner TV</li>
-<li onclick="loadStream('tvn_movies')">TVN Movies Pinoy</li>
-<li onclick="loadStream('tvn_movieshd')">TVN Movies</li>
-<li onclick="loadStream('tvn_plus')">TVN</li>
-<li onclick="loadStream('ptv4')">PTV4</li>
-<li onclick="loadStream('popup_ppv_hd')">Tap Movies</li>
-<li onclick="loadStream('taptv')">TAP TV</li>
-<li onclick="loadStream('tap_edge')">TAP Edge</li>
-<li onclick="loadStream('tap_sports')">TAP Sports</li>
-<li onclick="loadStream('cctv4')">CCTV4</li>
-<li onclick="loadStream('pba_rush_hd')">PBA Rush</li>
-<li onclick="loadStream('NBAPH')">NBA TV Philippines</li>
-<li onclick="loadStream('mp_tv')">MPTV</li>
-<li onclick="loadStream('uaap_varsity')">UAAP Varsity</li>
-<li onclick="loadStream('arirang')">Arirang</li>
-<li onclick="loadStream('bbcearth_hd')">BBC Earth</li>
-<li onclick="loadStream('discovery')">Discovery</li>
-<li onclick="loadStream('kbs_world')">KBS World</li>
-<li onclick="loadStream('kix_hd')">Kix HD</li>
-<li onclick="loadStream('lifetime')">Lifetime</li>
-<li onclick="loadStream('hgtv_hd')">HGTV HD</li>
-<li onclick="loadStream('asianfoodnetwork')">Asian Food Network</li>
-<li onclick="loadStream('travel_channel')">Travel Channel</li>
-<li onclick="loadStream('hits_hd')">Hits</li>
-<li onclick="loadStream('HitsMovies')">Hits Movies</li>
-<li onclick="loadStream('hits_now')">Hits Now</li>
-<li onclick="loadStream('crime_investigation')">Crime Investigation</li>
-<li onclick="loadStream('tech_storm')">Tech Storm</li>
-<li onclick="loadStream('aljazeera')">Al Jazeera</li>
-<li onclick="loadStream('bbcworld_news')">BBC World News</li>
-<li onclick="loadStream('channelnews_asia')">Channel News Asia</li>
-<li onclick="loadStream('abc_australia')">ABC Australia</li>
-<li onclick="loadStream('oneph')">One PH</li>
-<li onclick="loadStream('onenews_hd')">One News HD</li>
-<li onclick="loadStream('onesports')">One Sports</li>
-<li onclick="loadStream('one_sports_plus_hd')">One Sports Plus HD</li>
-<li onclick="loadStream('SPOTV_HD')">SPOTV</li>
-<li onclick="loadStream('SPOTV_HD2')">SPOTV2</li>
-<li onclick="loadStream('premiersports_hd')">Premier Sports</li>
-<li onclick="loadStream('premier_tennishd')">Premier Tennis</li>
-<li onclick="loadStream('tapactionflix_hd')">Tap Action Flix</li>
-<li onclick="loadStream('thrill')">Thrill</li>
-<li onclick="loadStream('foodnetwork_hd')">Food Network HD</li>
-<li onclick="loadStream('depedchannel')">DepEd Channel</li>
-<li onclick="loadStream('tvmaria')">TV Maria</li>
-<li onclick="loadStream('ibc13')">IBC13</li>
-<li onclick="loadStream('history_hd')">History HD</li>
-<li onclick="loadStream('animal_planet')">Animal Planet</li>
-<li onclick="loadStream('fashiontv_hd')">Fashion TV HD</li>
-<li onclick="loadStream('bloomberg')">Bloomberg</li>
-    </ul>
+    <div style="position: sticky; top: 0; background: rgba(0, 0, 255, 0.8); z-index: 1; padding-bottom: 10px;">
+        <h2>BURNIKS TV</h2>
+        <input type="text" id="search-bar" placeholder="Search channel...">
+    </div>
+    <div id="channel-list">
+        <ul>
+            <li onclick="loadStream('tv5')">TV5</li>
+            <li onclick="loadStream('kapamilya')">Kapamilya Channel</li>
+            <li onclick="loadStream('a2z')">A2Z</li>
+            <li onclick="loadStream('anc')">ANC</li>
+            <li onclick="loadStream('GmaPinoyTV')">GMA Pinoy TV</li>
+            <li onclick="loadStream('Animax')">Animax</li>
+            <li onclick="loadStream('cartoon_net_hd')">Cartoon Network HD</li>
+            <li onclick="loadStream('Cartoonito')">Cartoonito</li>
+            <li onclick="loadStream('moonbug')">Moonbug Kids</li>
+            <li onclick="loadStream('pbs')">PBS Kids</li>
+            <!-- Add other channels here as needed -->
+        </ul>
+    </div>
 </div>
 <div id="player-container">
     <div id="player"></div>
