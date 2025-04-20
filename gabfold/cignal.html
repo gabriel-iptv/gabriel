@@ -146,8 +146,6 @@
   <script>
     jwplayer.key = 'ITWMv7t88JGzI0xPwW8I0+LveiXX9SWbfdmt0ArUSyc=';
 
-    let hasEnteredFullscreen = false;
-
     function loadStream(channelKey) {
       const channel = channels[channelKey];
       const loadingOverlay = document.getElementById('loading-overlay');
@@ -199,6 +197,9 @@
         }
         channelNameDisplay.textContent = `${channel.name || channelKey} ${progress}%`;
       }, 25);
+
+      // Automatically close sidebar after selecting a channel
+      closeSidebar();
     }
 
     function toggleSidebar() {
@@ -213,25 +214,30 @@
       document.getElementById('toggle-menu').classList.remove('hidden');
     }
 
+    function isFullscreen() {
+      return document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement;
+    }
+
     function enterFullscreen() {
       const playerContainer = document.documentElement;
-      if (!document.fullscreenElement) {
+      if (!isFullscreen()) {
         if (playerContainer.requestFullscreen) {
           playerContainer.requestFullscreen();
+        } else if (playerContainer.webkitRequestFullscreen) {
+          playerContainer.webkitRequestFullscreen();
+        } else if (playerContainer.mozRequestFullScreen) {
+          playerContainer.mozRequestFullScreen();
         }
       }
     }
 
+    // Handle screen clicks
     document.addEventListener("click", function (e) {
       const sidebar = document.getElementById('sidebar');
       const toggleBtn = document.getElementById('toggle-menu');
 
-      // First tap = fullscreen
-      if (!hasEnteredFullscreen) {
-        enterFullscreen();
-        hasEnteredFullscreen = true;
-        return; // Skip closing sidebar on first tap
-      }
+      // Always try to go fullscreen if not already
+      enterFullscreen();
 
       // If sidebar is open and click is outside sidebar and toggle button
       if (
