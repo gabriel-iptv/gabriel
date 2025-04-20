@@ -129,24 +129,19 @@
 <script src="https://ssl.p.jwpcdn.com/player/v/8.36.4/jwplayer.js"></script>
 <script src="channels.js"></script>
 <script>
-    jwplayer.key = 'ITWMv7t88JGzI0xPwW8I0+LveiXX9SWbfdmt0ArUSyc=';let sidebarTimeout;
+    jwplayer.key = 'ITWMv7t88JGzI0xPwW8I0+LveiXX9SWbfdmt0ArUSyc=';
+    let sidebarTimeout;
 
     function loadStream(channelKey) {
         const channel = channels[channelKey];
         const loadingOverlay = document.getElementById('loading-overlay');
-        const loadingInfo = document.getElementById('loading-info');
         const channelNameDisplay = document.getElementById('channel-name');
 
         try {
             jwplayer("player").remove();
         } catch (e) {}
 
-        clearTimeout(sidebarTimeout);
-        document.getElementById('sidebar').classList.remove('active');
-        document.getElementById('toggle-menu').classList.remove('hidden');
-
         loadingOverlay.style.display = 'flex';
-
         channelNameDisplay.textContent = `${channel.name || channelKey} 0%`;
         channelNameDisplay.style.display = 'block';
 
@@ -156,7 +151,6 @@
             if (progress >= 100) {
                 progress = 100;
                 clearInterval(interval);
-
                 try {
                     jwplayer("player").setup({
                         file: channel.url,
@@ -188,20 +182,24 @@
             }
             channelNameDisplay.textContent = `${channel.name || channelKey} ${progress}%`;
         }, 25);
+
+        resetSidebarAutoClose();
     }
 
     function toggleSidebar() {
         const sidebar = document.getElementById('sidebar');
         const toggle = document.getElementById('toggle-menu');
-
         sidebar.classList.add('active');
         toggle.classList.add('hidden');
+        resetSidebarAutoClose();
+    }
 
+    function resetSidebarAutoClose() {
         clearTimeout(sidebarTimeout);
         sidebarTimeout = setTimeout(() => {
-            sidebar.classList.remove('active');
-            toggle.classList.remove('hidden');
-        }, 2000);
+            document.getElementById('sidebar').classList.remove('active');
+            document.getElementById('toggle-menu').classList.remove('hidden');
+        }, 5000);
     }
 
     function enterFullscreen() {
@@ -222,7 +220,6 @@
         loadStream("intro");
     };
 
-    // Search Filter
     document.addEventListener("DOMContentLoaded", function () {
         const searchInput = document.getElementById('search-bar');
         searchInput.addEventListener('input', function () {
@@ -234,6 +231,10 @@
                 item.style.display = text.includes(filter) ? '' : 'none';
             });
         });
+
+        // Any scroll or interaction resets the timeout
+        document.getElementById('channel-list').addEventListener('scroll', resetSidebarAutoClose);
+        document.getElementById('channel-list').addEventListener('click', resetSidebarAutoClose);
     });
 </script>
 </head>
@@ -251,12 +252,7 @@
             <li onclick="loadStream('a2z')">A2Z</li>
             <li onclick="loadStream('anc')">ANC</li>
             <li onclick="loadStream('GmaPinoyTV')">GMA Pinoy TV</li>
-            <li onclick="loadStream('Animax')">Animax</li>
-            <li onclick="loadStream('cartoon_net_hd')">Cartoon Network HD</li>
-            <li onclick="loadStream('Cartoonito')">Cartoonito</li>
-            <li onclick="loadStream('moonbug')">Moonbug Kids</li>
-            <li onclick="loadStream('pbs')">PBS Kids</li>
-            <!-- Add other channels here as needed -->
+            <!-- Add the rest of your channels here -->
         </ul>
     </div>
 </div>
