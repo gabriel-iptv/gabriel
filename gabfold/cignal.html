@@ -146,6 +146,8 @@
   <script>
     jwplayer.key = 'ITWMv7t88JGzI0xPwW8I0+LveiXX9SWbfdmt0ArUSyc=';
 
+    let hasEnteredFullscreen = false;
+
     function loadStream(channelKey) {
       const channel = channels[channelKey];
       const loadingOverlay = document.getElementById('loading-overlay');
@@ -206,21 +208,11 @@
       toggle.classList.add('hidden');
     }
 
-    // Close sidebar when clicking outside
-    document.addEventListener("click", function (e) {
-      const sidebar = document.getElementById('sidebar');
-      const toggleBtn = document.getElementById('toggle-menu');
-      if (
-        sidebar.classList.contains('active') &&
-        !sidebar.contains(e.target) &&
-        !toggleBtn.contains(e.target)
-      ) {
-        sidebar.classList.remove('active');
-        toggleBtn.classList.remove('hidden');
-      }
-    });
+    function closeSidebar() {
+      document.getElementById('sidebar').classList.remove('active');
+      document.getElementById('toggle-menu').classList.remove('hidden');
+    }
 
-    // Enter fullscreen
     function enterFullscreen() {
       const playerContainer = document.documentElement;
       if (!document.fullscreenElement) {
@@ -229,6 +221,27 @@
         }
       }
     }
+
+    document.addEventListener("click", function (e) {
+      const sidebar = document.getElementById('sidebar');
+      const toggleBtn = document.getElementById('toggle-menu');
+
+      // First tap = fullscreen
+      if (!hasEnteredFullscreen) {
+        enterFullscreen();
+        hasEnteredFullscreen = true;
+        return; // Skip closing sidebar on first tap
+      }
+
+      // If sidebar is open and click is outside sidebar and toggle button
+      if (
+        sidebar.classList.contains('active') &&
+        !sidebar.contains(e.target) &&
+        !toggleBtn.contains(e.target)
+      ) {
+        closeSidebar();
+      }
+    });
 
     document.addEventListener("DOMContentLoaded", function () {
       const searchInput = document.getElementById('search-bar');
