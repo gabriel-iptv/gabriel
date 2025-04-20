@@ -1,267 +1,277 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gabriel IPTV</title>
-<style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Gabriel IPTV</title>
+  <style>
     body {
-        margin: 0;
-        padding: 0;
-        background-color: #000;
-        height: 100vh;
-        width: 100vw;
-        overflow: hidden;
-        font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #000;
+      height: 100vh;
+      width: 100vw;
+      overflow: hidden;
+      font-family: Arial, sans-serif;
     }
+
     #sidebar {
-        width: 250px;
-        height: 100vh;
-        background: rgba(0, 0, 255, 0.5);
-        overflow: hidden;
-        position: absolute;
-        left: 0;
-        top: 0;
-        padding: 0;
-        border-right: 1px solid #444;
-        z-index: 1000;
-        color: white;
-        transform: translateX(-100%);
-        transition: transform 0.3s ease;
-        display: flex;
-        flex-direction: column;
+      width: 250px;
+      height: 100vh;
+      background: rgba(0, 0, 255, 0.5);
+      overflow: hidden;
+      position: absolute;
+      left: 0;
+      top: 0;
+      padding: 0;
+      border-right: 1px solid #444;
+      z-index: 1000;
+      color: white;
+      transform: translateX(-100%);
+      transition: transform 0.3s ease;
+      display: flex;
+      flex-direction: column;
     }
+
     #sidebar.active {
-        transform: translateX(0);
+      transform: translateX(0);
     }
+
     #sidebar h2 {
-        margin: 10px 0;
-        text-align: center;
-        font-size: 20px;
-        border-bottom: 1px solid #ccc;
-        padding-bottom: 10px;
+      margin: 10px 0;
+      text-align: center;
+      font-size: 20px;
+      border-bottom: 1px solid #ccc;
+      padding-bottom: 10px;
     }
+
     #search-bar {
-        width: 90%;
-        margin: 0 auto 10px auto;
-        padding: 8px;
-        border-radius: 5px;
-        border: none;
-        font-size: 14px;
+      width: 90%;
+      margin: 0 auto 10px auto;
+      padding: 8px;
+      border-radius: 5px;
+      border: none;
+      font-size: 14px;
     }
+
     #channel-list {
-        overflow-y: auto;
-        flex: 1;
-        padding: 10px;
+      overflow-y: auto;
+      flex: 1;
+      padding: 10px;
     }
+
     #channel-list ul {
-        list-style: none;
-        padding: 0;
-        margin: 0;
+      list-style: none;
+      padding: 0;
+      margin: 0;
     }
+
     #channel-list li {
-        padding: 10px;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-        cursor: pointer;
-        color: white;
+      padding: 10px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+      cursor: pointer;
+      color: white;
     }
+
     #channel-list li:hover {
-        background: rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.2);
     }
+
     #player-container {
-        height: 100vh;
-        width: 100vw;
-        position: relative;
+      height: 100vh;
+      width: 100vw;
+      position: relative;
     }
+
     #player {
-        width: 100%;
-        height: 100vh;
+      width: 100%;
+      height: 100vh;
     }
+
     #loading-overlay {
-        position: absolute;
-        width: 100%;
-        height: 100vh;
-        background-color: rgba(0, 0, 0, 0.7);
-        color: white;
-        font-size: 24px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 9999;
-        flex-direction: column;
+      position: absolute;
+      width: 100%;
+      height: 100vh;
+      background-color: rgba(0, 0, 0, 0.7);
+      color: white;
+      font-size: 24px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      flex-direction: column;
     }
+
     #loading-info {
-        font-size: 22px;
-        text-align: center;
-        background: rgba(0, 0, 0, 0.5);
-        padding: 10px 20px;
-        border-radius: 10px;
+      font-size: 22px;
+      text-align: center;
+      background: rgba(0, 0, 0, 0.5);
+      padding: 10px 20px;
+      border-radius: 10px;
     }
+
     #toggle-menu {
-        position: absolute;
-        top: 10px;
-        left: 10px;
-        z-index: 1001;
-        background: rgba(0, 0, 0, 0.5);
-        color: white;
-        padding: 8px 12px;
-        border: none;
-        font-size: 18px;
-        cursor: pointer;
-        border-radius: 5px;
-        transition: opacity 0.3s;
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      z-index: 1001;
+      background: rgba(0, 0, 0, 0.5);
+      color: white;
+      padding: 8px 12px;
+      border: none;
+      font-size: 18px;
+      cursor: pointer;
+      border-radius: 5px;
+      transition: opacity 0.3s;
     }
+
     #toggle-menu.hidden {
-        opacity: 0;
-        pointer-events: none;
+      opacity: 0;
+      pointer-events: none;
     }
+
     #channel-name {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        color: white;
-        font-size: 22px;
-        z-index: 1002;
-        display: none;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: white;
+      font-size: 22px;
+      z-index: 1002;
+      display: none;
     }
-</style>
-<script src="https://ssl.p.jwpcdn.com/player/v/8.36.4/jwplayer.js"></script>
-<script src="channels.js"></script>
-<script>
+  </style>
+  <script src="https://ssl.p.jwpcdn.com/player/v/8.36.4/jwplayer.js"></script>
+  <script src="channels.js"></script>
+  <script>
     jwplayer.key = 'ITWMv7t88JGzI0xPwW8I0+LveiXX9SWbfdmt0ArUSyc=';
-    let sidebarTimeout;
 
     function loadStream(channelKey) {
-        const channel = channels[channelKey];
-        const loadingOverlay = document.getElementById('loading-overlay');
-        const channelNameDisplay = document.getElementById('channel-name');
+      const channel = channels[channelKey];
+      const loadingOverlay = document.getElementById('loading-overlay');
+      const channelNameDisplay = document.getElementById('channel-name');
 
-        try {
-            jwplayer("player").remove();
-        } catch (e) {}
+      try {
+        jwplayer("player").remove();
+      } catch (e) {}
 
-        loadingOverlay.style.display = 'flex';
-        channelNameDisplay.textContent = `${channel.name || channelKey} 0%`;
-        channelNameDisplay.style.display = 'block';
+      loadingOverlay.style.display = 'flex';
+      channelNameDisplay.textContent = `${channel.name || channelKey} 0%`;
+      channelNameDisplay.style.display = 'block';
 
-        let progress = 0;
-        const interval = setInterval(() => {
-            progress++;
-            if (progress >= 100) {
-                progress = 100;
-                clearInterval(interval);
-                try {
-                    jwplayer("player").setup({
-                        file: channel.url,
-                        type: channel.type,
-                        drm: channel.type === 'mpd' ? {
-                            clearkey: {
-                                keyId: channel.keyId,
-                                key: channel.key
-                            }
-                        } : undefined,
-                        width: "100%",
-                        height: "100vh",
-                        autostart: true,
-                        controls: false
-                    }).on('error', () => {
-                        loadingOverlay.style.display = 'none';
-                        alert("This channel is currently unavailable.");
-                    }).on('firstFrame', function () {
-                        loadingOverlay.style.display = 'none';
-                    });
-                } catch (error) {
-                    loadingOverlay.style.display = 'none';
-                    alert("This channel is currently unavailable.");
+      let progress = 0;
+      const interval = setInterval(() => {
+        progress++;
+        if (progress >= 100) {
+          progress = 100;
+          clearInterval(interval);
+
+          try {
+            jwplayer("player").setup({
+              file: channel.url,
+              type: channel.type,
+              drm: channel.type === 'mpd' ? {
+                clearkey: {
+                  keyId: channel.keyId,
+                  key: channel.key
                 }
+              } : undefined,
+              width: "100%",
+              height: "100vh",
+              autostart: true,
+              controls: false
+            }).on('error', () => {
+              loadingOverlay.style.display = 'none';
+              alert("This channel is currently unavailable.");
+            }).on('firstFrame', function () {
+              loadingOverlay.style.display = 'none';
+            });
+          } catch (error) {
+            loadingOverlay.style.display = 'none';
+            alert("This channel is currently unavailable.");
+          }
 
-                setTimeout(() => {
-                    channelNameDisplay.style.display = 'none';
-                }, 3000);
-            }
-            channelNameDisplay.textContent = `${channel.name || channelKey} ${progress}%`;
-        }, 25);
-
-        resetSidebarAutoClose();
+          setTimeout(() => {
+            channelNameDisplay.style.display = 'none';
+          }, 3000);
+        }
+        channelNameDisplay.textContent = `${channel.name || channelKey} ${progress}%`;
+      }, 25);
     }
 
     function toggleSidebar() {
-        const sidebar = document.getElementById('sidebar');
-        const toggle = document.getElementById('toggle-menu');
-        sidebar.classList.add('active');
-        toggle.classList.add('hidden');
-        resetSidebarAutoClose();
+      const sidebar = document.getElementById('sidebar');
+      const toggle = document.getElementById('toggle-menu');
+      sidebar.classList.add('active');
+      toggle.classList.add('hidden');
     }
 
-    function resetSidebarAutoClose() {
-        clearTimeout(sidebarTimeout);
-        sidebarTimeout = setTimeout(() => {
-            document.getElementById('sidebar').classList.remove('active');
-            document.getElementById('toggle-menu').classList.remove('hidden');
-        }, 5000);
-    }
-
-    function enterFullscreen() {
-        const playerContainer = document.documentElement;
-        if (!document.fullscreenElement) {
-            if (playerContainer.requestFullscreen) {
-                playerContainer.requestFullscreen();
-            }
-        }
-    }
-
-    document.addEventListener("click", function () {
-        enterFullscreen();
+    // Close sidebar when clicking outside
+    document.addEventListener("click", function (e) {
+      const sidebar = document.getElementById('sidebar');
+      const toggleBtn = document.getElementById('toggle-menu');
+      if (
+        sidebar.classList.contains('active') &&
+        !sidebar.contains(e.target) &&
+        !toggleBtn.contains(e.target)
+      ) {
+        sidebar.classList.remove('active');
+        toggleBtn.classList.remove('hidden');
+      }
     });
 
-    window.onload = function () {
-        screen.orientation.lock("landscape").catch(() => {});
-        loadStream("intro");
-    };
+    // Enter fullscreen
+    function enterFullscreen() {
+      const playerContainer = document.documentElement;
+      if (!document.fullscreenElement) {
+        if (playerContainer.requestFullscreen) {
+          playerContainer.requestFullscreen();
+        }
+      }
+    }
 
     document.addEventListener("DOMContentLoaded", function () {
-        const searchInput = document.getElementById('search-bar');
-        searchInput.addEventListener('input', function () {
-            const filter = this.value.toLowerCase();
-            const listItems = document.querySelectorAll('#channel-list li');
+      const searchInput = document.getElementById('search-bar');
+      searchInput.addEventListener('input', function () {
+        const filter = this.value.toLowerCase();
+        const listItems = document.querySelectorAll('#channel-list li');
 
-            listItems.forEach(item => {
-                const text = item.textContent.toLowerCase();
-                item.style.display = text.includes(filter) ? '' : 'none';
-            });
+        listItems.forEach(item => {
+          const text = item.textContent.toLowerCase();
+          item.style.display = text.includes(filter) ? '' : 'none';
         });
+      });
 
-        // Any scroll or interaction resets the timeout
-        document.getElementById('channel-list').addEventListener('scroll', resetSidebarAutoClose);
-        document.getElementById('channel-list').addEventListener('click', resetSidebarAutoClose);
+      screen.orientation.lock("landscape").catch(() => {});
+      loadStream("intro");
     });
-</script>
+  </script>
 </head>
 <body>
-<button id="toggle-menu" onclick="toggleSidebar()">☰</button>
-<div id="sidebar">
+  <button id="toggle-menu" onclick="toggleSidebar()">☰</button>
+  <div id="sidebar">
     <div style="position: sticky; top: 0; background: rgba(0, 0, 255, 0.8); z-index: 1; padding-bottom: 10px;">
-        <h2>BURNIKS TV</h2>
-        <input type="text" id="search-bar" placeholder="Search channel...">
+      <h2>BURNIKS TV</h2>
+      <input type="text" id="search-bar" placeholder="Search channel..." />
     </div>
     <div id="channel-list">
-        <ul>
-            <li onclick="loadStream('tv5')">TV5</li>
-            <li onclick="loadStream('kapamilya')">Kapamilya Channel</li>
-            <li onclick="loadStream('a2z')">A2Z</li>
-            <li onclick="loadStream('anc')">ANC</li>
-            <li onclick="loadStream('GmaPinoyTV')">GMA Pinoy TV</li>
-            <!-- Add the rest of your channels here -->
-        </ul>
+      <ul>
+        <li onclick="loadStream('tv5')">TV5</li>
+        <li onclick="loadStream('kapamilya')">Kapamilya Channel</li>
+        <li onclick="loadStream('a2z')">A2Z</li>
+        <li onclick="loadStream('anc')">ANC</li>
+        <li onclick="loadStream('GmaPinoyTV')">GMA Pinoy TV</li>
+        <!-- Add more channels here -->
+      </ul>
     </div>
-</div>
-<div id="player-container">
+  </div>
+
+  <div id="player-container">
     <div id="player"></div>
     <div id="loading-overlay">
-        <div id="loading-info">Loading...</div>
+      <div id="loading-info">Loading...</div>
     </div>
     <div id="channel-name"></div>
-</div>
+  </div>
 </body>
 </html>
