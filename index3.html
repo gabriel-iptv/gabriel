@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TDEE Calculator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 400px;
+            background: white;
+            margin: 30px auto;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #1e88e5;
+        }
+
+        label {
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 15px;
+            padding: 12px;
+            background: #1e88e5;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #1565c0;
+        }
+
+        .result {
+            margin-top: 15px;
+            padding: 12px;
+            background: #e3f2fd;
+            border-radius: 5px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 12px;
+            color: gray;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🔥 TDEE Calculator</h1>
+
+    <label>Gender</label>
+    <select id="gender">
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+    </select>
+
+    <label>Age (years)</label>
+    <input type="number" id="age" placeholder="Enter your age">
+
+    <label>Weight (kg)</label>
+    <input type="number" id="weight" placeholder="Enter your weight">
+
+    <label>Height (cm)</label>
+    <input type="number" id="height" placeholder="Enter your height">
+
+    <label>Activity Level</label>
+    <select id="activity">
+        <option value="1.2">Sedentary (little or no exercise)</option>
+        <option value="1.375">Light (1–3 days/week)</option>
+        <option value="1.55">Moderate (3–5 days/week)</option>
+        <option value="1.725">Active (6–7 days/week)</option>
+        <option value="1.9">Very Active (twice/day)</option>
+    </select>
+
+    <button onclick="calculateTDEE()">Calculate TDEE</button>
+
+    <div class="result" id="result">
+        Your TDEE will appear here
+    </div>
+</div>
+
+<footer>
+    © 2026 Fitness Calculator
+</footer>
+
+<script>
+    function calculateTDEE() {
+        let gender = document.getElementById("gender").value;
+        let age = parseFloat(document.getElementById("age").value);
+        let weight = parseFloat(document.getElementById("weight").value);
+        let height = parseFloat(document.getElementById("height").value);
+        let activity = parseFloat(document.getElementById("activity").value);
+
+        if (!age || !weight || !height) {
+            document.getElementById("result").innerHTML = "⚠️ Please fill in all fields";
+            return;
+        }
+
+        let bmr;
+
+        // Mifflin-St Jeor Formula
+        if (gender === "male") {
+            bmr = (10 * weight) + (6.25 * height) - (5 * age) + 5;
+        } else {
+            bmr = (10 * weight) + (6.25 * height) - (5 * age) - 161;
+        }
+
+        let tdee = bmr * activity;
+
+        document.getElementById("result").innerHTML =
+            "🔥 Your TDEE is <br><span style='font-size:20px'>" +
+            Math.round(tdee) + " calories per day</span>";
+    }
+</script>
+
+</body>
+</html>
