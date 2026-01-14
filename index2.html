@@ -1,60 +1,111 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Home Workout Guide</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<title>Home Workout Guide</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            background-color: #f4f6f8;
-            color: #333;
-        }
+<style>
+* {
+    box-sizing: border-box;
+    font-family: "Poppins", Arial, sans-serif;
+}
 
-        header {
-            background-color: #1e88e5;
-            color: white;
-            padding: 20px;
-            text-align: center;
-        }
+body {
+    margin: 0;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #1e88e5, #6ab7ff);
+    color: #fff;
+}
 
-        section {
-            padding: 15px;
-            margin: 10px;
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-        }
+/* Header */
+header {
+    padding: 35px 20px;
+    text-align: center;
+}
 
-        h2 {
-            color: #1e88e5;
-        }
+header h1 {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 600;
+}
 
-        ul {
-            padding-left: 20px;
-        }
+header p {
+    opacity: 0.85;
+    margin-top: 6px;
+}
 
-        .exercise {
-            margin-bottom: 10px;
-        }
+/* Main Container */
+.main {
+    padding: 10px;
+    max-width: 500px;
+    margin: auto;
+}
 
-        footer {
-            text-align: center;
-            padding: 10px;
-            background-color: #1e88e5;
-            color: white;
-            margin-top: 20px;
-        }
-    </style>
+/* Glass Sections */
+section {
+    background: rgba(255, 255, 255, 0.18);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-radius: 22px;
+    padding: 18px;
+    margin-bottom: 15px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.25);
+}
+
+h2 {
+    margin-top: 0;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+/* Lists */
+ul {
+    padding-left: 18px;
+    margin: 10px 0 0;
+}
+
+li {
+    margin-bottom: 6px;
+    opacity: 0.9;
+}
+
+/* Exercise Cards */
+.exercise {
+    background: rgba(255,255,255,0.22);
+    border-radius: 18px;
+    padding: 12px;
+    margin-top: 10px;
+}
+
+.exercise strong {
+    font-size: 15px;
+}
+
+.exercise p {
+    margin: 4px 0 0;
+    font-size: 14px;
+    opacity: 0.85;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 15px;
+    font-size: 12px;
+    opacity: 0.6;
+}
+</style>
 </head>
+
 <body>
 
 <header>
     <h1>🏠 Home Workout Guide</h1>
     <p>Stay fit anytime, anywhere</p>
 </header>
+
+<div class="main">
 
 <section>
     <h2>🔥 Warm-Up (5 Minutes)</h2>
@@ -112,9 +163,7 @@
     </ul>
 </section>
 
-<footer>
-    <p>© 2026 Home Workout Guide</p>
-</footer>
+</div>
 
 </body>
 </html>
